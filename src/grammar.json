@@ -1,0 +1,485 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
+  "name": "asn1",
+  "rules": {
+    "source_file": {
+      "type": "REPEAT",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "block_comment"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "line_comment"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "keyword"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        ]
+      }
+    },
+    "block_comment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "/*"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[^*/]+"
+              },
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "*"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[^/]"
+                  }
+                ]
+              },
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "/"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[^*]"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "*/"
+        }
+      ]
+    },
+    "line_comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "--"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\n]*"
+          }
+        ]
+      }
+    },
+    "keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "ABSENT"
+          },
+          {
+            "type": "STRING",
+            "value": "ENCODED"
+          },
+          {
+            "type": "STRING",
+            "value": "INTERSECTION"
+          },
+          {
+            "type": "STRING",
+            "value": "SEQUENCE"
+          },
+          {
+            "type": "STRING",
+            "value": "ABSTRACT-SYNTAX"
+          },
+          {
+            "type": "STRING",
+            "value": "ENCODING-CONTROL"
+          },
+          {
+            "type": "STRING",
+            "value": "ISO646String"
+          },
+          {
+            "type": "STRING",
+            "value": "SET"
+          },
+          {
+            "type": "STRING",
+            "value": "ALL"
+          },
+          {
+            "type": "STRING",
+            "value": "END"
+          },
+          {
+            "type": "STRING",
+            "value": "MAX"
+          },
+          {
+            "type": "STRING",
+            "value": "SETTINGS"
+          },
+          {
+            "type": "STRING",
+            "value": "APPLICATION"
+          },
+          {
+            "type": "STRING",
+            "value": "ENUMERATED"
+          },
+          {
+            "type": "STRING",
+            "value": "MIN"
+          },
+          {
+            "type": "STRING",
+            "value": "SIZE"
+          },
+          {
+            "type": "STRING",
+            "value": "AUTOMATIC"
+          },
+          {
+            "type": "STRING",
+            "value": "EXCEPT"
+          },
+          {
+            "type": "STRING",
+            "value": "MINUS-INFINITY"
+          },
+          {
+            "type": "STRING",
+            "value": "STRING"
+          },
+          {
+            "type": "STRING",
+            "value": "BEGIN"
+          },
+          {
+            "type": "STRING",
+            "value": "EXPLICIT"
+          },
+          {
+            "type": "STRING",
+            "value": "NOT-A-NUMBER"
+          },
+          {
+            "type": "STRING",
+            "value": "SYNTAX"
+          },
+          {
+            "type": "STRING",
+            "value": "BIT"
+          },
+          {
+            "type": "STRING",
+            "value": "EXPORTS"
+          },
+          {
+            "type": "STRING",
+            "value": "NULL"
+          },
+          {
+            "type": "STRING",
+            "value": "T61String"
+          },
+          {
+            "type": "STRING",
+            "value": "BMPString"
+          },
+          {
+            "type": "STRING",
+            "value": "EXTENSIBILITY"
+          },
+          {
+            "type": "STRING",
+            "value": "NumericString"
+          },
+          {
+            "type": "STRING",
+            "value": "TAGS"
+          },
+          {
+            "type": "STRING",
+            "value": "BOOLEAN"
+          },
+          {
+            "type": "STRING",
+            "value": "EXTERNAL"
+          },
+          {
+            "type": "STRING",
+            "value": "OBJECT"
+          },
+          {
+            "type": "STRING",
+            "value": "TeletexString"
+          },
+          {
+            "type": "STRING",
+            "value": "BY"
+          },
+          {
+            "type": "STRING",
+            "value": "FALSE"
+          },
+          {
+            "type": "STRING",
+            "value": "ObjectDescriptor"
+          },
+          {
+            "type": "STRING",
+            "value": "TIME"
+          },
+          {
+            "type": "STRING",
+            "value": "CHARACTER"
+          },
+          {
+            "type": "STRING",
+            "value": "FROM"
+          },
+          {
+            "type": "STRING",
+            "value": "OCTET"
+          },
+          {
+            "type": "STRING",
+            "value": "TIME-OF-DAY"
+          },
+          {
+            "type": "STRING",
+            "value": "CHOICE"
+          },
+          {
+            "type": "STRING",
+            "value": "GeneralizedTime"
+          },
+          {
+            "type": "STRING",
+            "value": "OF"
+          },
+          {
+            "type": "STRING",
+            "value": "TRUE"
+          },
+          {
+            "type": "STRING",
+            "value": "CLASS"
+          },
+          {
+            "type": "STRING",
+            "value": "GeneralString"
+          },
+          {
+            "type": "STRING",
+            "value": "OID-IRI"
+          },
+          {
+            "type": "STRING",
+            "value": "TYPE-IDENTIFIER"
+          },
+          {
+            "type": "STRING",
+            "value": "COMPONENT"
+          },
+          {
+            "type": "STRING",
+            "value": "GraphicString"
+          },
+          {
+            "type": "STRING",
+            "value": "OPTIONAL"
+          },
+          {
+            "type": "STRING",
+            "value": "UNION"
+          },
+          {
+            "type": "STRING",
+            "value": "COMPONENTS"
+          },
+          {
+            "type": "STRING",
+            "value": "IA5String"
+          },
+          {
+            "type": "STRING",
+            "value": "PATTERN"
+          },
+          {
+            "type": "STRING",
+            "value": "UNIQUE"
+          },
+          {
+            "type": "STRING",
+            "value": "CONSTRAINED"
+          },
+          {
+            "type": "STRING",
+            "value": "IDENTIFIER"
+          },
+          {
+            "type": "STRING",
+            "value": "PDV"
+          },
+          {
+            "type": "STRING",
+            "value": "UNIVERSAL"
+          },
+          {
+            "type": "STRING",
+            "value": "CONTAINING"
+          },
+          {
+            "type": "STRING",
+            "value": "IMPLICIT"
+          },
+          {
+            "type": "STRING",
+            "value": "PLUS-INFINITY"
+          },
+          {
+            "type": "STRING",
+            "value": "UniversalString"
+          },
+          {
+            "type": "STRING",
+            "value": "DATE"
+          },
+          {
+            "type": "STRING",
+            "value": "IMPLIED"
+          },
+          {
+            "type": "STRING",
+            "value": "PRESENT"
+          },
+          {
+            "type": "STRING",
+            "value": "UTCTime"
+          },
+          {
+            "type": "STRING",
+            "value": "DATE-TIME"
+          },
+          {
+            "type": "STRING",
+            "value": "IMPORTS"
+          },
+          {
+            "type": "STRING",
+            "value": "PrintableString"
+          },
+          {
+            "type": "STRING",
+            "value": "UTF8String"
+          },
+          {
+            "type": "STRING",
+            "value": "DEFAULT"
+          },
+          {
+            "type": "STRING",
+            "value": "INCLUDES"
+          },
+          {
+            "type": "STRING",
+            "value": "PRIVATE"
+          },
+          {
+            "type": "STRING",
+            "value": "VideotexString"
+          },
+          {
+            "type": "STRING",
+            "value": "DEFINITIONS"
+          },
+          {
+            "type": "STRING",
+            "value": "INSTANCE"
+          },
+          {
+            "type": "STRING",
+            "value": "REAL"
+          },
+          {
+            "type": "STRING",
+            "value": "VisibleString"
+          },
+          {
+            "type": "STRING",
+            "value": "DURATION"
+          },
+          {
+            "type": "STRING",
+            "value": "INSTRUCTIONS"
+          },
+          {
+            "type": "STRING",
+            "value": "RELATIVE-OID"
+          },
+          {
+            "type": "STRING",
+            "value": "WITH"
+          },
+          {
+            "type": "STRING",
+            "value": "EMBEDDED"
+          },
+          {
+            "type": "STRING",
+            "value": "INTEGER"
+          },
+          {
+            "type": "STRING",
+            "value": "RELATIVE-OID-IRI"
+          }
+        ]
+      }
+    },
+    "identifier": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z][a-zA-Z0-9-]*"
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": [],
+  "reserved": {}
+}
