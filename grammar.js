@@ -1753,10 +1753,7 @@ module.exports = grammar({
       seq($.EmptyElementList, '<', $.identifier, '/>')
     ),
 
-    TextList: $ => choice(
-      $.identifier,
-      seq($.TextList, $.identifier)
-    ),
+    TextList: $ => repeat1($.identifier),
 
     XMLOctetStringValue: $ => choice(
       $.XMLTypedValue,
@@ -1772,10 +1769,7 @@ module.exports = grammar({
       $.XMLComponentValueList,
     )),
 
-    XMLComponentValueList: $ => choice(
-      $.XMLNamedValue,
-      seq($.XMLComponentValueList, $.XMLNamedValue)
-    ),
+    XMLComponentValueList: $ => repeat1($.XMLNamedValue),
 
     XMLNamedValue: $ => seq(
       '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
@@ -1786,20 +1780,14 @@ module.exports = grammar({
       $.XMLDelimitedItemList,
     )),
 
-    XMLValueList: $ => choice(
-      $.XMLValueOrEmpty,
-      seq($.XMLValueOrEmpty, $.XMLValueList)
-    ),
+    XMLValueList: $ => repeat1($.XMLValueOrEmpty),
 
     XMLValueOrEmpty: $ => choice(
       $.XMLValue,
       seq('<', $.NonParameterizedTypeName, '/>')
     ),
 
-    XMLDelimitedItemList: $ => choice(
-      $.XMLDelimitedItem,
-      seq($.XMLDelimitedItem, $.XMLDelimitedItemList)
-    ),
+    XMLDelimitedItemList: $ => repeat1($.XMLDelimitedItem),
 
     XMLDelimitedItem: $ => choice(
       seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
