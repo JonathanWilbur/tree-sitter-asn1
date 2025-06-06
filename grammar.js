@@ -14,11 +14,11 @@ module.exports = grammar({
 
   // TODO: Is this going to slow down the parser a lot or cause errors?
   // TODO: Must each one be only two grammar rules?
-  conflicts: $ => [
-    [$.Type, $.Value, $.ValueSet, $.Object, $.ObjectSet],
-    [$.FixedTypeValueSetFieldSpec, $.ObjectSetFieldSpec],
-    [$.Type, $.ValueSet, $.ObjectSet],
-  ],
+  // conflicts: $ => [
+  //   [$.Type, $.Value, $.ValueSet, $.Object, $.ObjectSet],
+  //   [$.FixedTypeValueSetFieldSpec, $.ObjectSetFieldSpec],
+  //   [$.Type, $.ValueSet, $.ObjectSet],
+  // ],
 
   extras: $ => [
     $.line_comment,
@@ -26,12 +26,7 @@ module.exports = grammar({
   ],
 
   rules: {
-    source_file: $ => repeat(choice(
-      $.block_comment,
-      $.line_comment,
-      $.keyword,
-      $.identifier
-    )),
+    source_file: $ => repeat($.ModuleDefinition),
 
     // TODO: This should prevent terminal hyphens. Apply it to other identifiers.
     yellcased_identifier: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
@@ -852,6 +847,315 @@ module.exports = grammar({
       $.ConstrainedType
     ),
 
+    BuiltinType: $ => choice(
+      $.BitStringType,
+      $.BooleanType,
+      $.CharacterStringType,
+      $.ChoiceType,
+      $.DateType,
+      $.DateTimeType,
+      $.DurationType,
+      $.EmbeddedPDVType,
+      $.EnumeratedType,
+      $.ExternalType,
+      $.InstanceOfType,
+      $.IntegerType,
+      $.IRIType,
+      $.NullType,
+      $.ObjectClassFieldType,
+      $.ObjectIdentifierType,
+      $.OctetStringType,
+      $.RealType,
+      $.RelativeIRIType,
+      $.RelativeOIDType,
+      $.SequenceType,
+      $.SequenceOfType,
+      $.SetType,
+      $.SetOfType,
+      $.PrefixedType,
+      $.TimeType,
+      $.TimeOfDayType
+    ),
+
+    BooleanType: $ => 'BOOLEAN',
+
+    IntegerType: $ => choice(
+      'INTEGER',
+      seq('INTEGER', '{', $.NamedNumberList, '}')
+    ),
+
+    NamedNumberList: $ => seq(
+      $.NamedNumber,
+      repeat(seq(',', $.NamedNumber))
+    ),
+
+    NamedNumber: $ => choice(
+      seq($.identifier, '(', $.SignedNumber, ')'),
+      seq($.identifier, '(', $.DefinedValue, ')')
+    ),
+
+    EnumeratedType: $ => seq(
+      'ENUMERATED',
+      '{',
+      $.Enumerations,
+      '}'
+    ),
+
+    Enumerations: $ => choice(
+      $.RootEnumeration,
+      seq($.RootEnumeration, ',', '...', optional($.ExceptionSpec)),
+      seq($.RootEnumeration, ',', '...', optional($.ExceptionSpec), ',', $.AdditionalEnumeration)
+    ),
+
+    RootEnumeration: $ => $.Enumeration,
+
+    AdditionalEnumeration: $ => $.Enumeration,
+
+    Enumeration: $ => choice(
+      $.EnumerationItem,
+      seq($.EnumerationItem, ',', $.Enumeration)
+    ),
+
+    EnumerationItem: $ => choice(
+      $.identifier,
+      $.NamedNumber
+    ),
+
+    RealType: $ => 'REAL',
+
+    BitStringType: $ => choice(
+      seq('BIT', 'STRING'),
+      seq('BIT', 'STRING', '{', $.NamedBitList, '}')
+    ),
+
+    NamedBitList: $ => seq(
+      $.NamedBit,
+      repeat(seq(',', $.NamedBit))
+    ),
+
+    NamedBit: $ => choice(
+      seq($.identifier, '(', $.number, ')'),
+      seq($.identifier, '(', $.DefinedValue, ')')
+    ),
+
+    OctetStringType: $ => seq('OCTET', 'STRING'),
+
+    NullType: $ => 'NULL',
+
+    SequenceType: $ => choice(
+      seq('SEQUENCE', '{', '}'),
+      seq('SEQUENCE', '{', $.ExtensionAndException, $.OptionalExtensionMarker, '}'),
+      seq('SEQUENCE', '{', $.ComponentTypeLists, '}')
+    ),
+
+    ExtensionAndException: $ => choice(
+      '...',
+      seq('...', optional($.ExceptionSpec))
+    ),
+
+    OptionalExtensionMarker: $ => optional(seq(',', '...')),
+
+    ComponentTypeLists: $ => choice(
+      $.RootComponentTypeList,
+      seq($.RootComponentTypeList, ',', $.ExtensionAndException, $.ExtensionAdditions, $.OptionalExtensionMarker),
+      seq($.RootComponentTypeList, ',', $.ExtensionAndException, $.ExtensionAdditions, $.ExtensionEndMarker, ',', $.RootComponentTypeList),
+      seq($.ExtensionAndException, $.ExtensionAdditions, $.ExtensionEndMarker, ',', $.RootComponentTypeList),
+      seq($.ExtensionAndException, $.ExtensionAdditions, $.OptionalExtensionMarker)
+    ),
+
+    RootComponentTypeList: $ => $.ComponentTypeList,
+
+    ExtensionEndMarker: $ => seq(',', '...'),
+
+    ExtensionAdditions: $ => optional(seq(',', $.ExtensionAdditionList)),
+
+    ExtensionAdditionList: $ => choice(
+      $.ExtensionAddition,
+      seq($.ExtensionAdditionList, ',', $.ExtensionAddition)
+    ),
+
+    ExtensionAddition: $ => choice(
+      $.ComponentType,
+      $.ExtensionAdditionGroup
+    ),
+
+    ExtensionAdditionGroup: $ => seq(
+      '[[',
+      optional(seq($.VersionNumber)),
+      $.ComponentTypeList,
+      ']]'
+    ),
+
+    VersionNumber: $ => seq($.number, ':'),
+
+    ComponentTypeList: $ => choice(
+      $.ComponentType,
+      seq($.ComponentTypeList, ',', $.ComponentType)
+    ),
+
+    ComponentType: $ => choice(
+      $.NamedType,
+      seq($.NamedType, 'OPTIONAL'),
+      seq($.NamedType, 'DEFAULT', $.Value),
+      seq('COMPONENTS', 'OF', $.Type)
+    ),
+
+    NamedType: $ => seq(
+      $.identifier,
+      $.Type
+    ),
+
+    SequenceOfType: $ => choice(
+      seq('SEQUENCE', 'OF', $.Type),
+      seq('SEQUENCE', 'OF', $.NamedType)
+    ),
+
+    SetType: $ => choice(
+      seq('SET', '{', '}'),
+      seq('SET', '{', $.ExtensionAndException, $.OptionalExtensionMarker, '}'),
+      seq('SET', '{', $.ComponentTypeLists, '}')
+    ),
+
+    SetOfType: $ => choice(
+      seq('SET', 'OF', $.Type),
+      seq('SET', 'OF', $.NamedType)
+    ),
+
+    ChoiceType: $ => seq(
+      'CHOICE',
+      '{',
+      $.AlternativeTypeLists,
+      '}'
+    ),
+
+    AlternativeTypeLists: $ => choice(
+      $.RootAlternativeTypeList,
+      seq($.RootAlternativeTypeList, ',', $.ExtensionAndException, $.ExtensionAdditionAlternatives, $.OptionalExtensionMarker)
+    ),
+
+    RootAlternativeTypeList: $ => $.AlternativeTypeList,
+
+    ExtensionAdditionAlternatives: $ => optional(seq(',', $.ExtensionAdditionAlternativesList)),
+
+    ExtensionAdditionAlternativesList: $ => choice(
+      $.ExtensionAdditionAlternative,
+      seq($.ExtensionAdditionAlternativesList, ',', $.ExtensionAdditionAlternative)
+    ),
+
+    ExtensionAdditionAlternative: $ => choice(
+      $.ExtensionAdditionAlternativesGroup,
+      $.NamedType
+    ),
+
+    ExtensionAdditionAlternativesGroup: $ => seq(
+      '[[',
+      optional(seq($.VersionNumber)),
+      $.AlternativeTypeList,
+      ']]'
+    ),
+
+    AlternativeTypeList: $ => choice(
+      $.NamedType,
+      seq($.AlternativeTypeList, ',', $.NamedType)
+    ),
+
+    ObjectIdentifierType: $ => seq('OBJECT', 'IDENTIFIER'),
+
+    RelativeOIDType: $ => 'RELATIVE-OID',
+
+    IRIType: $ => 'OID-IRI',
+
+    RelativeIRIType: $ => 'RELATIVE-OID-IRI',
+
+    EmbeddedPDVType: $ => seq('EMBEDDED', 'PDV'),
+
+    ExternalType: $ => 'EXTERNAL',
+
+    TimeType: $ => 'TIME',
+
+    DateType: $ => 'DATE',
+
+    TimeOfDayType: $ => 'TIME-OF-DAY',
+
+    DateTimeType: $ => 'DATE-TIME',
+
+    DurationType: $ => 'DURATION',
+
+    CharacterStringType: $ => choice(
+      $.RestrictedCharacterStringType,
+      $.UnrestrictedCharacterStringType
+    ),
+
+    RestrictedCharacterStringType: $ => choice(
+      'BMPString',
+      'GeneralString',
+      'GraphicString',
+      'IA5String',
+      'ISO646String',
+      'NumericString',
+      'PrintableString',
+      'TeletexString',
+      'T61String',
+      'UniversalString',
+      'UTF8String',
+      'VideotexString',
+      'VisibleString'
+    ),
+
+    UnrestrictedCharacterStringType: $ => seq('CHARACTER', 'STRING'),
+
+    PrefixedType: $ => choice(
+      $.TaggedType,
+      $.EncodingPrefixedType
+    ),
+
+    TaggedType: $ => choice(
+      seq($.Tag, $.Type),
+      seq($.Tag, 'IMPLICIT', $.Type),
+      seq($.Tag, 'EXPLICIT', $.Type)
+    ),
+
+    Tag: $ => seq(
+      '[',
+      optional(seq($.encodingreference, ':')),
+      optional($.Class),
+      $.ClassNumber,
+      ']'
+    ),
+
+    ClassNumber: $ => choice(
+      $.number,
+      $.DefinedValue
+    ),
+
+    Class: $ => choice(
+      'UNIVERSAL',
+      'APPLICATION',
+      'PRIVATE'
+    ),
+
+    EncodingPrefixedType: $ => seq(
+      $.EncodingPrefix,
+      $.Type
+    ),
+
+    EncodingPrefix: $ => seq(
+      '[',
+      $.encodingreference,
+      $.EncodingInstruction,
+      ']'
+    ),
+
+    EncodingInstruction: $ => /:[^]]*]/,
+
+    ObjectClassFieldType: $ => seq(
+      $.DefinedObjectClass,
+      '.',
+      $.FieldName
+    ),
+
+    InstanceOfType: $ => seq('INSTANCE', 'OF', $.DefinedObjectClass),
+
     ValueSet: $ => seq(
       '{',
       $.ElementSetSpecs,
@@ -1431,12 +1735,11 @@ module.exports = grammar({
       'NaN'
     ),
 
-    XMLBitStringValue: $ => choice(
+    XMLBitStringValue: $ => optional(choice(
       $.XMLTypedValue,
       $.xmlbstring,
       $.XMLIdentifierList,
-      ''  // empty
-    ),
+    )),
 
     xmlbstring: $ => /[01]*/,
 
@@ -1462,12 +1765,12 @@ module.exports = grammar({
 
     xmlhstring: $ => /[0-9A-Fa-f]*/,
 
-    XMLNullValue: $ => '',  // empty
+    // This is in the specification, I swear.
+    XMLNullValue: $ => optional('$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$'),
 
-    XMLSequenceValue: $ => choice(
+    XMLSequenceValue: $ => optional(choice(
       $.XMLComponentValueList,
-      ''  // empty
-    ),
+    )),
 
     XMLComponentValueList: $ => choice(
       $.XMLNamedValue,
@@ -1478,11 +1781,10 @@ module.exports = grammar({
       '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
     ),
 
-    XMLSequenceOfValue: $ => choice(
+    XMLSequenceOfValue: $ => optional(choice(
       $.XMLValueList,
       $.XMLDelimitedItemList,
-      ''  // empty
-    ),
+    )),
 
     XMLValueList: $ => choice(
       $.XMLValueOrEmpty,
@@ -1504,16 +1806,12 @@ module.exports = grammar({
       seq('<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>')
     ),
 
-    XMLSetValue: $ => choice(
-      $.XMLComponentValueList,
-      ''  // empty
-    ),
+    XMLSetValue: $ => optional($.XMLComponentValueList),
 
-    XMLSetOfValue: $ => choice(
+    XMLSetOfValue: $ => optional(choice(
       $.XMLValueList,
       $.XMLDelimitedItemList,
-      ''  // empty
-    ),
+    )),
 
     XMLChoiceValue: $ => seq(
       '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'

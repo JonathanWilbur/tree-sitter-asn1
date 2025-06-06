@@ -1,30 +1,6326 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "asn1",
+  "word": "yellcased_identifier",
   "rules": {
     "source_file": {
       "type": "REPEAT",
       "content": {
-        "type": "CHOICE",
+        "type": "SYMBOL",
+        "name": "ModuleDefinition"
+      }
+    },
+    "yellcased_identifier": {
+      "type": "PATTERN",
+      "value": "[A-Z][A-Z0-9]*(-[A-Z0-9]+)*"
+    },
+    "uppercased_identifier": {
+      "type": "PATTERN",
+      "value": "[A-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
+    },
+    "lowercased_identifier": {
+      "type": "PATTERN",
+      "value": "[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
+    },
+    "uppercased_field_ref": {
+      "type": "PATTERN",
+      "value": "&[A-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
+    },
+    "lowercased_field_ref": {
+      "type": "PATTERN",
+      "value": "&[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
+    },
+    "anycased_field_ref": {
+      "type": "PATTERN",
+      "value": "&[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
+    },
+    "any_identifier": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*"
+    },
+    "ModuleDefinition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ModuleIdentifier"
+        },
+        {
+          "type": "STRING",
+          "value": "DEFINITIONS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EncodingReferenceDefault"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TagDefault"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ExtensionDefault"
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "STRING",
+          "value": "BEGIN"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ModuleBody"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EncodingControlSections"
+        },
+        {
+          "type": "STRING",
+          "value": "END"
+        }
+      ]
+    },
+    "EncodingReferenceDefault": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "INSTRUCTIONS"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "encodingreference"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "encodingreference": {
+      "type": "PATTERN",
+      "value": "[A-Z][A-Z0-9\\-]+"
+    },
+    "ModuleIdentifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "DefinitiveIdentification"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "DefinitiveIdentification": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveOID"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveOIDandIRI"
+        }
+      ]
+    },
+    "DefinitiveOID": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveObjIdComponentList"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "DefinitiveObjIdComponentList": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "DefinitiveObjIdComponent"
+      }
+    },
+    "DefinitiveObjIdComponent": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NameForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveNumberForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveNameAndNumberForm"
+        }
+      ]
+    },
+    "NameForm": {
+      "type": "SYMBOL",
+      "name": "lowercased_identifier"
+    },
+    "DefinitiveNumberForm": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "0"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[1-9][0-9]*"
+        }
+      ]
+    },
+    "DefinitiveNameAndNumberForm": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "lowercased_identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveNumberForm"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "DefinitiveOIDandIRI": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveOID"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IRIValue"
+        }
+      ]
+    },
+    "IRIValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\""
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^\"]+"
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        }
+      ]
+    },
+    "FirstArcIdentifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "/"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ArcIdentifier"
+        }
+      ]
+    },
+    "modulereference": {
+      "type": "PATTERN",
+      "value": "[A-Z][a-zA-Z0-9-]*"
+    },
+    "valuereference": {
+      "type": "PATTERN",
+      "value": "[a-z][a-zA-Z0-9-]*"
+    },
+    "TagDefault": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "EXPLICIT"
+                },
+                {
+                  "type": "STRING",
+                  "value": "TAGS"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "IMPLICIT"
+                },
+                {
+                  "type": "STRING",
+                  "value": "TAGS"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "AUTOMATIC"
+                },
+                {
+                  "type": "STRING",
+                  "value": "TAGS"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ExtensionDefault": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "EXTENSIBILITY"
+            },
+            {
+              "type": "STRING",
+              "value": "IMPLIED"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ModuleBody": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Exports"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Imports"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "AssignmentList"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "Exports": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "EXPORTS"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "ALL"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "SymbolsExported"
+                }
+              ]
+            },
+            {
+              "type": "STRING",
+              "value": ";"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "SymbolsExported": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SymbolList"
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "SymbolList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Symbol"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "Symbol"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Symbol": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Reference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedReference"
+        }
+      ]
+    },
+    "Reference": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z][a-zA-Z0-9\\-]*"
+    },
+    "ParameterizedReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Reference"
+        },
+        {
+          "type": "STRING",
+          "value": "{}"
+        }
+      ]
+    },
+    "Imports": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "IMPORTS"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "SymbolsImported"
+            },
+            {
+              "type": "STRING",
+              "value": ";"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "SymbolsImported": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SymbolsFromModuleList"
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "SymbolsFromModuleList": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "SymbolsFromModule"
+      }
+    },
+    "SymbolsFromModule": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SymbolList"
+        },
+        {
+          "type": "STRING",
+          "value": "FROM"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "GlobalModuleReference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SelectionOption"
+        }
+      ]
+    },
+    "SelectionOption": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "WITH"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "SUCCESSORS"
+                },
+                {
+                  "type": "STRING",
+                  "value": "DESCENDANTS"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "GlobalModuleReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "AssignedIdentifier"
+        }
+      ]
+    },
+    "AssignedIdentifier": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ObjectIdentifierValue"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "DefinedValue"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ObjectIdentifierValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "DefinedValue"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjIdComponentsList"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "ObjIdComponentsList": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "ObjIdComponents"
+      }
+    },
+    "ObjIdComponents": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NameForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NameAndNumberForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ExternalValueReference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedValue"
+        }
+      ]
+    },
+    "DefinedValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExternalValueReference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "valuereference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedValue"
+        }
+      ]
+    },
+    "ParameterizedValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SimpleDefinedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ActualParameterList"
+        }
+      ]
+    },
+    "SimpleDefinedValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExternalValueReference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "valuereference"
+        }
+      ]
+    },
+    "ActualParameterList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ActualParameter"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ActualParameter"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "ActualParameter": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueSet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Object"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectSet"
+        }
+      ]
+    },
+    "ExternalValueReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "valuereference"
+        }
+      ]
+    },
+    "AssignmentList": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "Assignment"
+      }
+    },
+    "Assignment": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "ObjectClassAssignment"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TypeAssignment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectSetAssignment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueSetTypeAssignment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueAssignment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectAssignment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLValueAssignment"
+        }
+      ]
+    },
+    "ObjectClassAssignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "yellcased_identifier"
+          },
+          "named": false,
+          "value": "objectclassreference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ParameterList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectClass"
+        }
+      ]
+    },
+    "ParameterList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Parameter"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "Parameter"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "Parameter": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "ParamGovernor"
+              },
+              {
+                "type": "STRING",
+                "value": ":"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "DummyReference"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DummyReference"
+        }
+      ]
+    },
+    "ParamGovernor": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "Governor"
+          }
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "Reference"
+          },
+          "named": false,
+          "value": "DummyGovernor"
+        }
+      ]
+    },
+    "Governor": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "DefinedObjectClass"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        }
+      ]
+    },
+    "ObjectClass": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "ParameterizedObjectClass"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectClassDefn"
+        }
+      ]
+    },
+    "DefinedObjectClass": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "UsefulObjectClassReference"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ExternalObjectClassReference"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "yellcased_identifier"
+          },
+          "named": false,
+          "value": "objectclassreference"
+        }
+      ]
+    },
+    "UsefulObjectClassReference": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "TYPE-IDENTIFIER"
+        },
+        {
+          "type": "STRING",
+          "value": "ABSTRACT-SYNTAX"
+        }
+      ]
+    },
+    "ParameterizedObjectClass": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ActualParameterList"
+        }
+      ]
+    },
+    "ExternalObjectClassReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "yellcased_identifier"
+          },
+          "named": false,
+          "value": "objectclassreference"
+        }
+      ]
+    },
+    "ObjectClassDefn": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "CLASS"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldSpec"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "FieldSpec"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "WithSyntaxSpec"
+        }
+      ]
+    },
+    "FieldSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "TypeFieldSpec"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FixedTypeValueFieldSpec"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "VariableTypeValueFieldSpec"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FixedTypeValueSetFieldSpec"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "VariableTypeValueSetFieldSpec"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectFieldSpec"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectSetFieldSpec"
+        }
+      ]
+    },
+    "TypeFieldSpec": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_field_ref"
+          },
+          "named": false,
+          "value": "typefieldreference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "TypeOptionalitySpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "FixedTypeValueFieldSpec": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "lowercased_field_ref"
+          },
+          "named": false,
+          "value": "valuefieldreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "UNIQUE"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ValueOptionalitySpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "VariableTypeValueFieldSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "lowercased_field_ref"
+          },
+          "named": false,
+          "value": "valuefieldreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ValueOptionalitySpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "FixedTypeValueSetFieldSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_field_ref"
+          },
+          "named": false,
+          "value": "valuesetfieldreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ValueSetOptionalitySpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "VariableTypeValueSetFieldSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_field_ref"
+          },
+          "named": false,
+          "value": "valuesetfieldreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ValueSetOptionalitySpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "ObjectFieldSpec": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "lowercased_field_ref"
+          },
+          "named": false,
+          "value": "objectfieldreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ObjectOptionalitySpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "ObjectSetFieldSpec": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_field_ref"
+          },
+          "named": false,
+          "value": "objectsetfieldreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ObjectSetOptionalitySpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "TypeOptionalitySpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "OPTIONAL"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DEFAULT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        }
+      ]
+    },
+    "ValueOptionalitySpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "OPTIONAL"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DEFAULT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        }
+      ]
+    },
+    "ValueSetOptionalitySpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "OPTIONAL"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DEFAULT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ValueSet"
+            }
+          ]
+        }
+      ]
+    },
+    "ObjectOptionalitySpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "OPTIONAL"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DEFAULT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Object"
+            }
+          ]
+        }
+      ]
+    },
+    "ObjectSetOptionalitySpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "OPTIONAL"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DEFAULT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ObjectSet"
+            }
+          ]
+        }
+      ]
+    },
+    "FieldName": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "anycased_field_ref"
+          },
+          "named": false,
+          "value": "PrimitiveFieldName"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "."
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "anycased_field_ref"
+                },
+                "named": false,
+                "value": "PrimitiveFieldName"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "WithSyntaxSpec": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "WITH"
+        },
+        {
+          "type": "STRING",
+          "value": "SYNTAX"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SyntaxList"
+        }
+      ]
+    },
+    "SyntaxList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "TokenOrGroupSpec"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "TokenOrGroupSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RequiredToken"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OptionalGroup"
+        }
+      ]
+    },
+    "RequiredToken": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "Literal"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "any_identifier"
+        }
+      ]
+    },
+    "Literal": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "yellcased_identifier"
+          },
+          "named": false,
+          "value": "word"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        }
+      ]
+    },
+    "OptionalGroup": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "TokenOrGroupSpec"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        }
+      ]
+    },
+    "TypeAssignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_identifier"
+          },
+          "named": false,
+          "value": "typereference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ParameterList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        }
+      ]
+    },
+    "ValueSetTypeAssignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_identifier"
+          },
+          "named": false,
+          "value": "typereference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ParameterList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueSet"
+        }
+      ]
+    },
+    "ObjectSetAssignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_identifier"
+          },
+          "named": false,
+          "value": "objectreference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ParameterList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Object"
+        }
+      ]
+    },
+    "ObjectAssignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "lowercased_identifier"
+          },
+          "named": false,
+          "value": "objectreference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ParameterList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Object"
+        }
+      ]
+    },
+    "ValueAssignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "lowercased_identifier"
+          },
+          "named": false,
+          "value": "valuereference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ParameterList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        }
+      ]
+    },
+    "XMLValueAssignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "lowercased_identifier"
+          },
+          "named": false,
+          "value": "valuereference"
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLTypedValue"
+        }
+      ]
+    },
+    "EncodingControlSections": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "EncodingControlSections"
+      }
+    },
+    "EncodingControlSection": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "ENCODING-CONTROL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "encodingreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EncodingInstructionAssignmentList"
+        }
+      ]
+    },
+    "EncodingInstructionAssignmentList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": -1,
+            "content": {
+              "type": "PATTERN",
+              "value": "(?:(?!\\bEND\\b)[^])+"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": -1,
+            "content": {
+              "type": "PATTERN",
+              "value": "(?:(?!\\bENCODING-CONTROL\\b)[^])+"
+            }
+          }
+        }
+      ]
+    },
+    "Value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "BuiltinValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectClassFieldValue"
+        }
+      ]
+    },
+    "ReferencedValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueFromObject"
+        }
+      ]
+    },
+    "BuiltinValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "BitStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BooleanValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CharacterStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ChoiceValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EmbeddedPDVValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EnumeratedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ExternalValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "InstanceOfValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IntegerValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IRIValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NullValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectIdentifierValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OctetStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RealValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RelativeIRIValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RelativeOIDValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SequenceValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SequenceOfValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SetValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SetOfValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PrefixedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TimeValue"
+        }
+      ]
+    },
+    "BooleanValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "TRUE"
+        },
+        {
+          "type": "STRING",
+          "value": "FALSE"
+        }
+      ]
+    },
+    "IntegerValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SignedNumber"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        }
+      ]
+    },
+    "SignedNumber": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "number"
+            }
+          ]
+        }
+      ]
+    },
+    "number": {
+      "type": "PATTERN",
+      "value": "[0-9]+"
+    },
+    "EnumeratedValue": {
+      "type": "SYMBOL",
+      "name": "identifier"
+    },
+    "RealValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NumericRealValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SpecialRealValue"
+        }
+      ]
+    },
+    "NumericRealValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "realnumber"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "realnumber"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SequenceValue"
+        }
+      ]
+    },
+    "realnumber": {
+      "type": "PATTERN",
+      "value": "[0-9]+\\.[0-9]+([eE][-+]?[0-9]+)?"
+    },
+    "SpecialRealValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "PLUS-INFINITY"
+        },
+        {
+          "type": "STRING",
+          "value": "MINUS-INFINITY"
+        },
+        {
+          "type": "STRING",
+          "value": "NOT-A-NUMBER"
+        }
+      ]
+    },
+    "BitStringValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "bstring"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hstring"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "IdentifierList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "CONTAINING"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        }
+      ]
+    },
+    "bstring": {
+      "type": "PATTERN",
+      "value": "'[01]*'B"
+    },
+    "hstring": {
+      "type": "PATTERN",
+      "value": "'[0-9A-Fa-f]*'H"
+    },
+    "IdentifierList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "OctetStringValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "bstring"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hstring"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "CONTAINING"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        }
+      ]
+    },
+    "NullValue": {
+      "type": "STRING",
+      "value": "NULL"
+    },
+    "SequenceValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ComponentValueList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "ComponentValueList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedValue"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedValue"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "NamedValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        }
+      ]
+    },
+    "SequenceOfValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ValueList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedValueList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "ValueList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "Value"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "NamedValueList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedValue"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedValue"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "SetValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ComponentValueList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "SetOfValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ValueList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedValueList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "ChoiceValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        }
+      ]
+    },
+    "SelectionType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        }
+      ]
+    },
+    "PrefixedValue": {
+      "type": "SYMBOL",
+      "name": "Value"
+    },
+    "ObjectClassFieldValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "OpenTypeFieldVal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FixedTypeFieldVal"
+        }
+      ]
+    },
+    "OpenTypeFieldVal": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        }
+      ]
+    },
+    "FixedTypeFieldVal": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "BuiltinValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedValue"
+        }
+      ]
+    },
+    "ValueFromObject": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedObjects"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        }
+      ]
+    },
+    "ReferencedObjects": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObject"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedObject"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectSet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedObjectSet"
+        }
+      ]
+    },
+    "DefinedObject": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExternalObjectReference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "objectreference"
+        }
+      ]
+    },
+    "ExternalObjectReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "objectreference"
+        }
+      ]
+    },
+    "objectreference": {
+      "type": "SYMBOL",
+      "name": "lowercased_identifier"
+    },
+    "ParameterizedObject": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObject"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ActualParameterList"
+        }
+      ]
+    },
+    "DefinedObjectSet": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExternalObjectSetReference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "objectsetreference"
+        }
+      ]
+    },
+    "ExternalObjectSetReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "objectsetreference"
+        }
+      ]
+    },
+    "objectsetreference": {
+      "type": "SYMBOL",
+      "name": "uppercased_identifier"
+    },
+    "ParameterizedObjectSet": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectSet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ActualParameterList"
+        }
+      ]
+    },
+    "RelativeOIDValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RelativeOIDComponentsList"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "RelativeOIDComponentsList": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "RelativeOIDComponents"
+      }
+    },
+    "RelativeOIDComponents": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NumberForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NameAndNumberForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedValue"
+        }
+      ]
+    },
+    "NumberForm": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedValue"
+        }
+      ]
+    },
+    "NameAndNumberForm": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NumberForm"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "RelativeIRIValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\""
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FirstRelativeArcIdentifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SubsequentArcIdentifier"
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        }
+      ]
+    },
+    "FirstRelativeArcIdentifier": {
+      "type": "SYMBOL",
+      "name": "ArcIdentifier"
+    },
+    "ArcIdentifier": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9][a-zA-Z0-9-]*"
+    },
+    "SubsequentArcIdentifier": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SEQ",
         "members": [
           {
-            "type": "SYMBOL",
-            "name": "block_comment"
+            "type": "STRING",
+            "value": "/"
           },
           {
             "type": "SYMBOL",
-            "name": "line_comment"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "keyword"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "identifier"
+            "name": "ArcIdentifier"
           }
         ]
       }
+    },
+    "EmbeddedPDVValue": {
+      "type": "SYMBOL",
+      "name": "SequenceValue"
+    },
+    "ExternalValue": {
+      "type": "SYMBOL",
+      "name": "SequenceValue"
+    },
+    "TimeValue": {
+      "type": "SYMBOL",
+      "name": "tstring"
+    },
+    "tstring": {
+      "type": "PATTERN",
+      "value": "\"[0-9:.+\\-ZT][0-9:.+\\-ZT]*\""
+    },
+    "CharacterStringValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RestrictedCharacterStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UnrestrictedCharacterStringValue"
+        }
+      ]
+    },
+    "RestrictedCharacterStringValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "cstring"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CharacterStringList"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Quadruple"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Tuple"
+        }
+      ]
+    },
+    "cstring": {
+      "type": "PATTERN",
+      "value": "\"[^\"]*\""
+    },
+    "CharacterStringList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CharSyms"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "CharSyms": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "CharsDefn"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "CharsDefn"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "CharsDefn": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "cstring"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Quadruple"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Tuple"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedValue"
+        }
+      ]
+    },
+    "Quadruple": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Group"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Plane"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Row"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Cell"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "Group": {
+      "type": "SYMBOL",
+      "name": "number"
+    },
+    "Plane": {
+      "type": "SYMBOL",
+      "name": "number"
+    },
+    "Row": {
+      "type": "SYMBOL",
+      "name": "number"
+    },
+    "Cell": {
+      "type": "SYMBOL",
+      "name": "number"
+    },
+    "Tuple": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TableColumn"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TableRow"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "TableColumn": {
+      "type": "SYMBOL",
+      "name": "number"
+    },
+    "TableRow": {
+      "type": "SYMBOL",
+      "name": "number"
+    },
+    "UnrestrictedCharacterStringValue": {
+      "type": "SYMBOL",
+      "name": "SequenceValue"
+    },
+    "InstanceOfValue": {
+      "type": "SYMBOL",
+      "name": "Value"
+    },
+    "Type": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "BuiltinType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ConstrainedType"
+        }
+      ]
+    },
+    "BuiltinType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "BitStringType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BooleanType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CharacterStringType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ChoiceType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DateType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DateTimeType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DurationType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EmbeddedPDVType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EnumeratedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ExternalType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "InstanceOfType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IntegerType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IRIType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NullType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectClassFieldType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectIdentifierType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OctetStringType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RealType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RelativeIRIType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RelativeOIDType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SequenceType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SequenceOfType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SetType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SetOfType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PrefixedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TimeType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TimeOfDayType"
+        }
+      ]
+    },
+    "BooleanType": {
+      "type": "STRING",
+      "value": "BOOLEAN"
+    },
+    "IntegerType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "INTEGER"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "INTEGER"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedNumberList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "NamedNumberList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedNumber"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedNumber"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "NamedNumber": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "SignedNumber"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "DefinedValue"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        }
+      ]
+    },
+    "EnumeratedType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "ENUMERATED"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Enumerations"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "Enumerations": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RootEnumeration"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootEnumeration"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "STRING",
+              "value": "..."
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExceptionSpec"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootEnumeration"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "STRING",
+              "value": "..."
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExceptionSpec"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "AdditionalEnumeration"
+            }
+          ]
+        }
+      ]
+    },
+    "RootEnumeration": {
+      "type": "SYMBOL",
+      "name": "Enumeration"
+    },
+    "AdditionalEnumeration": {
+      "type": "SYMBOL",
+      "name": "Enumeration"
+    },
+    "Enumeration": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EnumerationItem"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "EnumerationItem"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Enumeration"
+            }
+          ]
+        }
+      ]
+    },
+    "EnumerationItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NamedNumber"
+        }
+      ]
+    },
+    "RealType": {
+      "type": "STRING",
+      "value": "REAL"
+    },
+    "BitStringType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "BIT"
+            },
+            {
+              "type": "STRING",
+              "value": "STRING"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "BIT"
+            },
+            {
+              "type": "STRING",
+              "value": "STRING"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedBitList"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "NamedBitList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedBit"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedBit"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "NamedBit": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "number"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "DefinedValue"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        }
+      ]
+    },
+    "OctetStringType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "OCTET"
+        },
+        {
+          "type": "STRING",
+          "value": "STRING"
+        }
+      ]
+    },
+    "NullType": {
+      "type": "STRING",
+      "value": "NULL"
+    },
+    "SequenceType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAndException"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "OptionalExtensionMarker"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ComponentTypeLists"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "ExtensionAndException": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "..."
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "..."
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExceptionSpec"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "OptionalExtensionMarker": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "STRING",
+              "value": "..."
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ComponentTypeLists": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RootComponentTypeList"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootComponentTypeList"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAndException"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditions"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "OptionalExtensionMarker"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootComponentTypeList"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAndException"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditions"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionEndMarker"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "RootComponentTypeList"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAndException"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditions"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionEndMarker"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "RootComponentTypeList"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAndException"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditions"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "OptionalExtensionMarker"
+            }
+          ]
+        }
+      ]
+    },
+    "RootComponentTypeList": {
+      "type": "SYMBOL",
+      "name": "ComponentTypeList"
+    },
+    "ExtensionEndMarker": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "STRING",
+          "value": "..."
+        }
+      ]
+    },
+    "ExtensionAdditions": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditionList"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ExtensionAdditionList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExtensionAddition"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditionList"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAddition"
+            }
+          ]
+        }
+      ]
+    },
+    "ExtensionAddition": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ComponentType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ExtensionAdditionGroup"
+        }
+      ]
+    },
+    "ExtensionAdditionGroup": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "[["
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "VersionNumber"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ComponentTypeList"
+        },
+        {
+          "type": "STRING",
+          "value": "]]"
+        }
+      ]
+    },
+    "VersionNumber": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        }
+      ]
+    },
+    "ComponentTypeList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ComponentType"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ComponentTypeList"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ComponentType"
+            }
+          ]
+        }
+      ]
+    },
+    "ComponentType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedType"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            },
+            {
+              "type": "STRING",
+              "value": "OPTIONAL"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            },
+            {
+              "type": "STRING",
+              "value": "DEFAULT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "COMPONENTS"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        }
+      ]
+    },
+    "NamedType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        }
+      ]
+    },
+    "SequenceOfType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            }
+          ]
+        }
+      ]
+    },
+    "SetType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAndException"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "OptionalExtensionMarker"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "STRING",
+              "value": "{"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ComponentTypeLists"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
+            }
+          ]
+        }
+      ]
+    },
+    "SetOfType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            }
+          ]
+        }
+      ]
+    },
+    "ChoiceType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "CHOICE"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "AlternativeTypeLists"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "AlternativeTypeLists": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RootAlternativeTypeList"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootAlternativeTypeList"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAndException"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditionAlternatives"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "OptionalExtensionMarker"
+            }
+          ]
+        }
+      ]
+    },
+    "RootAlternativeTypeList": {
+      "type": "SYMBOL",
+      "name": "AlternativeTypeList"
+    },
+    "ExtensionAdditionAlternatives": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditionAlternativesList"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ExtensionAdditionAlternativesList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExtensionAdditionAlternative"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditionAlternativesList"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionAdditionAlternative"
+            }
+          ]
+        }
+      ]
+    },
+    "ExtensionAdditionAlternative": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExtensionAdditionAlternativesGroup"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NamedType"
+        }
+      ]
+    },
+    "ExtensionAdditionAlternativesGroup": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "[["
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "VersionNumber"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "AlternativeTypeList"
+        },
+        {
+          "type": "STRING",
+          "value": "]]"
+        }
+      ]
+    },
+    "AlternativeTypeList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedType"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "AlternativeTypeList"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            }
+          ]
+        }
+      ]
+    },
+    "ObjectIdentifierType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "OBJECT"
+        },
+        {
+          "type": "STRING",
+          "value": "IDENTIFIER"
+        }
+      ]
+    },
+    "RelativeOIDType": {
+      "type": "STRING",
+      "value": "RELATIVE-OID"
+    },
+    "IRIType": {
+      "type": "STRING",
+      "value": "OID-IRI"
+    },
+    "RelativeIRIType": {
+      "type": "STRING",
+      "value": "RELATIVE-OID-IRI"
+    },
+    "EmbeddedPDVType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "EMBEDDED"
+        },
+        {
+          "type": "STRING",
+          "value": "PDV"
+        }
+      ]
+    },
+    "ExternalType": {
+      "type": "STRING",
+      "value": "EXTERNAL"
+    },
+    "TimeType": {
+      "type": "STRING",
+      "value": "TIME"
+    },
+    "DateType": {
+      "type": "STRING",
+      "value": "DATE"
+    },
+    "TimeOfDayType": {
+      "type": "STRING",
+      "value": "TIME-OF-DAY"
+    },
+    "DateTimeType": {
+      "type": "STRING",
+      "value": "DATE-TIME"
+    },
+    "DurationType": {
+      "type": "STRING",
+      "value": "DURATION"
+    },
+    "CharacterStringType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RestrictedCharacterStringType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UnrestrictedCharacterStringType"
+        }
+      ]
+    },
+    "RestrictedCharacterStringType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "BMPString"
+        },
+        {
+          "type": "STRING",
+          "value": "GeneralString"
+        },
+        {
+          "type": "STRING",
+          "value": "GraphicString"
+        },
+        {
+          "type": "STRING",
+          "value": "IA5String"
+        },
+        {
+          "type": "STRING",
+          "value": "ISO646String"
+        },
+        {
+          "type": "STRING",
+          "value": "NumericString"
+        },
+        {
+          "type": "STRING",
+          "value": "PrintableString"
+        },
+        {
+          "type": "STRING",
+          "value": "TeletexString"
+        },
+        {
+          "type": "STRING",
+          "value": "T61String"
+        },
+        {
+          "type": "STRING",
+          "value": "UniversalString"
+        },
+        {
+          "type": "STRING",
+          "value": "UTF8String"
+        },
+        {
+          "type": "STRING",
+          "value": "VideotexString"
+        },
+        {
+          "type": "STRING",
+          "value": "VisibleString"
+        }
+      ]
+    },
+    "UnrestrictedCharacterStringType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "CHARACTER"
+        },
+        {
+          "type": "STRING",
+          "value": "STRING"
+        }
+      ]
+    },
+    "PrefixedType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "TaggedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EncodingPrefixedType"
+        }
+      ]
+    },
+    "TaggedType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Tag"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Tag"
+            },
+            {
+              "type": "STRING",
+              "value": "IMPLICIT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Tag"
+            },
+            {
+              "type": "STRING",
+              "value": "EXPLICIT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        }
+      ]
+    },
+    "Tag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "encodingreference"
+                },
+                {
+                  "type": "STRING",
+                  "value": ":"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Class"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ClassNumber"
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        }
+      ]
+    },
+    "ClassNumber": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedValue"
+        }
+      ]
+    },
+    "Class": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "UNIVERSAL"
+        },
+        {
+          "type": "STRING",
+          "value": "APPLICATION"
+        },
+        {
+          "type": "STRING",
+          "value": "PRIVATE"
+        }
+      ]
+    },
+    "EncodingPrefixedType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EncodingPrefix"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        }
+      ]
+    },
+    "EncodingPrefix": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "SYMBOL",
+          "name": "encodingreference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EncodingInstruction"
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        }
+      ]
+    },
+    "EncodingInstruction": {
+      "type": "PATTERN",
+      "value": ":[^]]*]"
+    },
+    "ObjectClassFieldType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        }
+      ]
+    },
+    "InstanceOfType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "INSTANCE"
+        },
+        {
+          "type": "STRING",
+          "value": "OF"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        }
+      ]
+    },
+    "ValueSet": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ElementSetSpecs"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "ElementSetSpecs": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RootElementSetSpec"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootElementSetSpec"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "STRING",
+              "value": "..."
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootElementSetSpec"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "STRING",
+              "value": "..."
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "AdditionalElementSetSpec"
+            }
+          ]
+        }
+      ]
+    },
+    "RootElementSetSpec": {
+      "type": "SYMBOL",
+      "name": "ElementSetSpec"
+    },
+    "AdditionalElementSetSpec": {
+      "type": "SYMBOL",
+      "name": "ElementSetSpec"
+    },
+    "ElementSetSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Unions"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "ALL"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Exclusions"
+            }
+          ]
+        }
+      ]
+    },
+    "Unions": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Intersections"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "UElems"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "UnionMark"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Intersections"
+            }
+          ]
+        }
+      ]
+    },
+    "UElems": {
+      "type": "SYMBOL",
+      "name": "Unions"
+    },
+    "Intersections": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "IntersectionElements"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "IElems"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "IntersectionMark"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "IntersectionElements"
+            }
+          ]
+        }
+      ]
+    },
+    "IElems": {
+      "type": "SYMBOL",
+      "name": "Intersections"
+    },
+    "IntersectionElements": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Elements"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Elems"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Exclusions"
+            }
+          ]
+        }
+      ]
+    },
+    "Elems": {
+      "type": "SYMBOL",
+      "name": "Elements"
+    },
+    "Exclusions": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "EXCEPT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Elements"
+        }
+      ]
+    },
+    "UnionMark": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "|"
+        },
+        {
+          "type": "STRING",
+          "value": "UNION"
+        }
+      ]
+    },
+    "IntersectionMark": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "^"
+        },
+        {
+          "type": "STRING",
+          "value": "INTERSECTION"
+        }
+      ]
+    },
+    "Elements": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SubtypeElements"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectSetElements"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ElementSetSpec"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        }
+      ]
+    },
+    "SubtypeElements": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SingleValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ContainedSubtype"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueRange"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PermittedAlphabet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SizeConstraint"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TypeConstraint"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "InnerTypeConstraints"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PatternConstraint"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PropertySettings"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DurationRange"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TimePointRange"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RecurrenceRange"
+        }
+      ]
+    },
+    "SingleValue": {
+      "type": "SYMBOL",
+      "name": "Value"
+    },
+    "ContainedSubtype": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "INCLUDES"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        }
+      ]
+    },
+    "ValueRange": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "LowerEndpoint"
+        },
+        {
+          "type": "STRING",
+          "value": ".."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UpperEndpoint"
+        }
+      ]
+    },
+    "LowerEndpoint": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "LowerEndValue"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "LowerEndValue"
+            },
+            {
+              "type": "STRING",
+              "value": "<"
+            }
+          ]
+        }
+      ]
+    },
+    "UpperEndpoint": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "UpperEndValue"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "UpperEndValue"
+            }
+          ]
+        }
+      ]
+    },
+    "LowerEndValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        },
+        {
+          "type": "STRING",
+          "value": "MIN"
+        }
+      ]
+    },
+    "UpperEndValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        },
+        {
+          "type": "STRING",
+          "value": "MAX"
+        }
+      ]
+    },
+    "ObjectSetElements": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Object"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectSet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectSetFromObjects"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedObjectSet"
+        }
+      ]
+    },
+    "ObjectSetFromObjects": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedObjects"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        }
+      ]
+    },
+    "Object": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObject"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectDefn"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectFromObject"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedObject"
+        }
+      ]
+    },
+    "ObjectDefn": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefaultSyntax"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedSyntax"
+        }
+      ]
+    },
+    "DefaultSyntax": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "FieldSetting"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "FieldSetting"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "DefinedSyntax": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "DefinedSyntaxToken"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "DefinedSyntaxToken": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Setting"
+        }
+      ]
+    },
+    "FieldSetting": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "anycased_field_ref"
+          },
+          "named": false,
+          "value": "PrimitiveFieldName"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Setting"
+        }
+      ]
+    },
+    "Setting": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueSet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Object"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectSet"
+        }
+      ]
+    },
+    "ObjectSet": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ObjectSetSpec"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "ObjectSetSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "RootElementSetSpec"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootElementSetSpec"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "STRING",
+              "value": "..."
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "..."
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "..."
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "AdditionalElementSetSpec"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "RootElementSetSpec"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "STRING",
+              "value": "..."
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "SYMBOL",
+              "name": "AdditionalElementSetSpec"
+            }
+          ]
+        }
+      ]
+    },
+    "ObjectFromObject": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedObjects"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        }
+      ]
+    },
+    "TypeFromObject": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedObjects"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        }
+      ]
+    },
+    "PermittedAlphabet": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "FROM"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Constraint"
+        }
+      ]
+    },
+    "SizeConstraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "SIZE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Constraint"
+        }
+      ]
+    },
+    "TypeConstraint": {
+      "type": "SYMBOL",
+      "name": "Type"
+    },
+    "InnerTypeConstraints": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "WITH"
+            },
+            {
+              "type": "STRING",
+              "value": "COMPONENT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "SingleTypeConstraint"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "WITH"
+            },
+            {
+              "type": "STRING",
+              "value": "COMPONENTS"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "MultipleTypeConstraints"
+            }
+          ]
+        }
+      ]
+    },
+    "SingleTypeConstraint": {
+      "type": "SYMBOL",
+      "name": "Constraint"
+    },
+    "MultipleTypeConstraints": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "FullSpecification"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PartialSpecification"
+        }
+      ]
+    },
+    "FullSpecification": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TypeConstraints"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "PartialSpecification": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "STRING",
+          "value": "..."
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TypeConstraints"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "TypeConstraints": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedConstraint"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedConstraint"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "NamedConstraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ComponentConstraint"
+        }
+      ]
+    },
+    "ComponentConstraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ValueConstraint"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "PresenceConstraint"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "ValueConstraint": {
+      "type": "SYMBOL",
+      "name": "Constraint"
+    },
+    "PresenceConstraint": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "PRESENT"
+        },
+        {
+          "type": "STRING",
+          "value": "ABSENT"
+        },
+        {
+          "type": "STRING",
+          "value": "OPTIONAL"
+        }
+      ]
+    },
+    "PatternConstraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "PATTERN"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Value"
+        }
+      ]
+    },
+    "PropertySettings": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "SETTINGS"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\\"[^\\\"]*\\\""
+        }
+      ]
+    },
+    "DurationRange": {
+      "type": "SYMBOL",
+      "name": "ValueRange"
+    },
+    "TimePointRange": {
+      "type": "SYMBOL",
+      "name": "ValueRange"
+    },
+    "RecurrenceRange": {
+      "type": "SYMBOL",
+      "name": "ValueRange"
+    },
+    "ConstrainedType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Constraint"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TypeWithConstraint"
+        }
+      ]
+    },
+    "TypeWithConstraint": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Constraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "SizeConstraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Constraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "SizeConstraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Constraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SET"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "SizeConstraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Constraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SEQUENCE"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "SizeConstraint"
+            },
+            {
+              "type": "STRING",
+              "value": "OF"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NamedType"
+            }
+          ]
+        }
+      ]
+    },
+    "Constraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ConstraintSpec"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ExceptionSpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "ConstraintSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SubtypeConstraint"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "GeneralConstraint"
+        }
+      ]
+    },
+    "SubtypeConstraint": {
+      "type": "SYMBOL",
+      "name": "ElementSetSpecs"
+    },
+    "ExceptionSpec": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "!"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ExceptionIdentification"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ExceptionIdentification": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SignedNumber"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedValue"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        }
+      ]
+    },
+    "GeneralConstraint": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "UserDefinedConstraint"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TableConstraint"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ContentsConstraint"
+        }
+      ]
+    },
+    "UserDefinedConstraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "CONSTRAINED"
+        },
+        {
+          "type": "STRING",
+          "value": "BY"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "UserDefinedConstraintParameter"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "UserDefinedConstraintParameter"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "UserDefinedConstraintParameter": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Object"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "DefinedObjectClass"
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "DefinedObjectClass"
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Object"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectSet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "Type"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectClass"
+        }
+      ]
+    },
+    "TableConstraint": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SimpleTableConstraint"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ComponentRelationConstraint"
+        }
+      ]
+    },
+    "SimpleTableConstraint": {
+      "type": "SYMBOL",
+      "name": "ObjectSet"
+    },
+    "ComponentRelationConstraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DefinedObjectSet"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "AtNotation"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "AtNotation"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "AtNotation": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "@"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ComponentIdList"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "@."
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "Level"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ComponentIdList"
+            }
+          ]
+        }
+      ]
+    },
+    "Level": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "."
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "Level"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "ComponentIdList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "."
+              },
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "ContentsConstraint": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "CONTAINING"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "ENCODED"
+            },
+            {
+              "type": "STRING",
+              "value": "BY"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "CONTAINING"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Type"
+            },
+            {
+              "type": "STRING",
+              "value": "ENCODED"
+            },
+            {
+              "type": "STRING",
+              "value": "BY"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "Value"
+            }
+          ]
+        }
+      ]
     },
     "block_comment": {
       "type": "SEQ",
@@ -468,12 +6764,1230 @@
     "identifier": {
       "type": "PATTERN",
       "value": "[a-zA-Z][a-zA-Z0-9-]*"
+    },
+    "XMLTypedValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NonParameterizedTypeName"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLValue"
+            },
+            {
+              "type": "STRING",
+              "value": "</"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NonParameterizedTypeName"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NonParameterizedTypeName"
+            },
+            {
+              "type": "STRING",
+              "value": "/>"
+            }
+          ]
+        }
+      ]
+    },
+    "NonParameterizedTypeName": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExternalTypeReference"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_identifier"
+          },
+          "named": false,
+          "value": "typereference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xmlasn1typename"
+        }
+      ]
+    },
+    "xmlasn1typename": {
+      "type": "PATTERN",
+      "value": "[A-Za-z][A-Za-z0-9\\-]*"
+    },
+    "XMLValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLBuiltinValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLObjectClassFieldValue"
+        }
+      ]
+    },
+    "XMLBuiltinValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLBitStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLBooleanValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLCharacterStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLChoiceValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLEmbeddedPDVValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLEnumeratedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLExternalValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLInstanceOfValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLIntegerValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLIRIValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLNullValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLObjectIdentifierValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLOctetStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLRealValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLRelativeIRIValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLRelativeOIDValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLSequenceValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLSequenceOfValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLSetValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLSetOfValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLPrefixedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLTimeValue"
+        }
+      ]
+    },
+    "XMLBooleanValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EmptyElementBoolean"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TextBoolean"
+        }
+      ]
+    },
+    "EmptyElementBoolean": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<true/>"
+        },
+        {
+          "type": "STRING",
+          "value": "<false/>"
+        }
+      ]
+    },
+    "TextBoolean": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "true"
+        },
+        {
+          "type": "STRING",
+          "value": "false"
+        }
+      ]
+    },
+    "XMLIntegerValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLSignedNumber"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EmptyElementInteger"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TextInteger"
+        }
+      ]
+    },
+    "XMLSignedNumber": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "number"
+            }
+          ]
+        }
+      ]
+    },
+    "EmptyElementInteger": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "/>"
+        }
+      ]
+    },
+    "TextInteger": {
+      "type": "SYMBOL",
+      "name": "identifier"
+    },
+    "XMLEnumeratedValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EmptyElementEnumerated"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TextEnumerated"
+        }
+      ]
+    },
+    "EmptyElementEnumerated": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "/>"
+        }
+      ]
+    },
+    "TextEnumerated": {
+      "type": "SYMBOL",
+      "name": "identifier"
+    },
+    "XMLRealValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLNumericRealValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLSpecialRealValue"
+        }
+      ]
+    },
+    "XMLNumericRealValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "realnumber"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "realnumber"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLSpecialRealValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EmptyElementReal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TextReal"
+        }
+      ]
+    },
+    "EmptyElementReal": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<PLUS-INFINITY/>"
+        },
+        {
+          "type": "STRING",
+          "value": "<MINUS-INFINITY/>"
+        },
+        {
+          "type": "STRING",
+          "value": "<NOT-A-NUMBER/>"
+        }
+      ]
+    },
+    "TextReal": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "INF"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "STRING",
+              "value": "INF"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "NaN"
+        }
+      ]
+    },
+    "XMLBitStringValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLTypedValue"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "xmlbstring"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLIdentifierList"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "xmlbstring": {
+      "type": "PATTERN",
+      "value": "[01]*"
+    },
+    "XMLIdentifierList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EmptyElementList"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TextList"
+        }
+      ]
+    },
+    "EmptyElementList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": "/>"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "EmptyElementList"
+            },
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": "/>"
+            }
+          ]
+        }
+      ]
+    },
+    "TextList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "TextList"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLOctetStringValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLTypedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xmlhstring"
+        }
+      ]
+    },
+    "xmlhstring": {
+      "type": "PATTERN",
+      "value": "[0-9A-Fa-f]*"
+    },
+    "XMLNullValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$"
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "XMLSequenceValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLComponentValueList"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "XMLComponentValueList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLNamedValue"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLComponentValueList"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLNamedValue"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLNamedValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLValue"
+        },
+        {
+          "type": "STRING",
+          "value": "</"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        }
+      ]
+    },
+    "XMLSequenceOfValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLValueList"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLDelimitedItemList"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "XMLValueList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLValueOrEmpty"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLValueOrEmpty"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLValueList"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLValueOrEmpty": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLValue"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NonParameterizedTypeName"
+            },
+            {
+              "type": "STRING",
+              "value": "/>"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLDelimitedItemList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLDelimitedItem"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLDelimitedItem"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLDelimitedItemList"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLDelimitedItem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NonParameterizedTypeName"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLValue"
+            },
+            {
+              "type": "STRING",
+              "value": "</"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "NonParameterizedTypeName"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLValue"
+            },
+            {
+              "type": "STRING",
+              "value": "</"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLSetValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLComponentValueList"
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "XMLSetOfValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLValueList"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLDelimitedItemList"
+            }
+          ]
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    },
+    "XMLChoiceValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLValue"
+        },
+        {
+          "type": "STRING",
+          "value": "</"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        }
+      ]
+    },
+    "XMLPrefixedValue": {
+      "type": "SYMBOL",
+      "name": "XMLValue"
+    },
+    "XMLObjectClassFieldValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLOpenTypeFieldVal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLFixedTypeFieldVal"
+        }
+      ]
+    },
+    "XMLOpenTypeFieldVal": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLTypedValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xmlhstring"
+        }
+      ]
+    },
+    "XMLFixedTypeFieldVal": {
+      "type": "SYMBOL",
+      "name": "XMLBuiltinValue"
+    },
+    "XMLObjectIdentifierValue": {
+      "type": "SYMBOL",
+      "name": "XMLObjIdComponentList"
+    },
+    "XMLObjIdComponentList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLObjIdComponent"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLObjIdComponent"
+            },
+            {
+              "type": "STRING",
+              "value": "."
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLObjIdComponentList"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLObjIdComponent": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLNumberForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLNameAndNumberForm"
+        }
+      ]
+    },
+    "XMLNumberForm": {
+      "type": "SYMBOL",
+      "name": "number"
+    },
+    "XMLNameAndNumberForm": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLNumberForm"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "XMLRelativeOIDValue": {
+      "type": "SYMBOL",
+      "name": "XMLRelativeOIDComponentList"
+    },
+    "XMLRelativeOIDComponentList": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLRelativeOIDComponent"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLRelativeOIDComponent"
+            },
+            {
+              "type": "STRING",
+              "value": "."
+            },
+            {
+              "type": "SYMBOL",
+              "name": "XMLRelativeOIDComponentList"
+            }
+          ]
+        }
+      ]
+    },
+    "XMLRelativeOIDComponent": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLNumberForm"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLNameAndNumberForm"
+        }
+      ]
+    },
+    "XMLIRIValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "FirstArcIdentifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SubsequentArcIdentifier"
+        }
+      ]
+    },
+    "XMLRelativeIRIValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "FirstRelativeArcIdentifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SubsequentArcIdentifier"
+        }
+      ]
+    },
+    "XMLEmbeddedPDVValue": {
+      "type": "SYMBOL",
+      "name": "XMLSequenceValue"
+    },
+    "XMLExternalValue": {
+      "type": "SYMBOL",
+      "name": "XMLSequenceValue"
+    },
+    "XMLTimeValue": {
+      "type": "SYMBOL",
+      "name": "xmltstring"
+    },
+    "xmltstring": {
+      "type": "PATTERN",
+      "value": "[0-9:.+\\-ZT][0-9:.+\\-ZT]*"
+    },
+    "XMLCharacterStringValue": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "XMLRestrictedCharacterStringValue"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLUnrestrictedCharacterStringValue"
+        }
+      ]
+    },
+    "XMLRestrictedCharacterStringValue": {
+      "type": "SYMBOL",
+      "name": "xmlcstring"
+    },
+    "xmlcstring": {
+      "type": "PATTERN",
+      "value": "[^<&]*"
+    },
+    "XMLUnrestrictedCharacterStringValue": {
+      "type": "SYMBOL",
+      "name": "XMLSequenceValue"
+    },
+    "XMLInstanceOfValue": {
+      "type": "SYMBOL",
+      "name": "XMLValue"
+    },
+    "ReferencedType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UsefulType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SelectionType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TypeFromObject"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ValueSetFromObjects"
+        }
+      ]
+    },
+    "DefinedType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExternalTypeReference"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_identifier"
+          },
+          "named": false,
+          "value": "typereference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ParameterizedValueSetType"
+        }
+      ]
+    },
+    "ParameterizedType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SimpleDefinedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ActualParameterList"
+        }
+      ]
+    },
+    "SimpleDefinedType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ExternalTypeReference"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_identifier"
+          },
+          "named": false,
+          "value": "typereference"
+        }
+      ]
+    },
+    "ExternalTypeReference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercased_identifier"
+          },
+          "named": false,
+          "value": "typereference"
+        }
+      ]
+    },
+    "ParameterizedValueSetType": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "SimpleDefinedType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ActualParameterList"
+        }
+      ]
+    },
+    "UsefulType": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "uppercased_identifier"
+      },
+      "named": false,
+      "value": "typereference"
+    },
+    "ValueSetFromObjects": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ReferencedObjects"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FieldName"
+        }
+      ]
+    },
+    "DummyReference": {
+      "type": "SYMBOL",
+      "name": "Reference"
     }
   },
   "extras": [
     {
-      "type": "PATTERN",
-      "value": "\\s"
+      "type": "SYMBOL",
+      "name": "line_comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "block_comment"
     }
   ],
   "conflicts": [],
