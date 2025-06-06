@@ -13,19 +13,63 @@ module.exports = grammar({
   word: $ => $.yellcased_identifier,
 
   // TODO: Is this going to slow down the parser a lot or cause errors?
-  // TODO: Must each one be only two grammar rules?
-  // conflicts: $ => [
-  //   [$.Type, $.Value, $.ValueSet, $.Object, $.ObjectSet],
-  //   [$.FixedTypeValueSetFieldSpec, $.ObjectSetFieldSpec],
-  //   [$.Type, $.ValueSet, $.ObjectSet],
-  // ],
-
   conflicts: $ => [
     [$.UsefulType, $.DefinedType],
     [$.SimpleDefinedType, $.objectsetreference],
+    [$.ParameterizedValueSetType, $.ParameterizedType],
+    [$.objectsetreference, $.ExternalTypeReference],
+    [$.objectsetreference, $.DefinedType, $.UsefulType],
+    [$.objectsetreference, $.DefinedType, $.SimpleDefinedType, $.UsefulType],
+    [$.NameForm, $.objectreference],
+    // [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue, $.DefaultSyntax, $.DefinedSyntax],
+    [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue],
+    [$.ObjIdComponents, $.SignedNumber],
+    [$.ObjIdComponents, $.SignedNumber, $.NumberForm],
+    // [$.TableColumn, $.TableRow, $.Group, $.Plane, $.Row, $.Cell],
+    [$.SignedNumber, $.Group, $.TableColumn],
+    // [$.SignedNumber, $.Group, $.TableColumn, $.Plane],
+    // [$.SignedNumber, $.Group, $.TableColumn, $.Plane, $.Row],
+    // [$.SignedNumber, $.Group, $.TableColumn, $.Plane, $.Row, $.Cell],
+    [$.RestrictedCharacterStringValue, $.CharsDefn], // TODO: I feel like this can be fixed.
+    [$.EnumeratedValue, $.NamedValue],
+    [$.EnumeratedValue, $.IdentifierList],
+    [$.ObjectIdentifierValue, $.ReferencedValue],
+
+    // TODO: AI generated these. Review if these are needed.
+    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm, $.CharsDefn],
+    [$.ObjectIdentifierValue, $.ReferencedValue, $.RelativeOIDComponents, $.NumberForm],
+    [$.ReferencedValue, $.CharsDefn],
+    [$.ObjIdComponents, $.DefinedValue],
+    [$.DefinedValue, $.SimpleDefinedValue],
+    [$.ValueList, $.Setting],
+    [$.ValueFromObject, $.ObjectSetFromObjects, $.ObjectFromObject, $.TypeFromObject],
+    [$.ComponentValueList, $.NamedValueList],
+    [$.ParameterizedObject, $.Object],
+    [$.ObjectSetElements, $.Setting],
+    [$.BitStringValue, $.OctetStringValue],
+    [$.ObjIdComponents, $.RelativeOIDComponents],
+    [$.Setting, $.TypeConstraint],
+    [$.ObjectSetElements, $.Setting],
+    [$.ObjectSetElements, $.ComponentRelationConstraint],
+    [$.ElementSetSpecs, $.ObjectSetSpec],
+    [$.ObjIdComponents, $.NumberForm],
+    [$.ObjectIdentifierValue, $.RelativeOIDComponents, $.NumberForm],
+    [$.ExtensionAdditions, $.ExtensionAdditionList],
+    [$.BitStringType],
+    [$.SequenceValue, $.SetValue],
+    [$.SequenceOfValue, $.SetOfValue],
+    [$.RelativeOIDComponents, $.NumberForm],
+    [$.ValueList, $.Setting],
+    [$.SingleValue, $.Setting, $.ValueList],
+    [$.ValueFromObject, $.ObjectFromObject, $.TypeFromObject],
+    [$.ValueFromObject, $.TypeFromObject],
+    [$.Group, $.TableColumn],
+    [$.ExtensionAdditionAlternatives, $.ExtensionAdditionAlternativesList],
+    [$.ValueFromObject, $.ObjectFromObject]
   ],
 
   extras: $ => [
+    /\s+/,
     $.line_comment,
     $.block_comment,
   ],
@@ -226,8 +270,8 @@ module.exports = grammar({
 
     DefinedValue: $ => choice(
       $.ExternalValueReference,
-      $.valuereference,
-      $.ParameterizedValue,
+      prec(-1, $.valuereference),
+      prec(1, $.ParameterizedValue),
     ),
 
     ParameterizedValue: $ => seq(
@@ -265,13 +309,13 @@ module.exports = grammar({
     AssignmentList: $ => repeat1($.Assignment),
 
     Assignment: $ => choice(
-      prec(1, $.ObjectClassAssignment),
+      prec(2, $.ObjectClassAssignment),
       $.TypeAssignment,
       $.ObjectSetAssignment,
-      $.ValueSetTypeAssignment,
+      prec(1, $.ValueSetTypeAssignment),
       $.ValueAssignment,
       $.ObjectAssignment,
-      $.XMLValueAssignment,
+      // $.XMLValueAssignment, // TODO: Re-enable
     ),
 
     ObjectClassAssignment: $ => seq(
@@ -519,7 +563,7 @@ module.exports = grammar({
     Value: $ => choice(
       $.BuiltinValue,
       $.ReferencedValue,
-      $.ObjectClassFieldValue
+      $.OpenTypeFieldVal,
     ),
     
     ReferencedValue: $ => choice(
@@ -535,7 +579,7 @@ module.exports = grammar({
       $.EmbeddedPDVValue,
       $.EnumeratedValue,
       $.ExternalValue,
-      $.InstanceOfValue,
+      // $.InstanceOfValue,
       $.IntegerValue,
       $.IRIValue,
       $.NullValue,
@@ -544,12 +588,12 @@ module.exports = grammar({
       $.RealValue,
       $.RelativeIRIValue,
       $.RelativeOIDValue,
-      $.SequenceValue,
+      prec(2, $.SequenceValue),
       $.SequenceOfValue,
       $.SetValue,
       $.SetOfValue,
-      $.PrefixedValue,
-      $.TimeValue
+      // $.PrefixedValue,
+      $.TimeValue,
     ),
     
     BooleanValue: $ => choice(
@@ -559,7 +603,8 @@ module.exports = grammar({
     
     IntegerValue: $ => choice(
       $.SignedNumber,
-      $.identifier
+      // REVIEW:
+      // $.identifier
     ),
     
     SignedNumber: $ => choice(
@@ -591,8 +636,8 @@ module.exports = grammar({
     ),
     
     BitStringValue: $ => choice(
-      $.bstring,
-      $.hstring,
+      prec(1, $.bstring),
+      prec(1, $.hstring),
       seq('{', $.IdentifierList, '}'),
       seq('{', '}'),
       seq('CONTAINING', $.Value)
@@ -613,7 +658,7 @@ module.exports = grammar({
       seq('CONTAINING', $.Value)
     ),
     
-    NullValue: $ => 'NULL',
+    NullValue: $ => prec(1, 'NULL'),
     
     SequenceValue: $ => choice(
       seq('{', $.ComponentValueList, '}'),
@@ -663,28 +708,16 @@ module.exports = grammar({
       $.Value
     ),
     
-    SelectionType: $ => seq(
+    SelectionType: $ => prec(2, seq(
       $.identifier,
       '<',
       $.Type
-    ),
-    
-    PrefixedValue: $ => $.Value,
-    
-    ObjectClassFieldValue: $ => choice(
-      $.OpenTypeFieldVal,
-      $.FixedTypeFieldVal
-    ),
+    )),
     
     OpenTypeFieldVal: $ => seq(
       $.Type,
       ':',
       $.Value
-    ),
-    
-    FixedTypeFieldVal: $ => choice(
-      $.BuiltinValue,
-      $.ReferencedValue
     ),
     
     ValueFromObject: $ => seq(
@@ -719,7 +752,7 @@ module.exports = grammar({
     ),
     
     DefinedObjectSet: $ => choice(
-      $.ExternalObjectSetReference,
+      prec(1, $.ExternalObjectSetReference),
       $.objectsetreference
     ),
     
@@ -785,7 +818,7 @@ module.exports = grammar({
     tstring: $ => /"[0-9:.+\-ZT][0-9:.+\-ZT]*"/,
     
     CharacterStringValue: $ => choice(
-      $.RestrictedCharacterStringValue,
+      prec(1, $.RestrictedCharacterStringValue),
       $.UnrestrictedCharacterStringValue
     ),
     
@@ -811,8 +844,8 @@ module.exports = grammar({
     
     CharsDefn: $ => choice(
       $.cstring,
-      $.Quadruple,
-      $.Tuple,
+      prec(1, $.Quadruple),
+      prec(2, $.Tuple),
       $.DefinedValue
     ),
     
@@ -829,11 +862,8 @@ module.exports = grammar({
     ),
     
     Group: $ => $.number,
-    
     Plane: $ => $.number,
-    
     Row: $ => $.number,
-    
     Cell: $ => $.number,
     
     Tuple: $ => seq(
@@ -845,21 +875,20 @@ module.exports = grammar({
     ),
     
     TableColumn: $ => $.number,
-    
     TableRow: $ => $.number,
     
     UnrestrictedCharacterStringValue: $ => $.SequenceValue,
     
-    InstanceOfValue: $ => $.Value,
+    // InstanceOfValue: $ => $.Value,
 
-    Type: $ => seq(
+    Type: $ => prec.left(seq(
       choice(
         $.BuiltinType,
         $.ReferencedType,
         $.TypeWithConstraint
       ),
-      repeat($.Constraint),
-    ),
+      repeat($.Constraint)
+    )),
 
     BuiltinType: $ => choice(
       $.BitStringType,
@@ -895,7 +924,7 @@ module.exports = grammar({
 
     IntegerType: $ => choice(
       'INTEGER',
-      seq('INTEGER', '{', $.NamedNumberList, '}')
+      prec(1, seq('INTEGER', '{', $.NamedNumberList, '}')),
     ),
 
     NamedNumberList: $ => seq(
@@ -925,10 +954,10 @@ module.exports = grammar({
 
     AdditionalEnumeration: $ => $.Enumeration,
 
-    Enumeration: $ => choice(
+    Enumeration: $ => prec.left(choice(
       $.EnumerationItem,
       seq($.EnumerationItem, ',', $.Enumeration)
-    ),
+    )),
 
     EnumerationItem: $ => choice(
       $.identifier,
@@ -958,7 +987,7 @@ module.exports = grammar({
 
     SequenceType: $ => choice(
       seq('SEQUENCE', '{', '}'),
-      seq('SEQUENCE', '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}'),
+      prec(1,seq('SEQUENCE', '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}')),
       seq('SEQUENCE', '{', $.ComponentTypeLists, '}')
     ),
 
@@ -971,10 +1000,10 @@ module.exports = grammar({
 
     ComponentTypeLists: $ => choice(
       $.RootComponentTypeList,
-      seq($.RootComponentTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditions), optional($.OptionalExtensionMarker)),
-      seq($.RootComponentTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditions), $.ExtensionEndMarker, ',', $.RootComponentTypeList),
-      seq($.ExtensionAndException, optional($.ExtensionAdditions), $.ExtensionEndMarker, ',', $.RootComponentTypeList),
-      seq($.ExtensionAndException, optional($.ExtensionAdditions), optional($.OptionalExtensionMarker))
+      prec.left(3, seq($.RootComponentTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditions), $.ExtensionEndMarker, ',', $.RootComponentTypeList)),
+      prec.left(2, seq($.RootComponentTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditions), optional($.OptionalExtensionMarker))),
+      prec.left(1, seq($.ExtensionAndException, optional($.ExtensionAdditions), $.ExtensionEndMarker, ',', $.RootComponentTypeList)),
+      prec.left(0, seq($.ExtensionAndException, optional($.ExtensionAdditions), optional($.OptionalExtensionMarker)))
     ),
 
     RootComponentTypeList: $ => $.ComponentTypeList,
@@ -1002,10 +1031,10 @@ module.exports = grammar({
 
     VersionNumber: $ => seq($.number, ':'),
 
-    ComponentTypeList: $ => choice(
+    ComponentTypeList: $ => prec.left(seq(
       $.ComponentType,
-      seq($.ComponentTypeList, ',', $.ComponentType)
-    ),
+      repeat(seq(',', $.ComponentType)),
+    )),
 
     ComponentType: $ => choice(
       $.NamedType,
@@ -1044,10 +1073,10 @@ module.exports = grammar({
 
     AlternativeTypeLists: $ => choice(
       $.RootAlternativeTypeList,
-      seq($.RootAlternativeTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditionAlternatives), optional($.OptionalExtensionMarker))
+      prec(1, seq($.RootAlternativeTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditionAlternatives), optional($.OptionalExtensionMarker)))
     ),
 
-    RootAlternativeTypeList: $ => $.AlternativeTypeList,
+    RootAlternativeTypeList: $ => prec.left($.AlternativeTypeList),
 
     ExtensionAdditionAlternatives: $ => seq(',', $.ExtensionAdditionAlternativesList),
 
@@ -1225,24 +1254,21 @@ module.exports = grammar({
     ),
 
     SubtypeElements: $ => choice(
-      $.SingleValue,
+      prec(1, $.SingleValue),
       $.ContainedSubtype,
-      $.ValueRange,
+      prec(2, $.ValueRange),
       $.PermittedAlphabet,
       $.SizeConstraint,
       $.TypeConstraint,
       $.InnerTypeConstraints,
       $.PatternConstraint,
       $.PropertySettings,
-      $.DurationRange,
-      $.TimePointRange,
-      $.RecurrenceRange
     ),
 
     SingleValue: $ => $.Value,
 
     ContainedSubtype: $ => seq(
-      optional('INCLUDES'),
+      'INCLUDES', // Non-optional is already handled in SubtypeElements
       $.Type
     ),
 
@@ -1294,7 +1320,7 @@ module.exports = grammar({
 
     ObjectDefn: $ => choice(
       $.DefaultSyntax,
-      $.DefinedSyntax
+      $.DefinedSyntax,
     ),
 
     DefaultSyntax: $ => seq(
@@ -1304,11 +1330,11 @@ module.exports = grammar({
       '}'
     ),
 
-    DefinedSyntax: $ => seq(
+    DefinedSyntax: $ => prec(1, seq(
       '{',
       repeat($.DefinedSyntaxToken),
       '}'
-    ),
+    )),
 
     DefinedSyntaxToken: $ => choice(
       $.Literal,
@@ -1420,12 +1446,6 @@ module.exports = grammar({
       'SETTINGS',
       /\"[^\"]*\"/
     ),
-
-    DurationRange: $ => $.ValueRange,
-
-    TimePointRange: $ => $.ValueRange,
-
-    RecurrenceRange: $ => $.ValueRange,
 
     TypeWithConstraint: $ => choice(
       seq('SET', $.Constraint, 'OF', $.Type),
@@ -1895,8 +1915,7 @@ module.exports = grammar({
       $.DefinedType,
       $.UsefulType,
       $.SelectionType,
-      $.TypeFromObject,
-      $.ValueSetFromObjects
+      prec(1, $.TypeFromObject),
     ),
 
     DefinedType: $ => choice(
@@ -1912,7 +1931,7 @@ module.exports = grammar({
     ),
 
     SimpleDefinedType: $ => choice(
-      $.ExternalTypeReference,
+      prec(1, $.ExternalTypeReference),
       alias($.uppercased_identifier, 'typereference')
     ),
 
@@ -1928,12 +1947,6 @@ module.exports = grammar({
     ),
 
     UsefulType: $ => alias($.uppercased_identifier, 'typereference'),
-
-    ValueSetFromObjects: $ => seq(
-      $.ReferencedObjects,
-      '.',
-      $.FieldName
-    ),
 
     DummyReference: $ => $.Reference,
   },

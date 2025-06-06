@@ -707,12 +707,20 @@
           "name": "ExternalValueReference"
         },
         {
-          "type": "SYMBOL",
-          "name": "valuereference"
+          "type": "PREC",
+          "value": -1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "valuereference"
+          }
         },
         {
-          "type": "SYMBOL",
-          "name": "ParameterizedValue"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "ParameterizedValue"
+          }
         }
       ]
     },
@@ -833,7 +841,7 @@
       "members": [
         {
           "type": "PREC",
-          "value": 1,
+          "value": 2,
           "content": {
             "type": "SYMBOL",
             "name": "ObjectClassAssignment"
@@ -848,8 +856,12 @@
           "name": "ObjectSetAssignment"
         },
         {
-          "type": "SYMBOL",
-          "name": "ValueSetTypeAssignment"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "ValueSetTypeAssignment"
+          }
         },
         {
           "type": "SYMBOL",
@@ -858,10 +870,6 @@
         {
           "type": "SYMBOL",
           "name": "ObjectAssignment"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "XMLValueAssignment"
         }
       ]
     },
@@ -1879,7 +1887,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "ObjectClassFieldValue"
+          "name": "OpenTypeFieldVal"
         }
       ]
     },
@@ -1929,10 +1937,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "InstanceOfValue"
-        },
-        {
-          "type": "SYMBOL",
           "name": "IntegerValue"
         },
         {
@@ -1964,8 +1968,12 @@
           "name": "RelativeOIDValue"
         },
         {
-          "type": "SYMBOL",
-          "name": "SequenceValue"
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "SYMBOL",
+            "name": "SequenceValue"
+          }
         },
         {
           "type": "SYMBOL",
@@ -1978,10 +1986,6 @@
         {
           "type": "SYMBOL",
           "name": "SetOfValue"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "PrefixedValue"
         },
         {
           "type": "SYMBOL",
@@ -2008,10 +2012,6 @@
         {
           "type": "SYMBOL",
           "name": "SignedNumber"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
         }
       ]
     },
@@ -2109,12 +2109,20 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "bstring"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "bstring"
+          }
         },
         {
-          "type": "SYMBOL",
-          "name": "hstring"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "hstring"
+          }
         },
         {
           "type": "SEQ",
@@ -2221,8 +2229,12 @@
       ]
     },
     "NullValue": {
-      "type": "STRING",
-      "value": "NULL"
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "STRING",
+        "value": "NULL"
+      }
     },
     "SequenceValue": {
       "type": "CHOICE",
@@ -2504,38 +2516,25 @@
       ]
     },
     "SelectionType": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
-        },
-        {
-          "type": "STRING",
-          "value": "<"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "Type"
-        }
-      ]
-    },
-    "PrefixedValue": {
-      "type": "SYMBOL",
-      "name": "Value"
-    },
-    "ObjectClassFieldValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "OpenTypeFieldVal"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "FixedTypeFieldVal"
-        }
-      ]
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "identifier"
+          },
+          {
+            "type": "STRING",
+            "value": "<"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "Type"
+          }
+        ]
+      }
     },
     "OpenTypeFieldVal": {
       "type": "SEQ",
@@ -2551,19 +2550,6 @@
         {
           "type": "SYMBOL",
           "name": "Value"
-        }
-      ]
-    },
-    "FixedTypeFieldVal": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "BuiltinValue"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "ReferencedValue"
         }
       ]
     },
@@ -2656,8 +2642,12 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "ExternalObjectSetReference"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "ExternalObjectSetReference"
+          }
         },
         {
           "type": "SYMBOL",
@@ -2835,8 +2825,12 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "RestrictedCharacterStringValue"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "RestrictedCharacterStringValue"
+          }
         },
         {
           "type": "SYMBOL",
@@ -2919,12 +2913,20 @@
           "name": "cstring"
         },
         {
-          "type": "SYMBOL",
-          "name": "Quadruple"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "Quadruple"
+          }
         },
         {
-          "type": "SYMBOL",
-          "name": "Tuple"
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "SYMBOL",
+            "name": "Tuple"
+          }
         },
         {
           "type": "SYMBOL",
@@ -3026,38 +3028,38 @@
       "type": "SYMBOL",
       "name": "SequenceValue"
     },
-    "InstanceOfValue": {
-      "type": "SYMBOL",
-      "name": "Value"
-    },
     "Type": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "BuiltinType"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ReferencedType"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "TypeWithConstraint"
+              }
+            ]
+          },
+          {
+            "type": "REPEAT",
+            "content": {
               "type": "SYMBOL",
-              "name": "BuiltinType"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ReferencedType"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "TypeWithConstraint"
+              "name": "Constraint"
             }
-          ]
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "Constraint"
           }
-        }
-      ]
+        ]
+      }
     },
     "BuiltinType": {
       "type": "CHOICE",
@@ -3184,25 +3186,29 @@
           "value": "INTEGER"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "INTEGER"
-            },
-            {
-              "type": "STRING",
-              "value": "{"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "NamedNumberList"
-            },
-            {
-              "type": "STRING",
-              "value": "}"
-            }
-          ]
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "INTEGER"
+              },
+              {
+                "type": "STRING",
+                "value": "{"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedNumberList"
+              },
+              {
+                "type": "STRING",
+                "value": "}"
+              }
+            ]
+          }
         }
       ]
     },
@@ -3383,30 +3389,34 @@
       "name": "Enumeration"
     },
     "Enumeration": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "EnumerationItem"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "EnumerationItem"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "Enumeration"
-            }
-          ]
-        }
-      ]
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "EnumerationItem"
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "EnumerationItem"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "Enumeration"
+              }
+            ]
+          }
+        ]
+      }
     },
     "EnumerationItem": {
       "type": "CHOICE",
@@ -3578,37 +3588,41 @@
           ]
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "SEQUENCE"
-            },
-            {
-              "type": "STRING",
-              "value": "{"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAndException"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "OptionalExtensionMarker"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "STRING",
-              "value": "}"
-            }
-          ]
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "SEQUENCE"
+              },
+              {
+                "type": "STRING",
+                "value": "{"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionAndException"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "OptionalExtensionMarker"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "STRING",
+                "value": "}"
+              }
+            ]
+          }
         },
         {
           "type": "SEQ",
@@ -3684,152 +3698,168 @@
           "name": "RootComponentTypeList"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "RootComponentTypeList"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAndException"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ExtensionAdditions"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "OptionalExtensionMarker"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
+          "type": "PREC_LEFT",
+          "value": 3,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "RootComponentTypeList"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionAndException"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "ExtensionAdditions"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionEndMarker"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "RootComponentTypeList"
+              }
+            ]
+          }
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "RootComponentTypeList"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAndException"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ExtensionAdditions"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionEndMarker"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "RootComponentTypeList"
-            }
-          ]
+          "type": "PREC_LEFT",
+          "value": 2,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "RootComponentTypeList"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionAndException"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "ExtensionAdditions"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "OptionalExtensionMarker"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAndException"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ExtensionAdditions"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionEndMarker"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "RootComponentTypeList"
-            }
-          ]
+          "type": "PREC_LEFT",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionAndException"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "ExtensionAdditions"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionEndMarker"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "RootComponentTypeList"
+              }
+            ]
+          }
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAndException"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ExtensionAdditions"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "OptionalExtensionMarker"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
+          "type": "PREC_LEFT",
+          "value": 0,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionAndException"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "ExtensionAdditions"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "OptionalExtensionMarker"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
         }
       ]
     },
@@ -3945,30 +3975,33 @@
       ]
     },
     "ComponentTypeList": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "ComponentType"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "ComponentTypeList"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ComponentType"
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "ComponentType"
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "ComponentType"
+                }
+              ]
             }
-          ]
-        }
-      ]
+          }
+        ]
+      }
     },
     "ComponentType": {
       "type": "CHOICE",
@@ -4222,51 +4255,59 @@
           "name": "RootAlternativeTypeList"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "RootAlternativeTypeList"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAndException"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ExtensionAdditionAlternatives"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "OptionalExtensionMarker"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "RootAlternativeTypeList"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ExtensionAndException"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "ExtensionAdditionAlternatives"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "OptionalExtensionMarker"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
         }
       ]
     },
     "RootAlternativeTypeList": {
-      "type": "SYMBOL",
-      "name": "AlternativeTypeList"
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SYMBOL",
+        "name": "AlternativeTypeList"
+      }
     },
     "ExtensionAdditionAlternatives": {
       "type": "SEQ",
@@ -4994,16 +5035,24 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "SingleValue"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "SingleValue"
+          }
         },
         {
           "type": "SYMBOL",
           "name": "ContainedSubtype"
         },
         {
-          "type": "SYMBOL",
-          "name": "ValueRange"
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "SYMBOL",
+            "name": "ValueRange"
+          }
         },
         {
           "type": "SYMBOL",
@@ -5028,18 +5077,6 @@
         {
           "type": "SYMBOL",
           "name": "PropertySettings"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "DurationRange"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "TimePointRange"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "RecurrenceRange"
         }
       ]
     },
@@ -5051,16 +5088,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "INCLUDES"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "STRING",
+          "value": "INCLUDES"
         },
         {
           "type": "SYMBOL",
@@ -5269,24 +5298,28 @@
       ]
     },
     "DefinedSyntax": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "{"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "DefinedSyntaxToken"
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "{"
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "DefinedSyntaxToken"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "}"
           }
-        },
-        {
-          "type": "STRING",
-          "value": "}"
-        }
-      ]
+        ]
+      }
     },
     "DefinedSyntaxToken": {
       "type": "CHOICE",
@@ -5699,18 +5732,6 @@
           "value": "\\\"[^\\\"]*\\\""
         }
       ]
-    },
-    "DurationRange": {
-      "type": "SYMBOL",
-      "name": "ValueRange"
-    },
-    "TimePointRange": {
-      "type": "SYMBOL",
-      "name": "ValueRange"
-    },
-    "RecurrenceRange": {
-      "type": "SYMBOL",
-      "name": "ValueRange"
     },
     "TypeWithConstraint": {
       "type": "CHOICE",
@@ -7778,12 +7799,12 @@
           "name": "SelectionType"
         },
         {
-          "type": "SYMBOL",
-          "name": "TypeFromObject"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "ValueSetFromObjects"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "TypeFromObject"
+          }
         }
       ]
     },
@@ -7830,8 +7851,12 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "ExternalTypeReference"
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "ExternalTypeReference"
+          }
         },
         {
           "type": "ALIAS",
@@ -7888,29 +7913,16 @@
       "named": false,
       "value": "typereference"
     },
-    "ValueSetFromObjects": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "ReferencedObjects"
-        },
-        {
-          "type": "STRING",
-          "value": "."
-        },
-        {
-          "type": "SYMBOL",
-          "name": "FieldName"
-        }
-      ]
-    },
     "DummyReference": {
       "type": "SYMBOL",
       "name": "Reference"
     }
   },
   "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s+"
+    },
     {
       "type": "SYMBOL",
       "name": "line_comment"
@@ -7928,6 +7940,194 @@
     [
       "SimpleDefinedType",
       "objectsetreference"
+    ],
+    [
+      "ParameterizedValueSetType",
+      "ParameterizedType"
+    ],
+    [
+      "objectsetreference",
+      "ExternalTypeReference"
+    ],
+    [
+      "objectsetreference",
+      "DefinedType",
+      "UsefulType"
+    ],
+    [
+      "objectsetreference",
+      "DefinedType",
+      "SimpleDefinedType",
+      "UsefulType"
+    ],
+    [
+      "NameForm",
+      "objectreference"
+    ],
+    [
+      "BitStringValue",
+      "SequenceValue",
+      "SequenceOfValue",
+      "SetValue",
+      "SetOfValue"
+    ],
+    [
+      "ObjIdComponents",
+      "SignedNumber"
+    ],
+    [
+      "ObjIdComponents",
+      "SignedNumber",
+      "NumberForm"
+    ],
+    [
+      "SignedNumber",
+      "Group",
+      "TableColumn"
+    ],
+    [
+      "RestrictedCharacterStringValue",
+      "CharsDefn"
+    ],
+    [
+      "EnumeratedValue",
+      "NamedValue"
+    ],
+    [
+      "EnumeratedValue",
+      "IdentifierList"
+    ],
+    [
+      "ObjectIdentifierValue",
+      "ReferencedValue"
+    ],
+    [
+      "ReferencedValue",
+      "RelativeOIDComponents",
+      "NumberForm",
+      "CharsDefn"
+    ],
+    [
+      "ObjectIdentifierValue",
+      "ReferencedValue",
+      "RelativeOIDComponents",
+      "NumberForm"
+    ],
+    [
+      "ReferencedValue",
+      "CharsDefn"
+    ],
+    [
+      "ObjIdComponents",
+      "DefinedValue"
+    ],
+    [
+      "DefinedValue",
+      "SimpleDefinedValue"
+    ],
+    [
+      "ValueList",
+      "Setting"
+    ],
+    [
+      "ValueFromObject",
+      "ObjectSetFromObjects",
+      "ObjectFromObject",
+      "TypeFromObject"
+    ],
+    [
+      "ComponentValueList",
+      "NamedValueList"
+    ],
+    [
+      "ParameterizedObject",
+      "Object"
+    ],
+    [
+      "ObjectSetElements",
+      "Setting"
+    ],
+    [
+      "BitStringValue",
+      "OctetStringValue"
+    ],
+    [
+      "ObjIdComponents",
+      "RelativeOIDComponents"
+    ],
+    [
+      "Setting",
+      "TypeConstraint"
+    ],
+    [
+      "ObjectSetElements",
+      "Setting"
+    ],
+    [
+      "ObjectSetElements",
+      "ComponentRelationConstraint"
+    ],
+    [
+      "ElementSetSpecs",
+      "ObjectSetSpec"
+    ],
+    [
+      "ObjIdComponents",
+      "NumberForm"
+    ],
+    [
+      "ObjectIdentifierValue",
+      "RelativeOIDComponents",
+      "NumberForm"
+    ],
+    [
+      "ExtensionAdditions",
+      "ExtensionAdditionList"
+    ],
+    [
+      "BitStringType"
+    ],
+    [
+      "SequenceValue",
+      "SetValue"
+    ],
+    [
+      "SequenceOfValue",
+      "SetOfValue"
+    ],
+    [
+      "RelativeOIDComponents",
+      "NumberForm"
+    ],
+    [
+      "ValueList",
+      "Setting"
+    ],
+    [
+      "SingleValue",
+      "Setting",
+      "ValueList"
+    ],
+    [
+      "ValueFromObject",
+      "ObjectFromObject",
+      "TypeFromObject"
+    ],
+    [
+      "ValueFromObject",
+      "TypeFromObject"
+    ],
+    [
+      "Group",
+      "TableColumn"
+    ],
+    [
+      "ExtensionAdditionAlternatives",
+      "ExtensionAdditionAlternativesList"
+    ],
+    [
+      "ValueFromObject",
+      "ObjectFromObject"
     ]
   ],
   "precedences": [],

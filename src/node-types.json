@@ -1,8 +1,4770 @@
 [
   {
+    "type": "ActualParameter",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "Object",
+          "named": true
+        },
+        {
+          "type": "ObjectSet",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        },
+        {
+          "type": "ValueSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ActualParameterList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ActualParameter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "AdditionalElementSetSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ElementSetSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "AdditionalEnumeration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Enumeration",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "AlternativeTypeList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AlternativeTypeList",
+          "named": true
+        },
+        {
+          "type": "NamedType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "AlternativeTypeLists",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ExtensionAdditionAlternatives",
+          "named": true
+        },
+        {
+          "type": "ExtensionAndException",
+          "named": true
+        },
+        {
+          "type": "OptionalExtensionMarker",
+          "named": true
+        },
+        {
+          "type": "RootAlternativeTypeList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "AssignedIdentifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "ObjectIdentifierValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Assignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ObjectAssignment",
+          "named": true
+        },
+        {
+          "type": "ObjectClassAssignment",
+          "named": true
+        },
+        {
+          "type": "ObjectSetAssignment",
+          "named": true
+        },
+        {
+          "type": "TypeAssignment",
+          "named": true
+        },
+        {
+          "type": "ValueAssignment",
+          "named": true
+        },
+        {
+          "type": "ValueSetTypeAssignment",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "AssignmentList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Assignment",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "AtNotation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ComponentIdList",
+          "named": true
+        },
+        {
+          "type": "Level",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "BitStringType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "NamedBitList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "BitStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "IdentifierList",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        },
+        {
+          "type": "bstring",
+          "named": true
+        },
+        {
+          "type": "hstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "BooleanValue",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "BuiltinType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "BitStringType",
+          "named": true
+        },
+        {
+          "type": "BooleanType",
+          "named": true
+        },
+        {
+          "type": "CharacterStringType",
+          "named": true
+        },
+        {
+          "type": "ChoiceType",
+          "named": true
+        },
+        {
+          "type": "DateTimeType",
+          "named": true
+        },
+        {
+          "type": "DateType",
+          "named": true
+        },
+        {
+          "type": "DurationType",
+          "named": true
+        },
+        {
+          "type": "EmbeddedPDVType",
+          "named": true
+        },
+        {
+          "type": "EnumeratedType",
+          "named": true
+        },
+        {
+          "type": "ExternalType",
+          "named": true
+        },
+        {
+          "type": "IRIType",
+          "named": true
+        },
+        {
+          "type": "InstanceOfType",
+          "named": true
+        },
+        {
+          "type": "IntegerType",
+          "named": true
+        },
+        {
+          "type": "NullType",
+          "named": true
+        },
+        {
+          "type": "ObjectClassFieldType",
+          "named": true
+        },
+        {
+          "type": "ObjectIdentifierType",
+          "named": true
+        },
+        {
+          "type": "OctetStringType",
+          "named": true
+        },
+        {
+          "type": "PrefixedType",
+          "named": true
+        },
+        {
+          "type": "RealType",
+          "named": true
+        },
+        {
+          "type": "RelativeIRIType",
+          "named": true
+        },
+        {
+          "type": "RelativeOIDType",
+          "named": true
+        },
+        {
+          "type": "SequenceOfType",
+          "named": true
+        },
+        {
+          "type": "SequenceType",
+          "named": true
+        },
+        {
+          "type": "SetOfType",
+          "named": true
+        },
+        {
+          "type": "SetType",
+          "named": true
+        },
+        {
+          "type": "TimeOfDayType",
+          "named": true
+        },
+        {
+          "type": "TimeType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "BuiltinValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "BitStringValue",
+          "named": true
+        },
+        {
+          "type": "BooleanValue",
+          "named": true
+        },
+        {
+          "type": "CharacterStringValue",
+          "named": true
+        },
+        {
+          "type": "ChoiceValue",
+          "named": true
+        },
+        {
+          "type": "EmbeddedPDVValue",
+          "named": true
+        },
+        {
+          "type": "EnumeratedValue",
+          "named": true
+        },
+        {
+          "type": "ExternalValue",
+          "named": true
+        },
+        {
+          "type": "IRIValue",
+          "named": true
+        },
+        {
+          "type": "IntegerValue",
+          "named": true
+        },
+        {
+          "type": "NullValue",
+          "named": true
+        },
+        {
+          "type": "ObjectIdentifierValue",
+          "named": true
+        },
+        {
+          "type": "OctetStringValue",
+          "named": true
+        },
+        {
+          "type": "RealValue",
+          "named": true
+        },
+        {
+          "type": "RelativeIRIValue",
+          "named": true
+        },
+        {
+          "type": "RelativeOIDValue",
+          "named": true
+        },
+        {
+          "type": "SequenceOfValue",
+          "named": true
+        },
+        {
+          "type": "SequenceValue",
+          "named": true
+        },
+        {
+          "type": "SetOfValue",
+          "named": true
+        },
+        {
+          "type": "SetValue",
+          "named": true
+        },
+        {
+          "type": "TimeValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Cell",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "CharSyms",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "CharsDefn",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "CharacterStringList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "CharSyms",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "CharacterStringType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "RestrictedCharacterStringType",
+          "named": true
+        },
+        {
+          "type": "UnrestrictedCharacterStringType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "CharacterStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "RestrictedCharacterStringValue",
+          "named": true
+        },
+        {
+          "type": "UnrestrictedCharacterStringValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "CharsDefn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "Quadruple",
+          "named": true
+        },
+        {
+          "type": "Tuple",
+          "named": true
+        },
+        {
+          "type": "cstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ChoiceType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "AlternativeTypeLists",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ChoiceValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Class",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ClassNumber",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ComponentIdList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ComponentRelationConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AtNotation",
+          "named": true
+        },
+        {
+          "type": "DefinedObjectSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ComponentType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ComponentTypeList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ComponentType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ComponentTypeLists",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ExtensionAdditions",
+          "named": true
+        },
+        {
+          "type": "ExtensionAndException",
+          "named": true
+        },
+        {
+          "type": "ExtensionEndMarker",
+          "named": true
+        },
+        {
+          "type": "OptionalExtensionMarker",
+          "named": true
+        },
+        {
+          "type": "RootComponentTypeList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ComponentValueList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Constraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ConstraintSpec",
+          "named": true
+        },
+        {
+          "type": "ExceptionSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ConstraintSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "GeneralConstraint",
+          "named": true
+        },
+        {
+          "type": "SubtypeConstraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ContainedSubtype",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ContentsConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefaultSyntax",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "FieldSetting",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinedObject",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExternalObjectReference",
+          "named": true
+        },
+        {
+          "type": "objectreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinedObjectClass",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ExternalObjectClassReference",
+          "named": true
+        },
+        {
+          "type": "UsefulObjectClassReference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinedObjectSet",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExternalObjectSetReference",
+          "named": true
+        },
+        {
+          "type": "objectsetreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinedSyntax",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "DefinedSyntaxToken",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinedSyntaxToken",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Literal",
+          "named": true
+        },
+        {
+          "type": "Setting",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ExternalTypeReference",
+          "named": true
+        },
+        {
+          "type": "ParameterizedType",
+          "named": true
+        },
+        {
+          "type": "ParameterizedValueSetType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExternalValueReference",
+          "named": true
+        },
+        {
+          "type": "ParameterizedValue",
+          "named": true
+        },
+        {
+          "type": "valuereference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinitiveIdentification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinitiveOID",
+          "named": true
+        },
+        {
+          "type": "DefinitiveOIDandIRI",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinitiveNameAndNumberForm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinitiveNumberForm",
+          "named": true
+        },
+        {
+          "type": "lowercased_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinitiveNumberForm",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "DefinitiveOID",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinitiveObjIdComponentList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinitiveOIDandIRI",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinitiveOID",
+          "named": true
+        },
+        {
+          "type": "IRIValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinitiveObjIdComponent",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinitiveNameAndNumberForm",
+          "named": true
+        },
+        {
+          "type": "DefinitiveNumberForm",
+          "named": true
+        },
+        {
+          "type": "NameForm",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DefinitiveObjIdComponentList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinitiveObjIdComponent",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DummyReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ElementSetSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Exclusions",
+          "named": true
+        },
+        {
+          "type": "Unions",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ElementSetSpecs",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AdditionalElementSetSpec",
+          "named": true
+        },
+        {
+          "type": "RootElementSetSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Elements",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ElementSetSpec",
+          "named": true
+        },
+        {
+          "type": "ObjectSetElements",
+          "named": true
+        },
+        {
+          "type": "SubtypeElements",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Elems",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Elements",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EmbeddedPDVType",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "EmbeddedPDVValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SequenceValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EncodingControlSection",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "encodingreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EncodingControlSections",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "EncodingControlSection",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EncodingPrefix",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "EncodingInstruction",
+          "named": true
+        },
+        {
+          "type": "encodingreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EncodingPrefixedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "EncodingPrefix",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EncodingReferenceDefault",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "encodingreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EnumeratedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Enumerations",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EnumeratedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Enumeration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Enumeration",
+          "named": true
+        },
+        {
+          "type": "EnumerationItem",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EnumerationItem",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedNumber",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Enumerations",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AdditionalEnumeration",
+          "named": true
+        },
+        {
+          "type": "ExceptionSpec",
+          "named": true
+        },
+        {
+          "type": "RootEnumeration",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExceptionIdentification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "SignedNumber",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExceptionSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExceptionIdentification",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Exclusions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Elements",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Exports",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "SymbolsExported",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAddition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ComponentType",
+          "named": true
+        },
+        {
+          "type": "ExtensionAdditionGroup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAdditionAlternative",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExtensionAdditionAlternativesGroup",
+          "named": true
+        },
+        {
+          "type": "NamedType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAdditionAlternatives",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExtensionAdditionAlternativesList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAdditionAlternativesGroup",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AlternativeTypeList",
+          "named": true
+        },
+        {
+          "type": "VersionNumber",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAdditionAlternativesList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ExtensionAdditionAlternative",
+          "named": true
+        },
+        {
+          "type": "ExtensionAdditionAlternativesList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAdditionGroup",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ComponentTypeList",
+          "named": true
+        },
+        {
+          "type": "VersionNumber",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAdditionList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ExtensionAddition",
+          "named": true
+        },
+        {
+          "type": "ExtensionAdditionList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAdditions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExtensionAdditionList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionAndException",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ExceptionSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtensionDefault",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ExtensionEndMarker",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ExternalObjectClassReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "modulereference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExternalObjectReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "modulereference",
+          "named": true
+        },
+        {
+          "type": "objectreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExternalObjectSetReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "modulereference",
+          "named": true
+        },
+        {
+          "type": "objectsetreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExternalTypeReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "modulereference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExternalValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SequenceValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExternalValueReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "modulereference",
+          "named": true
+        },
+        {
+          "type": "valuereference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "FieldName",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "FieldSetting",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Setting",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "FieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "FixedTypeValueFieldSpec",
+          "named": true
+        },
+        {
+          "type": "FixedTypeValueSetFieldSpec",
+          "named": true
+        },
+        {
+          "type": "ObjectFieldSpec",
+          "named": true
+        },
+        {
+          "type": "ObjectSetFieldSpec",
+          "named": true
+        },
+        {
+          "type": "TypeFieldSpec",
+          "named": true
+        },
+        {
+          "type": "VariableTypeValueFieldSpec",
+          "named": true
+        },
+        {
+          "type": "VariableTypeValueSetFieldSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "FirstRelativeArcIdentifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ArcIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "FixedTypeValueFieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "ValueOptionalitySpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "FixedTypeValueSetFieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "ValueSetOptionalitySpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "FullSpecification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "TypeConstraints",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "GeneralConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ContentsConstraint",
+          "named": true
+        },
+        {
+          "type": "TableConstraint",
+          "named": true
+        },
+        {
+          "type": "UserDefinedConstraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "GlobalModuleReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AssignedIdentifier",
+          "named": true
+        },
+        {
+          "type": "modulereference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Governor",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Group",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "IElems",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Intersections",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "IRIValue",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "IdentifierList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Imports",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "SymbolsImported",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "InnerTypeConstraints",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "MultipleTypeConstraints",
+          "named": true
+        },
+        {
+          "type": "SingleTypeConstraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "InstanceOfType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "IntegerType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "NamedNumberList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "IntegerValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SignedNumber",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "IntersectionElements",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Elements",
+          "named": true
+        },
+        {
+          "type": "Elems",
+          "named": true
+        },
+        {
+          "type": "Exclusions",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "IntersectionMark",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "Intersections",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "IElems",
+          "named": true
+        },
+        {
+          "type": "IntersectionElements",
+          "named": true
+        },
+        {
+          "type": "IntersectionMark",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Level",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Level",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Literal",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "LowerEndValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "LowerEndpoint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "LowerEndValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ModuleBody",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AssignmentList",
+          "named": true
+        },
+        {
+          "type": "Exports",
+          "named": true
+        },
+        {
+          "type": "Imports",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ModuleDefinition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "EncodingControlSections",
+          "named": true
+        },
+        {
+          "type": "EncodingReferenceDefault",
+          "named": true
+        },
+        {
+          "type": "ExtensionDefault",
+          "named": true
+        },
+        {
+          "type": "ModuleBody",
+          "named": true
+        },
+        {
+          "type": "ModuleIdentifier",
+          "named": true
+        },
+        {
+          "type": "TagDefault",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ModuleIdentifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinitiveIdentification",
+          "named": true
+        },
+        {
+          "type": "modulereference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "MultipleTypeConstraints",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "FullSpecification",
+          "named": true
+        },
+        {
+          "type": "PartialSpecification",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NameAndNumberForm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NumberForm",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NameForm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "lowercased_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedBit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedBitList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedBit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "PresenceConstraint",
+          "named": true
+        },
+        {
+          "type": "ValueConstraint",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedNumber",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "SignedNumber",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedNumberList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedNumber",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NamedValueList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NullType",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "NullValue",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "NumberForm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NumericRealValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SequenceValue",
+          "named": true
+        },
+        {
+          "type": "realnumber",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjIdComponents",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExternalValueReference",
+          "named": true
+        },
+        {
+          "type": "NameAndNumberForm",
+          "named": true
+        },
+        {
+          "type": "NameForm",
+          "named": true
+        },
+        {
+          "type": "ParameterizedValue",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjIdComponentsList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ObjIdComponents",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Object",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObject",
+          "named": true
+        },
+        {
+          "type": "ObjectDefn",
+          "named": true
+        },
+        {
+          "type": "ObjectFromObject",
+          "named": true
+        },
+        {
+          "type": "ParameterizedObject",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "Object",
+          "named": true
+        },
+        {
+          "type": "ParameterList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectClass",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "ObjectClassDefn",
+          "named": true
+        },
+        {
+          "type": "ParameterizedObjectClass",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectClassAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ObjectClass",
+          "named": true
+        },
+        {
+          "type": "ParameterList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectClassDefn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "FieldSpec",
+          "named": true
+        },
+        {
+          "type": "WithSyntaxSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectClassFieldType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "FieldName",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectDefn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefaultSyntax",
+          "named": true
+        },
+        {
+          "type": "DefinedSyntax",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectFieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "ObjectOptionalitySpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectFromObject",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "FieldName",
+          "named": true
+        },
+        {
+          "type": "ReferencedObjects",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectIdentifierType",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ObjectIdentifierValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "ObjIdComponentsList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectOptionalitySpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Object",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectSet",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ObjectSetSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectSetAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "Object",
+          "named": true
+        },
+        {
+          "type": "ParameterList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectSetElements",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectSet",
+          "named": true
+        },
+        {
+          "type": "Object",
+          "named": true
+        },
+        {
+          "type": "ObjectSetFromObjects",
+          "named": true
+        },
+        {
+          "type": "ParameterizedObjectSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectSetFieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "ObjectSetOptionalitySpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectSetFromObjects",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "FieldName",
+          "named": true
+        },
+        {
+          "type": "ReferencedObjects",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectSetOptionalitySpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ObjectSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectSetSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "AdditionalElementSetSpec",
+          "named": true
+        },
+        {
+          "type": "RootElementSetSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "OctetStringType",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OctetStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        },
+        {
+          "type": "bstring",
+          "named": true
+        },
+        {
+          "type": "hstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "OpenTypeFieldVal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "OptionalExtensionMarker",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OptionalGroup",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "TokenOrGroupSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParamGovernor",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Governor",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Parameter",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DummyReference",
+          "named": true
+        },
+        {
+          "type": "ParamGovernor",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Parameter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterizedObject",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
+        {
+          "type": "DefinedObject",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterizedObjectClass",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterizedObjectSet",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
+        {
+          "type": "DefinedObjectSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterizedReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterizedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
+        {
+          "type": "SimpleDefinedType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterizedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
+        {
+          "type": "SimpleDefinedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParameterizedValueSetType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
+        {
+          "type": "SimpleDefinedType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PartialSpecification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "TypeConstraints",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PatternConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PermittedAlphabet",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Plane",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PrefixedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "EncodingPrefixedType",
+          "named": true
+        },
+        {
+          "type": "TaggedType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PresenceConstraint",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "PropertySettings",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "Quadruple",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Cell",
+          "named": true
+        },
+        {
+          "type": "Group",
+          "named": true
+        },
+        {
+          "type": "Plane",
+          "named": true
+        },
+        {
+          "type": "Row",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RealValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "NumericRealValue",
+          "named": true
+        },
+        {
+          "type": "SpecialRealValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ReferencedObjects",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObject",
+          "named": true
+        },
+        {
+          "type": "DefinedObjectSet",
+          "named": true
+        },
+        {
+          "type": "ParameterizedObject",
+          "named": true
+        },
+        {
+          "type": "ParameterizedObjectSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ReferencedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedType",
+          "named": true
+        },
+        {
+          "type": "SelectionType",
+          "named": true
+        },
+        {
+          "type": "TypeFromObject",
+          "named": true
+        },
+        {
+          "type": "UsefulType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ReferencedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "ValueFromObject",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RelativeIRIValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ArcIdentifier",
+          "named": true
+        },
+        {
+          "type": "FirstRelativeArcIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RelativeOIDComponents",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedValue",
+          "named": true
+        },
+        {
+          "type": "NameAndNumberForm",
+          "named": true
+        },
+        {
+          "type": "NumberForm",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RelativeOIDComponentsList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "RelativeOIDComponents",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RelativeOIDValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "RelativeOIDComponentsList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RequiredToken",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Literal",
+          "named": true
+        },
+        {
+          "type": "any_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RestrictedCharacterStringType",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "RestrictedCharacterStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "CharacterStringList",
+          "named": true
+        },
+        {
+          "type": "Quadruple",
+          "named": true
+        },
+        {
+          "type": "Tuple",
+          "named": true
+        },
+        {
+          "type": "cstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RootAlternativeTypeList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "AlternativeTypeList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RootComponentTypeList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ComponentTypeList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RootElementSetSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ElementSetSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RootEnumeration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Enumeration",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Row",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SelectionOption",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "SelectionType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SequenceOfType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SequenceOfValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "NamedValueList",
+          "named": true
+        },
+        {
+          "type": "ValueList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SequenceType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ComponentTypeLists",
+          "named": true
+        },
+        {
+          "type": "ExtensionAndException",
+          "named": true
+        },
+        {
+          "type": "OptionalExtensionMarker",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SequenceValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ComponentValueList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SetOfType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SetOfValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "NamedValueList",
+          "named": true
+        },
+        {
+          "type": "ValueList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SetType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ComponentTypeLists",
+          "named": true
+        },
+        {
+          "type": "ExtensionAndException",
+          "named": true
+        },
+        {
+          "type": "OptionalExtensionMarker",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SetValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ComponentValueList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Setting",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Object",
+          "named": true
+        },
+        {
+          "type": "ObjectSet",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        },
+        {
+          "type": "ValueSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SignedNumber",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SimpleDefinedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ExternalTypeReference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SimpleDefinedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExternalValueReference",
+          "named": true
+        },
+        {
+          "type": "valuereference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SimpleTableConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ObjectSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SingleTypeConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SingleValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SizeConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SpecialRealValue",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "SubtypeConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ElementSetSpecs",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SubtypeElements",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ContainedSubtype",
+          "named": true
+        },
+        {
+          "type": "InnerTypeConstraints",
+          "named": true
+        },
+        {
+          "type": "PatternConstraint",
+          "named": true
+        },
+        {
+          "type": "PermittedAlphabet",
+          "named": true
+        },
+        {
+          "type": "PropertySettings",
+          "named": true
+        },
+        {
+          "type": "SingleValue",
+          "named": true
+        },
+        {
+          "type": "SizeConstraint",
+          "named": true
+        },
+        {
+          "type": "TypeConstraint",
+          "named": true
+        },
+        {
+          "type": "ValueRange",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Symbol",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ParameterizedReference",
+          "named": true
+        },
+        {
+          "type": "Reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SymbolList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SymbolsExported",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SymbolList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SymbolsFromModule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "GlobalModuleReference",
+          "named": true
+        },
+        {
+          "type": "SelectionOption",
+          "named": true
+        },
+        {
+          "type": "SymbolList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SymbolsFromModuleList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "SymbolsFromModule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SymbolsImported",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SymbolsFromModuleList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SyntaxList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "TokenOrGroupSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TableColumn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TableConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ComponentRelationConstraint",
+          "named": true
+        },
+        {
+          "type": "SimpleTableConstraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TableRow",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Tag",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Class",
+          "named": true
+        },
+        {
+          "type": "ClassNumber",
+          "named": true
+        },
+        {
+          "type": "encodingreference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TagDefault",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "TaggedType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Tag",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TimeValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "tstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TokenOrGroupSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "OptionalGroup",
+          "named": true
+        },
+        {
+          "type": "RequiredToken",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Tuple",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "TableColumn",
+          "named": true
+        },
+        {
+          "type": "TableRow",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "BuiltinType",
+          "named": true
+        },
+        {
+          "type": "Constraint",
+          "named": true
+        },
+        {
+          "type": "ReferencedType",
+          "named": true
+        },
+        {
+          "type": "TypeWithConstraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TypeAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ParameterList",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TypeConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TypeConstraints",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NamedConstraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TypeFieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "TypeOptionalitySpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TypeFromObject",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "FieldName",
+          "named": true
+        },
+        {
+          "type": "ReferencedObjects",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TypeOptionalitySpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TypeWithConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Constraint",
+          "named": true
+        },
+        {
+          "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "SizeConstraint",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "UElems",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Unions",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "UnionMark",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "Unions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Intersections",
+          "named": true
+        },
+        {
+          "type": "UElems",
+          "named": true
+        },
+        {
+          "type": "UnionMark",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "UnrestrictedCharacterStringType",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "UnrestrictedCharacterStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SequenceValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "UpperEndValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "UpperEndpoint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "UpperEndValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "UsefulObjectClassReference",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "UsefulType",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "UserDefinedConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "UserDefinedConstraintParameter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "UserDefinedConstraintParameter",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "DefinedObjectSet",
+          "named": true
+        },
+        {
+          "type": "Object",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "BuiltinValue",
+          "named": true
+        },
+        {
+          "type": "OpenTypeFieldVal",
+          "named": true
+        },
+        {
+          "type": "ReferencedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ParameterList",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueFromObject",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "FieldName",
+          "named": true
+        },
+        {
+          "type": "ReferencedObjects",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueOptionalitySpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueRange",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LowerEndpoint",
+          "named": true
+        },
+        {
+          "type": "UpperEndpoint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueSet",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ElementSetSpecs",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueSetOptionalitySpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ValueSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ValueSetTypeAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ParameterList",
+          "named": true
+        },
+        {
+          "type": "Type",
+          "named": true
+        },
+        {
+          "type": "ValueSet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "VariableTypeValueFieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "FieldName",
+          "named": true
+        },
+        {
+          "type": "ValueOptionalitySpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "VariableTypeValueSetFieldSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "FieldName",
+          "named": true
+        },
+        {
+          "type": "ValueSetOptionalitySpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "VersionNumber",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "WithSyntaxSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SyntaxList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "block_comment",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "objectreference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "lowercased_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectsetreference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "uppercased_identifier",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "source_file",
@@ -14,23 +4776,27 @@
       "required": false,
       "types": [
         {
-          "type": "block_comment",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "keyword",
-          "named": true
-        },
-        {
-          "type": "line_comment",
+          "type": "ModuleDefinition",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "!",
+    "named": false
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
   },
   {
     "type": "*",
@@ -38,6 +4804,26 @@
   },
   {
     "type": "*/",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": "..",
+    "named": false
+  },
+  {
+    "type": "...",
     "named": false
   },
   {
@@ -49,15 +4835,544 @@
     "named": false
   },
   {
+    "type": "0",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "::=",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "@",
+    "named": false
+  },
+  {
+    "type": "@.",
+    "named": false
+  },
+  {
+    "type": "ABSENT",
+    "named": false
+  },
+  {
+    "type": "ABSTRACT-SYNTAX",
+    "named": false
+  },
+  {
+    "type": "ALL",
+    "named": false
+  },
+  {
+    "type": "APPLICATION",
+    "named": false
+  },
+  {
+    "type": "AUTOMATIC",
+    "named": false
+  },
+  {
+    "type": "ArcIdentifier",
+    "named": true
+  },
+  {
+    "type": "BEGIN",
+    "named": false
+  },
+  {
+    "type": "BIT",
+    "named": false
+  },
+  {
+    "type": "BMPString",
+    "named": false
+  },
+  {
+    "type": "BY",
+    "named": false
+  },
+  {
+    "type": "BooleanType",
+    "named": true
+  },
+  {
+    "type": "CHARACTER",
+    "named": false
+  },
+  {
+    "type": "CHOICE",
+    "named": false
+  },
+  {
+    "type": "CLASS",
+    "named": false
+  },
+  {
+    "type": "COMPONENT",
+    "named": false
+  },
+  {
+    "type": "COMPONENTS",
+    "named": false
+  },
+  {
+    "type": "CONSTRAINED",
+    "named": false
+  },
+  {
+    "type": "CONTAINING",
+    "named": false
+  },
+  {
+    "type": "DEFAULT",
+    "named": false
+  },
+  {
+    "type": "DEFINITIONS",
+    "named": false
+  },
+  {
+    "type": "DESCENDANTS",
+    "named": false
+  },
+  {
+    "type": "DateTimeType",
+    "named": true
+  },
+  {
+    "type": "DateType",
+    "named": true
+  },
+  {
+    "type": "DummyGovernor",
+    "named": false
+  },
+  {
+    "type": "DurationType",
+    "named": true
+  },
+  {
+    "type": "EMBEDDED",
+    "named": false
+  },
+  {
+    "type": "ENCODED",
+    "named": false
+  },
+  {
+    "type": "ENCODING-CONTROL",
+    "named": false
+  },
+  {
+    "type": "END",
+    "named": false
+  },
+  {
+    "type": "ENUMERATED",
+    "named": false
+  },
+  {
+    "type": "EXCEPT",
+    "named": false
+  },
+  {
+    "type": "EXPLICIT",
+    "named": false
+  },
+  {
+    "type": "EXPORTS",
+    "named": false
+  },
+  {
+    "type": "EXTENSIBILITY",
+    "named": false
+  },
+  {
+    "type": "EncodingInstruction",
+    "named": true
+  },
+  {
+    "type": "ExternalType",
+    "named": true
+  },
+  {
+    "type": "FALSE",
+    "named": false
+  },
+  {
+    "type": "FROM",
+    "named": false
+  },
+  {
+    "type": "GeneralString",
+    "named": false
+  },
+  {
+    "type": "GraphicString",
+    "named": false
+  },
+  {
+    "type": "IA5String",
+    "named": false
+  },
+  {
+    "type": "IDENTIFIER",
+    "named": false
+  },
+  {
+    "type": "IMPLICIT",
+    "named": false
+  },
+  {
+    "type": "IMPLIED",
+    "named": false
+  },
+  {
+    "type": "IMPORTS",
+    "named": false
+  },
+  {
+    "type": "INCLUDES",
+    "named": false
+  },
+  {
+    "type": "INSTANCE",
+    "named": false
+  },
+  {
+    "type": "INSTRUCTIONS",
+    "named": false
+  },
+  {
+    "type": "INTEGER",
+    "named": false
+  },
+  {
+    "type": "INTERSECTION",
+    "named": false
+  },
+  {
+    "type": "IRIType",
+    "named": true
+  },
+  {
+    "type": "ISO646String",
+    "named": false
+  },
+  {
+    "type": "MAX",
+    "named": false
+  },
+  {
+    "type": "MIN",
+    "named": false
+  },
+  {
+    "type": "MINUS-INFINITY",
+    "named": false
+  },
+  {
+    "type": "NOT-A-NUMBER",
+    "named": false
+  },
+  {
+    "type": "NULL",
+    "named": false
+  },
+  {
+    "type": "NumericString",
+    "named": false
+  },
+  {
+    "type": "OBJECT",
+    "named": false
+  },
+  {
+    "type": "OCTET",
+    "named": false
+  },
+  {
+    "type": "OF",
+    "named": false
+  },
+  {
+    "type": "OPTIONAL",
+    "named": false
+  },
+  {
+    "type": "PATTERN",
+    "named": false
+  },
+  {
+    "type": "PDV",
+    "named": false
+  },
+  {
+    "type": "PLUS-INFINITY",
+    "named": false
+  },
+  {
+    "type": "PRESENT",
+    "named": false
+  },
+  {
+    "type": "PRIVATE",
+    "named": false
+  },
+  {
+    "type": "PrimitiveFieldName",
+    "named": false
+  },
+  {
+    "type": "PrintableString",
+    "named": false
+  },
+  {
+    "type": "RealType",
+    "named": true
+  },
+  {
+    "type": "Reference",
+    "named": true
+  },
+  {
+    "type": "RelativeIRIType",
+    "named": true
+  },
+  {
+    "type": "RelativeOIDType",
+    "named": true
+  },
+  {
+    "type": "SEQUENCE",
+    "named": false
+  },
+  {
+    "type": "SET",
+    "named": false
+  },
+  {
+    "type": "SETTINGS",
+    "named": false
+  },
+  {
+    "type": "SIZE",
+    "named": false
+  },
+  {
+    "type": "STRING",
+    "named": false
+  },
+  {
+    "type": "SUCCESSORS",
+    "named": false
+  },
+  {
+    "type": "SYNTAX",
+    "named": false
+  },
+  {
+    "type": "T61String",
+    "named": false
+  },
+  {
+    "type": "TAGS",
+    "named": false
+  },
+  {
+    "type": "TRUE",
+    "named": false
+  },
+  {
+    "type": "TYPE-IDENTIFIER",
+    "named": false
+  },
+  {
+    "type": "TeletexString",
+    "named": false
+  },
+  {
+    "type": "TimeOfDayType",
+    "named": true
+  },
+  {
+    "type": "TimeType",
+    "named": true
+  },
+  {
+    "type": "UNION",
+    "named": false
+  },
+  {
+    "type": "UNIQUE",
+    "named": false
+  },
+  {
+    "type": "UNIVERSAL",
+    "named": false
+  },
+  {
+    "type": "UTF8String",
+    "named": false
+  },
+  {
+    "type": "UniversalString",
+    "named": false
+  },
+  {
+    "type": "VideotexString",
+    "named": false
+  },
+  {
+    "type": "VisibleString",
+    "named": false
+  },
+  {
+    "type": "WITH",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "[[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "]]",
+    "named": false
+  },
+  {
+    "type": "^",
+    "named": false
+  },
+  {
+    "type": "any_identifier",
+    "named": true
+  },
+  {
+    "type": "bstring",
+    "named": true
+  },
+  {
+    "type": "cstring",
+    "named": true
+  },
+  {
+    "type": "encodingreference",
+    "named": true
+  },
+  {
+    "type": "hstring",
+    "named": true
+  },
+  {
     "type": "identifier",
     "named": true
   },
   {
-    "type": "keyword",
+    "type": "line_comment",
+    "named": true,
+    "extra": true
+  },
+  {
+    "type": "lowercased_identifier",
     "named": true
   },
   {
-    "type": "line_comment",
+    "type": "modulereference",
     "named": true
+  },
+  {
+    "type": "number",
+    "named": true
+  },
+  {
+    "type": "objectclassreference",
+    "named": false
+  },
+  {
+    "type": "objectfieldreference",
+    "named": false
+  },
+  {
+    "type": "objectreference",
+    "named": false
+  },
+  {
+    "type": "objectsetfieldreference",
+    "named": false
+  },
+  {
+    "type": "realnumber",
+    "named": true
+  },
+  {
+    "type": "tstring",
+    "named": true
+  },
+  {
+    "type": "typefieldreference",
+    "named": false
+  },
+  {
+    "type": "typereference",
+    "named": false
+  },
+  {
+    "type": "uppercased_identifier",
+    "named": true
+  },
+  {
+    "type": "valuefieldreference",
+    "named": false
+  },
+  {
+    "type": "valuereference",
+    "named": true
+  },
+  {
+    "type": "valuereference",
+    "named": false
+  },
+  {
+    "type": "valuesetfieldreference",
+    "named": false
+  },
+  {
+    "type": "word",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "{}",
+    "named": false
+  },
+  {
+    "type": "|",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
   }
 ]
