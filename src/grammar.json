@@ -1062,7 +1062,7 @@
       ]
     },
     "ParameterizedObjectClass": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
@@ -1863,37 +1863,6 @@
         {
           "type": "SYMBOL",
           "name": "encodingreference"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "EncodingInstructionAssignmentList"
-        }
-      ]
-    },
-    "EncodingInstructionAssignmentList": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": -1,
-            "content": {
-              "type": "PATTERN",
-              "value": "(?:(?!\\bEND\\b)[^])+"
-            }
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": -1,
-            "content": {
-              "type": "PATTERN",
-              "value": "(?:(?!\\bENCODING-CONTROL\\b)[^])+"
-            }
-          }
         }
       ]
     },
@@ -3062,19 +3031,31 @@
       "name": "Value"
     },
     "Type": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "BuiltinType"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "BuiltinType"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ReferencedType"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "TypeWithConstraint"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "ReferencedType"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "ConstrainedType"
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "Constraint"
+          }
         }
       ]
     },
@@ -5731,28 +5712,6 @@
       "type": "SYMBOL",
       "name": "ValueRange"
     },
-    "ConstrainedType": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "Type"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "Constraint"
-            }
-          ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "TypeWithConstraint"
-        }
-      ]
-    },
     "TypeWithConstraint": {
       "type": "CHOICE",
       "members": [
@@ -7961,7 +7920,16 @@
       "name": "block_comment"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "UsefulType",
+      "DefinedType"
+    ],
+    [
+      "SimpleDefinedType",
+      "objectsetreference"
+    ]
+  ],
   "precedences": [],
   "externals": [],
   "inline": [],

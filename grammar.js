@@ -20,6 +20,11 @@ module.exports = grammar({
   //   [$.Type, $.ValueSet, $.ObjectSet],
   // ],
 
+  conflicts: $ => [
+    [$.UsefulType, $.DefinedType],
+    [$.SimpleDefinedType, $.objectsetreference],
+  ],
+
   extras: $ => [
     $.line_comment,
     $.block_comment,
@@ -315,7 +320,7 @@ module.exports = grammar({
       'ABSTRACT-SYNTAX',
     ),
 
-    ParameterizedObjectClass: $ => choice(
+    ParameterizedObjectClass: $ => seq(
       $.DefinedObjectClass,
       $.ActualParameterList,
     ),
@@ -503,15 +508,14 @@ module.exports = grammar({
     EncodingControlSection: $ => seq(
       'ENCODING-CONTROL',
       $.encodingreference,
-      $.EncodingInstructionAssignmentList,
+      // FIXME:
+      // $.EncodingInstructionAssignmentList,
     ),
 
-    EncodingInstructionAssignmentList: $ => choice(
-      token(prec(-1, /(?:(?!\bEND\b)[^])+/)),
-      token(prec(-1, /(?:(?!\bENCODING-CONTROL\b)[^])+/))
-    ),
+    // EncodingInstructionAssignmentList: $ => token(prec(-1, /[^E]+|E(?!ND\b|NCODING-CONTROL\b)/)),
+    // EncodingInstructionAssignmentList: $ => repeat1($.EncodingInstructionAssignment),
+    // EncodingInstructionAssignment: $ => /(?!END|ENCODING-CONTROL)/,
 
-    // FIXME:
     Value: $ => choice(
       $.BuiltinValue,
       $.ReferencedValue,
@@ -848,10 +852,13 @@ module.exports = grammar({
     
     InstanceOfValue: $ => $.Value,
 
-    Type: $ => choice(
-      $.BuiltinType,
-      $.ReferencedType,
-      $.ConstrainedType
+    Type: $ => seq(
+      choice(
+        $.BuiltinType,
+        $.ReferencedType,
+        $.TypeWithConstraint
+      ),
+      repeat($.Constraint),
     ),
 
     BuiltinType: $ => choice(
@@ -1419,11 +1426,6 @@ module.exports = grammar({
     TimePointRange: $ => $.ValueRange,
 
     RecurrenceRange: $ => $.ValueRange,
-
-    ConstrainedType: $ => choice(
-      seq($.Type, $.Constraint),
-      $.TypeWithConstraint
-    ),
 
     TypeWithConstraint: $ => choice(
       seq('SET', $.Constraint, 'OF', $.Type),
