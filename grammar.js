@@ -79,6 +79,24 @@ module.exports = grammar({
 
     DefinitiveObjIdComponentList: $ => repeat($.DefinitiveObjIdComponent),
 
+    DefinitiveObjIdComponent: $ => choice(
+      $.NameForm,
+      $.DefinitiveNumberForm,
+      $.DefinitiveNameAndNumberForm,
+    ),
+
+    NameForm: $ => $.lowercased_identifier,
+    DefinitiveNumberForm: $ => choice(
+      '0',
+      /[1-9][0-9]*/,
+    ),
+    DefinitiveNameAndNumberForm: $ => seq(
+      $.lowercased_identifier,
+      '(',
+      $.DefinitiveNumberForm,
+      ')',
+    ),
+
     DefinitiveOIDandIRI: $ => seq(
       $.DefinitiveOID,
       $.IRIValue,
@@ -185,6 +203,16 @@ module.exports = grammar({
       optional($.DefinedValue),
       $.ObjIdComponentsList,
       '}',
+    ),
+
+    ObjIdComponentsList: $ => repeat($.ObjIdComponents),
+
+    ObjIdComponents: $ => choice(
+      $.NameForm,
+      $.number,
+      $.NameAndNumberForm,
+      $.ExternalValueReference,
+      $.ParameterizedValue,
     ),
 
     DefinedValue: $ => choice(
@@ -480,13 +508,711 @@ module.exports = grammar({
     ),
 
     // FIXME:
-    Value: $ => choice(),
-    Type: $ => choice(),
-    Object: $ => choice(),
-    ObjectSet: $ => choice(),
-    ValueSet: $ => choice(),
+    Value: $ => choice(
+      $.BuiltinValue,
+      $.ReferencedValue,
+      $.ObjectClassFieldValue
+    ),
+    
+    ReferencedValue: $ => choice(
+      $.DefinedValue,
+      $.ValueFromObject
+    ),
+    
+    BuiltinValue: $ => choice(
+      $.BitStringValue,
+      $.BooleanValue,
+      $.CharacterStringValue,
+      $.ChoiceValue,
+      $.EmbeddedPDVValue,
+      $.EnumeratedValue,
+      $.ExternalValue,
+      $.InstanceOfValue,
+      $.IntegerValue,
+      $.IRIValue,
+      $.NullValue,
+      $.ObjectIdentifierValue,
+      $.OctetStringValue,
+      $.RealValue,
+      $.RelativeIRIValue,
+      $.RelativeOIDValue,
+      $.SequenceValue,
+      $.SequenceOfValue,
+      $.SetValue,
+      $.SetOfValue,
+      $.PrefixedValue,
+      $.TimeValue
+    ),
+    
+    BooleanValue: $ => choice(
+      'TRUE',
+      'FALSE'
+    ),
+    
+    IntegerValue: $ => choice(
+      $.SignedNumber,
+      $.identifier
+    ),
+    
+    SignedNumber: $ => choice(
+      $.number,
+      seq('-', $.number)
+    ),
+    
+    number: $ => /[0-9]+/,
+    
+    EnumeratedValue: $ => $.identifier,
+    
+    RealValue: $ => choice(
+      $.NumericRealValue,
+      $.SpecialRealValue
+    ),
+    
+    NumericRealValue: $ => choice(
+      $.realnumber,
+      seq('-', $.realnumber),
+      $.SequenceValue
+    ),
+    
+    realnumber: $ => /[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?/,
+    
+    SpecialRealValue: $ => choice(
+      'PLUS-INFINITY',
+      'MINUS-INFINITY',
+      'NOT-A-NUMBER'
+    ),
+    
+    BitStringValue: $ => choice(
+      $.bstring,
+      $.hstring,
+      seq('{', $.IdentifierList, '}'),
+      seq('{', '}'),
+      seq('CONTAINING', $.Value)
+    ),
+    
+    bstring: $ => /'[01]*'B/,
+    
+    hstring: $ => /'[0-9A-Fa-f]*'H/,
+    
+    IdentifierList: $ => seq(
+      $.identifier,
+      repeat(seq(',', $.identifier))
+    ),
+    
+    OctetStringValue: $ => choice(
+      $.bstring,
+      $.hstring,
+      seq('CONTAINING', $.Value)
+    ),
+    
+    NullValue: $ => 'NULL',
+    
+    SequenceValue: $ => choice(
+      seq('{', $.ComponentValueList, '}'),
+      seq('{', '}')
+    ),
+    
+    ComponentValueList: $ => seq(
+      $.NamedValue,
+      repeat(seq(',', $.NamedValue))
+    ),
+    
+    NamedValue: $ => seq(
+      $.identifier,
+      $.Value
+    ),
+    
+    SequenceOfValue: $ => choice(
+      seq('{', $.ValueList, '}'),
+      seq('{', $.NamedValueList, '}'),
+      seq('{', '}')
+    ),
+    
+    ValueList: $ => seq(
+      $.Value,
+      repeat(seq(',', $.Value))
+    ),
+    
+    NamedValueList: $ => seq(
+      $.NamedValue,
+      repeat(seq(',', $.NamedValue))
+    ),
+    
+    SetValue: $ => choice(
+      seq('{', $.ComponentValueList, '}'),
+      seq('{', '}')
+    ),
+    
+    SetOfValue: $ => choice(
+      seq('{', $.ValueList, '}'),
+      seq('{', $.NamedValueList, '}'),
+      seq('{', '}')
+    ),
+    
+    ChoiceValue: $ => seq(
+      $.identifier,
+      ':',
+      $.Value
+    ),
+    
+    SelectionType: $ => seq(
+      $.identifier,
+      '<',
+      $.Type
+    ),
+    
+    PrefixedValue: $ => $.Value,
+    
+    ObjectClassFieldValue: $ => choice(
+      $.OpenTypeFieldVal,
+      $.FixedTypeFieldVal
+    ),
+    
+    OpenTypeFieldVal: $ => seq(
+      $.Type,
+      ':',
+      $.Value
+    ),
+    
+    FixedTypeFieldVal: $ => choice(
+      $.BuiltinValue,
+      $.ReferencedValue
+    ),
+    
+    ValueFromObject: $ => seq(
+      $.ReferencedObjects,
+      '.',
+      $.FieldName
+    ),
+    
+    ReferencedObjects: $ => choice(
+      $.DefinedObject,
+      $.ParameterizedObject,
+      $.DefinedObjectSet,
+      $.ParameterizedObjectSet
+    ),
+    
+    DefinedObject: $ => choice(
+      $.ExternalObjectReference,
+      $.objectreference
+    ),
+    
+    ExternalObjectReference: $ => seq(
+      $.modulereference,
+      '.',
+      $.objectreference
+    ),
+    
+    objectreference: $ => $.lowercased_identifier,
+    
+    ParameterizedObject: $ => seq(
+      $.DefinedObject,
+      $.ActualParameterList
+    ),
+    
+    DefinedObjectSet: $ => choice(
+      $.ExternalObjectSetReference,
+      $.objectsetreference
+    ),
+    
+    ExternalObjectSetReference: $ => seq(
+      $.modulereference,
+      '.',
+      $.objectsetreference
+    ),
+    
+    objectsetreference: $ => $.uppercased_identifier,
+    
+    ParameterizedObjectSet: $ => seq(
+      $.DefinedObjectSet,
+      $.ActualParameterList
+    ),
+    
+    RelativeOIDValue: $ => seq(
+      '{',
+      $.RelativeOIDComponentsList,
+      '}'
+    ),
+    
+    RelativeOIDComponentsList: $ => repeat1($.RelativeOIDComponents),
+    
+    RelativeOIDComponents: $ => choice(
+      $.NumberForm,
+      $.NameAndNumberForm,
+      $.DefinedValue
+    ),
+    
+    NumberForm: $ => choice(
+      $.number,
+      $.DefinedValue
+    ),
+    
+    NameAndNumberForm: $ => seq(
+      $.identifier,
+      '(',
+      $.NumberForm,
+      ')'
+    ),
+    
+    RelativeIRIValue: $ => seq(
+      '"',
+      $.FirstRelativeArcIdentifier,
+      $.SubsequentArcIdentifier,
+      '"'
+    ),
+    
+    FirstRelativeArcIdentifier: $ => $.ArcIdentifier,
+    
+    ArcIdentifier: $ => /[a-zA-Z0-9][a-zA-Z0-9-]*/,
+    
+    SubsequentArcIdentifier: $ => repeat(seq(
+      '/',
+      $.ArcIdentifier
+    )),
+    
+    EmbeddedPDVValue: $ => $.SequenceValue,
+    
+    ExternalValue: $ => $.SequenceValue,
+    
+    TimeValue: $ => $.tstring,
+    
+    tstring: $ => /"[0-9:.+\-ZT][0-9:.+\-ZT]*"/,
+    
+    CharacterStringValue: $ => choice(
+      $.RestrictedCharacterStringValue,
+      $.UnrestrictedCharacterStringValue
+    ),
+    
+    RestrictedCharacterStringValue: $ => choice(
+      $.cstring,
+      $.CharacterStringList,
+      $.Quadruple,
+      $.Tuple
+    ),
+    
+    cstring: $ => /"[^"]*"/,
+    
+    CharacterStringList: $ => seq(
+      '{',
+      $.CharSyms,
+      '}'
+    ),
+    
+    CharSyms: $ => seq(
+      $.CharsDefn,
+      repeat(seq(',', $.CharsDefn))
+    ),
+    
+    CharsDefn: $ => choice(
+      $.cstring,
+      $.Quadruple,
+      $.Tuple,
+      $.DefinedValue
+    ),
+    
+    Quadruple: $ => seq(
+      '{',
+      $.Group,
+      ',',
+      $.Plane,
+      ',',
+      $.Row,
+      ',',
+      $.Cell,
+      '}'
+    ),
+    
+    Group: $ => $.number,
+    
+    Plane: $ => $.number,
+    
+    Row: $ => $.number,
+    
+    Cell: $ => $.number,
+    
+    Tuple: $ => seq(
+      '{',
+      $.TableColumn,
+      ',',
+      $.TableRow,
+      '}'
+    ),
+    
+    TableColumn: $ => $.number,
+    
+    TableRow: $ => $.number,
+    
+    UnrestrictedCharacterStringValue: $ => $.SequenceValue,
+    
+    InstanceOfValue: $ => $.Value,
 
-    // TODO: Stuff to clean up
+    Type: $ => choice(
+      $.BuiltinType,
+      $.ReferencedType,
+      $.ConstrainedType
+    ),
+
+    ValueSet: $ => seq(
+      '{',
+      $.ElementSetSpecs,
+      '}'
+    ),
+
+    ElementSetSpecs: $ => choice(
+      $.RootElementSetSpec,
+      seq($.RootElementSetSpec, ',', '...'),
+      seq($.RootElementSetSpec, ',', '...', ',', $.AdditionalElementSetSpec)
+    ),
+
+    RootElementSetSpec: $ => $.ElementSetSpec,
+
+    AdditionalElementSetSpec: $ => $.ElementSetSpec,
+
+    ElementSetSpec: $ => choice(
+      $.Unions,
+      seq('ALL', $.Exclusions)
+    ),
+
+    Unions: $ => choice(
+      $.Intersections,
+      seq($.UElems, $.UnionMark, $.Intersections)
+    ),
+
+    UElems: $ => $.Unions,
+
+    Intersections: $ => choice(
+      $.IntersectionElements,
+      seq($.IElems, $.IntersectionMark, $.IntersectionElements)
+    ),
+
+    IElems: $ => $.Intersections,
+
+    IntersectionElements: $ => choice(
+      $.Elements,
+      seq($.Elems, $.Exclusions)
+    ),
+
+    Elems: $ => $.Elements,
+
+    Exclusions: $ => seq('EXCEPT', $.Elements),
+
+    UnionMark: $ => choice('|', 'UNION'),
+
+    IntersectionMark: $ => choice('^', 'INTERSECTION'),
+
+    Elements: $ => choice(
+      $.SubtypeElements,
+      $.ObjectSetElements,
+      seq('(', $.ElementSetSpec, ')')
+    ),
+
+    SubtypeElements: $ => choice(
+      $.SingleValue,
+      $.ContainedSubtype,
+      $.ValueRange,
+      $.PermittedAlphabet,
+      $.SizeConstraint,
+      $.TypeConstraint,
+      $.InnerTypeConstraints,
+      $.PatternConstraint,
+      $.PropertySettings,
+      $.DurationRange,
+      $.TimePointRange,
+      $.RecurrenceRange
+    ),
+
+    SingleValue: $ => $.Value,
+
+    ContainedSubtype: $ => seq(
+      optional('INCLUDES'),
+      $.Type
+    ),
+
+    ValueRange: $ => seq(
+      $.LowerEndpoint,
+      '..',
+      $.UpperEndpoint
+    ),
+
+    LowerEndpoint: $ => choice(
+      $.LowerEndValue,
+      seq($.LowerEndValue, '<')
+    ),
+
+    UpperEndpoint: $ => choice(
+      $.UpperEndValue,
+      seq('<', $.UpperEndValue)
+    ),
+
+    LowerEndValue: $ => choice(
+      $.Value,
+      'MIN'
+    ),
+
+    UpperEndValue: $ => choice(
+      $.Value,
+      'MAX'
+    ),
+
+    ObjectSetElements: $ => choice(
+      $.Object,
+      $.DefinedObjectSet,
+      $.ObjectSetFromObjects,
+      $.ParameterizedObjectSet
+    ),
+
+    ObjectSetFromObjects: $ => seq(
+      $.ReferencedObjects,
+      '.',
+      $.FieldName
+    ),
+
+    Object: $ => choice(
+      $.DefinedObject,
+      $.ObjectDefn,
+      $.ObjectFromObject,
+      $.ParameterizedObject
+    ),
+
+    ObjectDefn: $ => choice(
+      $.DefaultSyntax,
+      $.DefinedSyntax
+    ),
+
+    DefaultSyntax: $ => seq(
+      '{',
+      optional($.FieldSetting),
+      repeat(seq(',', $.FieldSetting)),
+      '}'
+    ),
+
+    DefinedSyntax: $ => seq(
+      '{',
+      repeat($.DefinedSyntaxToken),
+      '}'
+    ),
+
+    DefinedSyntaxToken: $ => choice(
+      $.Literal,
+      $.Setting
+    ),
+
+    FieldSetting: $ => seq(
+      alias($.anycased_field_ref, 'PrimitiveFieldName'),
+      $.Setting
+    ),
+
+    Setting: $ => choice(
+      $.Type,
+      $.Value,
+      $.ValueSet,
+      $.Object,
+      $.ObjectSet
+    ),
+
+    ObjectSet: $ => seq(
+      '{',
+      $.ObjectSetSpec,
+      '}'
+    ),
+
+    ObjectSetSpec: $ => choice(
+      $.RootElementSetSpec,
+      seq($.RootElementSetSpec, ',', '...'),
+      '...',
+      seq('...', ',', $.AdditionalElementSetSpec),
+      seq($.RootElementSetSpec, ',', '...', ',', $.AdditionalElementSetSpec)
+    ),
+
+    ObjectFromObject: $ => seq(
+      $.ReferencedObjects,
+      '.',
+      $.FieldName
+    ),
+
+    TypeFromObject: $ => seq(
+      $.ReferencedObjects,
+      '.',
+      $.FieldName
+    ),
+
+    PermittedAlphabet: $ => seq(
+      'FROM',
+      $.Constraint
+    ),
+
+    SizeConstraint: $ => seq(
+      'SIZE',
+      $.Constraint
+    ),
+
+    TypeConstraint: $ => $.Type,
+
+    InnerTypeConstraints: $ => choice(
+      seq('WITH', 'COMPONENT', $.SingleTypeConstraint),
+      seq('WITH', 'COMPONENTS', $.MultipleTypeConstraints)
+    ),
+
+    SingleTypeConstraint: $ => $.Constraint,
+
+    MultipleTypeConstraints: $ => choice(
+      $.FullSpecification,
+      $.PartialSpecification
+    ),
+
+    FullSpecification: $ => seq(
+      '{',
+      $.TypeConstraints,
+      '}'
+    ),
+
+    PartialSpecification: $ => seq(
+      '{',
+      '...',
+      ',',
+      $.TypeConstraints,
+      '}'
+    ),
+
+    TypeConstraints: $ => seq(
+      $.NamedConstraint,
+      repeat(seq(',', $.NamedConstraint))
+    ),
+
+    NamedConstraint: $ => seq(
+      $.identifier,
+      $.ComponentConstraint
+    ),
+
+    ComponentConstraint: $ => seq(
+      optional($.ValueConstraint),
+      optional($.PresenceConstraint)
+    ),
+
+    ValueConstraint: $ => $.Constraint,
+
+    PresenceConstraint: $ => choice(
+      'PRESENT',
+      'ABSENT',
+      'OPTIONAL'
+    ),
+
+    PatternConstraint: $ => seq(
+      'PATTERN',
+      $.Value
+    ),
+
+    PropertySettings: $ => seq(
+      'SETTINGS',
+      /\"[^\"]*\"/
+    ),
+
+    DurationRange: $ => $.ValueRange,
+
+    TimePointRange: $ => $.ValueRange,
+
+    RecurrenceRange: $ => $.ValueRange,
+
+    ConstrainedType: $ => choice(
+      seq($.Type, $.Constraint),
+      $.TypeWithConstraint
+    ),
+
+    TypeWithConstraint: $ => choice(
+      seq('SET', $.Constraint, 'OF', $.Type),
+      seq('SET', $.SizeConstraint, 'OF', $.Type),
+      seq('SEQUENCE', $.Constraint, 'OF', $.Type),
+      seq('SEQUENCE', $.SizeConstraint, 'OF', $.Type),
+      seq('SET', $.Constraint, 'OF', $.NamedType),
+      seq('SET', $.SizeConstraint, 'OF', $.NamedType),
+      seq('SEQUENCE', $.Constraint, 'OF', $.NamedType),
+      seq('SEQUENCE', $.SizeConstraint, 'OF', $.NamedType)
+    ),
+
+    Constraint: $ => seq(
+      '(',
+      $.ConstraintSpec,
+      optional($.ExceptionSpec),
+      ')'
+    ),
+
+    ConstraintSpec: $ => choice(
+      $.SubtypeConstraint,
+      $.GeneralConstraint
+    ),
+
+    SubtypeConstraint: $ => $.ElementSetSpecs,
+
+    ExceptionSpec: $ => optional(seq(
+      '!',
+      $.ExceptionIdentification
+    )),
+
+    ExceptionIdentification: $ => choice(
+      $.SignedNumber,
+      $.DefinedValue,
+      seq($.Type, ':', $.Value)
+    ),
+
+    GeneralConstraint: $ => choice(
+      $.UserDefinedConstraint,
+      $.TableConstraint,
+      $.ContentsConstraint
+    ),
+
+    UserDefinedConstraint: $ => seq(
+      'CONSTRAINED',
+      'BY',
+      '{',
+      optional($.UserDefinedConstraintParameter),
+      repeat(seq(',', $.UserDefinedConstraintParameter)),
+      '}'
+    ),
+
+    UserDefinedConstraintParameter: $ => choice(
+      seq($.Type, ':', $.Value),
+      seq($.Type, ':', $.Object),
+      seq($.DefinedObjectClass, ':', $.Value),
+      seq($.DefinedObjectClass, ':', $.Object),
+      $.DefinedObjectSet,
+      $.Type,
+      $.DefinedObjectClass
+    ),
+
+    TableConstraint: $ => choice(
+      $.SimpleTableConstraint,
+      $.ComponentRelationConstraint
+    ),
+
+    SimpleTableConstraint: $ => $.ObjectSet,
+
+    ComponentRelationConstraint: $ => seq(
+      '{',
+      $.DefinedObjectSet,
+      '}',
+      '{',
+      $.AtNotation,
+      repeat(seq(',', $.AtNotation)),
+      '}'
+    ),
+
+    AtNotation: $ => choice(
+      seq('@', $.ComponentIdList),
+      seq('@.', optional($.Level), $.ComponentIdList)
+    ),
+
+    Level: $ => optional(seq('.', optional($.Level))),
+
+    ComponentIdList: $ => seq(
+      $.identifier,
+      repeat1(seq('.', $.identifier))
+    ),
+
+    ContentsConstraint: $ => choice(
+      seq('CONTAINING', $.Type),
+      seq('ENCODED', 'BY', $.Value),
+      seq('CONTAINING', $.Type, 'ENCODED', 'BY', $.Value)
+    ),
 
     block_comment: $ => seq(
       '/*',
@@ -596,6 +1322,324 @@ module.exports = grammar({
 
     identifier: $ => /[a-zA-Z][a-zA-Z0-9-]*/,
 
+    XMLTypedValue: $ => choice(
+      seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
+      seq('<', $.NonParameterizedTypeName, '/>')
+    ),
+
+    NonParameterizedTypeName: $ => choice(
+      $.ExternalTypeReference,
+      alias($.uppercased_identifier, 'typereference'),
+      $.xmlasn1typename
+    ),
+
+    xmlasn1typename: $ => /[A-Za-z][A-Za-z0-9\-]*/,
+
+    XMLValue: $ => choice(
+      $.XMLBuiltinValue,
+      $.XMLObjectClassFieldValue
+    ),
+
+    XMLBuiltinValue: $ => choice(
+      $.XMLBitStringValue,
+      $.XMLBooleanValue,
+      $.XMLCharacterStringValue,
+      $.XMLChoiceValue,
+      $.XMLEmbeddedPDVValue,
+      $.XMLEnumeratedValue,
+      $.XMLExternalValue,
+      $.XMLInstanceOfValue,
+      $.XMLIntegerValue,
+      $.XMLIRIValue,
+      $.XMLNullValue,
+      $.XMLObjectIdentifierValue,
+      $.XMLOctetStringValue,
+      $.XMLRealValue,
+      $.XMLRelativeIRIValue,
+      $.XMLRelativeOIDValue,
+      $.XMLSequenceValue,
+      $.XMLSequenceOfValue,
+      $.XMLSetValue,
+      $.XMLSetOfValue,
+      $.XMLPrefixedValue,
+      $.XMLTimeValue
+    ),
+
+    XMLBooleanValue: $ => choice(
+      $.EmptyElementBoolean,
+      $.TextBoolean
+    ),
+
+    EmptyElementBoolean: $ => choice(
+      '<true/>',
+      '<false/>'
+    ),
+
+    TextBoolean: $ => choice(
+      'true',
+      'false'
+    ),
+
+    XMLIntegerValue: $ => choice(
+      $.XMLSignedNumber,
+      $.EmptyElementInteger,
+      $.TextInteger
+    ),
+
+    XMLSignedNumber: $ => choice(
+      $.number,
+      seq('-', $.number)
+    ),
+
+    EmptyElementInteger: $ => seq('<', $.identifier, '/>'),
+
+    TextInteger: $ => $.identifier,
+
+    XMLEnumeratedValue: $ => choice(
+      $.EmptyElementEnumerated,
+      $.TextEnumerated
+    ),
+
+    EmptyElementEnumerated: $ => seq('<', $.identifier, '/>'),
+
+    TextEnumerated: $ => $.identifier,
+
+    XMLRealValue: $ => choice(
+      $.XMLNumericRealValue,
+      $.XMLSpecialRealValue
+    ),
+
+    XMLNumericRealValue: $ => choice(
+      $.realnumber,
+      seq('-', $.realnumber)
+    ),
+
+    XMLSpecialRealValue: $ => choice(
+      $.EmptyElementReal,
+      $.TextReal
+    ),
+
+    EmptyElementReal: $ => choice(
+      '<PLUS-INFINITY/>',
+      '<MINUS-INFINITY/>',
+      '<NOT-A-NUMBER/>'
+    ),
+
+    TextReal: $ => choice(
+      'INF',
+      seq('-', 'INF'),
+      'NaN'
+    ),
+
+    XMLBitStringValue: $ => choice(
+      $.XMLTypedValue,
+      $.xmlbstring,
+      $.XMLIdentifierList,
+      ''  // empty
+    ),
+
+    xmlbstring: $ => /[01]*/,
+
+    XMLIdentifierList: $ => choice(
+      $.EmptyElementList,
+      $.TextList
+    ),
+
+    EmptyElementList: $ => choice(
+      seq('<', $.identifier, '/>'),
+      seq($.EmptyElementList, '<', $.identifier, '/>')
+    ),
+
+    TextList: $ => choice(
+      $.identifier,
+      seq($.TextList, $.identifier)
+    ),
+
+    XMLOctetStringValue: $ => choice(
+      $.XMLTypedValue,
+      $.xmlhstring
+    ),
+
+    xmlhstring: $ => /[0-9A-Fa-f]*/,
+
+    XMLNullValue: $ => '',  // empty
+
+    XMLSequenceValue: $ => choice(
+      $.XMLComponentValueList,
+      ''  // empty
+    ),
+
+    XMLComponentValueList: $ => choice(
+      $.XMLNamedValue,
+      seq($.XMLComponentValueList, $.XMLNamedValue)
+    ),
+
+    XMLNamedValue: $ => seq(
+      '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
+    ),
+
+    XMLSequenceOfValue: $ => choice(
+      $.XMLValueList,
+      $.XMLDelimitedItemList,
+      ''  // empty
+    ),
+
+    XMLValueList: $ => choice(
+      $.XMLValueOrEmpty,
+      seq($.XMLValueOrEmpty, $.XMLValueList)
+    ),
+
+    XMLValueOrEmpty: $ => choice(
+      $.XMLValue,
+      seq('<', $.NonParameterizedTypeName, '/>')
+    ),
+
+    XMLDelimitedItemList: $ => choice(
+      $.XMLDelimitedItem,
+      seq($.XMLDelimitedItem, $.XMLDelimitedItemList)
+    ),
+
+    XMLDelimitedItem: $ => choice(
+      seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
+      seq('<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>')
+    ),
+
+    XMLSetValue: $ => choice(
+      $.XMLComponentValueList,
+      ''  // empty
+    ),
+
+    XMLSetOfValue: $ => choice(
+      $.XMLValueList,
+      $.XMLDelimitedItemList,
+      ''  // empty
+    ),
+
+    XMLChoiceValue: $ => seq(
+      '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
+    ),
+
+    XMLPrefixedValue: $ => $.XMLValue,
+
+    XMLObjectClassFieldValue: $ => choice(
+      $.XMLOpenTypeFieldVal,
+      $.XMLFixedTypeFieldVal
+    ),
+
+    XMLOpenTypeFieldVal: $ => choice(
+      $.XMLTypedValue,
+      $.xmlhstring
+    ),
+
+    XMLFixedTypeFieldVal: $ => $.XMLBuiltinValue,
+
+    XMLObjectIdentifierValue: $ => $.XMLObjIdComponentList,
+
+    XMLObjIdComponentList: $ => choice(
+      $.XMLObjIdComponent,
+      seq($.XMLObjIdComponent, '.', $.XMLObjIdComponentList)
+    ),
+
+    XMLObjIdComponent: $ => choice(
+      $.identifier,  // NameForm
+      $.XMLNumberForm,
+      $.XMLNameAndNumberForm
+    ),
+
+    XMLNumberForm: $ => $.number,
+
+    XMLNameAndNumberForm: $ => seq(
+      $.identifier, '(', $.XMLNumberForm, ')'
+    ),
+
+    XMLRelativeOIDValue: $ => $.XMLRelativeOIDComponentList,
+
+    XMLRelativeOIDComponentList: $ => choice(
+      $.XMLRelativeOIDComponent,
+      seq($.XMLRelativeOIDComponent, '.', $.XMLRelativeOIDComponentList)
+    ),
+
+    XMLRelativeOIDComponent: $ => choice(
+      $.XMLNumberForm,
+      $.XMLNameAndNumberForm
+    ),
+
+    XMLIRIValue: $ => seq(
+      $.FirstArcIdentifier, 
+      $.SubsequentArcIdentifier
+    ),
+
+    XMLRelativeIRIValue: $ => seq(
+      $.FirstRelativeArcIdentifier,
+      $.SubsequentArcIdentifier
+    ),
+
+    XMLEmbeddedPDVValue: $ => $.XMLSequenceValue,
+
+    XMLExternalValue: $ => $.XMLSequenceValue,
+
+    XMLTimeValue: $ => $.xmltstring,
+
+    xmltstring: $ => /[0-9:.+\-ZT][0-9:.+\-ZT]*/,
+
+    XMLCharacterStringValue: $ => choice(
+      $.XMLRestrictedCharacterStringValue,
+      $.XMLUnrestrictedCharacterStringValue
+    ),
+
+    XMLRestrictedCharacterStringValue: $ => $.xmlcstring,
+
+    xmlcstring: $ => /[^<&]*/,  // Simplified, should exclude XML reserved chars
+
+    XMLUnrestrictedCharacterStringValue: $ => $.XMLSequenceValue,
+
+    XMLInstanceOfValue: $ => $.XMLValue,
+
+    ReferencedType: $ => choice(
+      $.DefinedType,
+      $.UsefulType,
+      $.SelectionType,
+      $.TypeFromObject,
+      $.ValueSetFromObjects
+    ),
+
+    DefinedType: $ => choice(
+      $.ExternalTypeReference,
+      alias($.uppercased_identifier, 'typereference'),
+      $.ParameterizedType,
+      $.ParameterizedValueSetType
+    ),
+
+    ParameterizedType: $ => seq(
+      $.SimpleDefinedType,
+      $.ActualParameterList
+    ),
+
+    SimpleDefinedType: $ => choice(
+      $.ExternalTypeReference,
+      alias($.uppercased_identifier, 'typereference')
+    ),
+
+    ExternalTypeReference: $ => seq(
+      $.modulereference,
+      '.',
+      alias($.uppercased_identifier, 'typereference')
+    ),
+
+    ParameterizedValueSetType: $ => seq(
+      $.SimpleDefinedType,
+      $.ActualParameterList
+    ),
+
+    UsefulType: $ => alias($.uppercased_identifier, 'typereference'),
+
+    ValueSetFromObjects: $ => seq(
+      $.ReferencedObjects,
+      '.',
+      $.FieldName
+    ),
+
+    DummyReference: $ => $.Reference,
   },
 
 });
