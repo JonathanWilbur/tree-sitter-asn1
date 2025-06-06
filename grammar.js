@@ -43,20 +43,20 @@ module.exports = grammar({
     ModuleDefinition: $ => seq(
       $.ModuleIdentifier,
       'DEFINITIONS',
-      $.EncodingReferenceDefault,
-      $.TagDefault,
-      $.ExtensionDefault,
+      optional($.EncodingReferenceDefault),
+      optional($.TagDefault),
+      optional($.ExtensionDefault),
       '::=',
       'BEGIN',
-      $.ModuleBody,
-      $.EncodingControlSections,
+      optional($.ModuleBody),
+      optional($.EncodingControlSections),
       'END',
     ),
 
-    EncodingReferenceDefault: $ => optional(seq(
+    EncodingReferenceDefault: $ => seq(
       'INSTRUCTIONS',
       $.encodingreference,
-    )),
+    ),
 
     encodingreference: $ => /[A-Z][A-Z0-9\-]+/,
 
@@ -72,7 +72,7 @@ module.exports = grammar({
 
     DefinitiveOID: $ => seq('{', $.DefinitiveObjIdComponentList, '}'),
 
-    DefinitiveObjIdComponentList: $ => repeat($.DefinitiveObjIdComponent),
+    DefinitiveObjIdComponentList: $ => repeat1($.DefinitiveObjIdComponent),
 
     DefinitiveObjIdComponent: $ => choice(
       $.NameForm,
@@ -108,30 +108,39 @@ module.exports = grammar({
     modulereference: $ => /[A-Z][a-zA-Z0-9-]*/,
     valuereference: $ => /[a-z][a-zA-Z0-9-]*/,
 
-    TagDefault: $ => optional(choice(
+    TagDefault: $ => choice(
       seq('EXPLICIT', 'TAGS'),
       seq('IMPLICIT', 'TAGS'),
       seq('AUTOMATIC', 'TAGS'),
-    )),
+    ),
 
-    ExtensionDefault: $ => optional(seq('EXTENSIBILITY', 'IMPLIED')),
+    ExtensionDefault: $ => seq('EXTENSIBILITY', 'IMPLIED'),
 
-    ModuleBody: $ => optional(seq(
-      $.Exports,
-      $.Imports,
-      $.AssignmentList,
-    )),
+    // In the ABNF, all of these are optional, but tree-sitter does not allow that.
+    // So this grammar rule requires either AssignmentList or Exports and Imports.
+    ModuleBody: $ => choice(
+      seq(
+        optional($.Exports),
+        optional($.Imports),
+        $.AssignmentList,
+      ),
+      seq( // If the module defines nothing of its own, it must re-export things.
+        $.Exports,
+        $.Imports,
+        optional($.AssignmentList),
+      ),
+    ),
 
-    Exports: $ => optional(seq(
+    Exports: $ => seq(
       'EXPORTS',
       choice(
         'ALL',
-        $.SymbolsExported,
+        optional($.SymbolsExported),
       ),
       ';',
-    )),
+    ),
 
-    SymbolsExported: $ => optional($.SymbolList),
+    SymbolsExported: $ => $.SymbolList,
 
     SymbolList: $ => seq(
       $.Symbol,
@@ -158,13 +167,13 @@ module.exports = grammar({
       '{}',
     ),
   
-    Imports: $ => optional(seq(
+    Imports: $ => seq(
       'IMPORTS',
-      $.SymbolsImported,
+      optional($.SymbolsImported),
       ';',
-    )),
+    ),
 
-    SymbolsImported: $ => optional($.SymbolsFromModuleList),
+    SymbolsImported: $ => $.SymbolsFromModuleList,
 
     SymbolsFromModuleList: $ => repeat1($.SymbolsFromModule),
 
@@ -172,26 +181,26 @@ module.exports = grammar({
       $.SymbolList,
       'FROM',
       $.GlobalModuleReference,
-      $.SelectionOption,
+      optional($.SelectionOption),
     ),
 
-    SelectionOption: $ => optional(seq(
+    SelectionOption: $ => seq(
       'WITH',
       choice(
         'SUCCESSORS',
         'DESCENDANTS',
       ),
-    )),
+    ),
 
     GlobalModuleReference: $ => seq(
       $.modulereference,
-      $.AssignedIdentifier,
+      optional($.AssignedIdentifier),
     ),
 
-    AssignedIdentifier: $ => optional(choice(
+    AssignedIdentifier: $ => choice(
       $.ObjectIdentifierValue,
       $.DefinedValue,
-    )),
+    ),
 
     ObjectIdentifierValue: $ => seq(
       '{',
@@ -200,7 +209,7 @@ module.exports = grammar({
       '}',
     ),
 
-    ObjIdComponentsList: $ => repeat($.ObjIdComponents),
+    ObjIdComponentsList: $ => repeat1($.ObjIdComponents),
 
     ObjIdComponents: $ => choice(
       $.NameForm,
@@ -348,19 +357,19 @@ module.exports = grammar({
       optional($.ValueOptionalitySpec),
     ),
 
-    VariableTypeValueFieldSpec: $ => choice(
+    VariableTypeValueFieldSpec: $ => seq(
       alias($.lowercased_field_ref, 'valuefieldreference'),
       $.FieldName,
       optional($.ValueOptionalitySpec),
     ),
 
-    FixedTypeValueSetFieldSpec: $ => choice(
+    FixedTypeValueSetFieldSpec: $ => seq(
       alias($.uppercased_field_ref, 'valuesetfieldreference'),
       $.Type,
       optional($.ValueSetOptionalitySpec),
     ),
 
-    VariableTypeValueSetFieldSpec: $ => choice(
+    VariableTypeValueSetFieldSpec: $ => seq(
       alias($.uppercased_field_ref, 'valuesetfieldreference'),
       $.FieldName,
       optional($.ValueSetOptionalitySpec),
@@ -489,7 +498,7 @@ module.exports = grammar({
       $.XMLTypedValue,
     ),
 
-    EncodingControlSections: $ => repeat($.EncodingControlSections),
+    EncodingControlSections: $ => repeat1($.EncodingControlSection),
 
     EncodingControlSection: $ => seq(
       'ENCODING-CONTROL',
@@ -752,18 +761,16 @@ module.exports = grammar({
     RelativeIRIValue: $ => seq(
       '"',
       $.FirstRelativeArcIdentifier,
-      $.SubsequentArcIdentifier,
+      repeat(seq(
+        '/',
+        $.ArcIdentifier
+      )),
       '"'
     ),
     
     FirstRelativeArcIdentifier: $ => $.ArcIdentifier,
     
     ArcIdentifier: $ => /[a-zA-Z0-9][a-zA-Z0-9-]*/,
-    
-    SubsequentArcIdentifier: $ => repeat(seq(
-      '/',
-      $.ArcIdentifier
-    )),
     
     EmbeddedPDVValue: $ => $.SequenceValue,
     
@@ -944,7 +951,7 @@ module.exports = grammar({
 
     SequenceType: $ => choice(
       seq('SEQUENCE', '{', '}'),
-      seq('SEQUENCE', '{', $.ExtensionAndException, $.OptionalExtensionMarker, '}'),
+      seq('SEQUENCE', '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}'),
       seq('SEQUENCE', '{', $.ComponentTypeLists, '}')
     ),
 
@@ -953,21 +960,21 @@ module.exports = grammar({
       seq('...', optional($.ExceptionSpec))
     ),
 
-    OptionalExtensionMarker: $ => optional(seq(',', '...')),
+    OptionalExtensionMarker: $ => seq(',', '...'),
 
     ComponentTypeLists: $ => choice(
       $.RootComponentTypeList,
-      seq($.RootComponentTypeList, ',', $.ExtensionAndException, $.ExtensionAdditions, $.OptionalExtensionMarker),
-      seq($.RootComponentTypeList, ',', $.ExtensionAndException, $.ExtensionAdditions, $.ExtensionEndMarker, ',', $.RootComponentTypeList),
-      seq($.ExtensionAndException, $.ExtensionAdditions, $.ExtensionEndMarker, ',', $.RootComponentTypeList),
-      seq($.ExtensionAndException, $.ExtensionAdditions, $.OptionalExtensionMarker)
+      seq($.RootComponentTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditions), optional($.OptionalExtensionMarker)),
+      seq($.RootComponentTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditions), $.ExtensionEndMarker, ',', $.RootComponentTypeList),
+      seq($.ExtensionAndException, optional($.ExtensionAdditions), $.ExtensionEndMarker, ',', $.RootComponentTypeList),
+      seq($.ExtensionAndException, optional($.ExtensionAdditions), optional($.OptionalExtensionMarker))
     ),
 
     RootComponentTypeList: $ => $.ComponentTypeList,
 
     ExtensionEndMarker: $ => seq(',', '...'),
 
-    ExtensionAdditions: $ => optional(seq(',', $.ExtensionAdditionList)),
+    ExtensionAdditions: $ => seq(',', $.ExtensionAdditionList),
 
     ExtensionAdditionList: $ => choice(
       $.ExtensionAddition,
@@ -981,7 +988,7 @@ module.exports = grammar({
 
     ExtensionAdditionGroup: $ => seq(
       '[[',
-      optional(seq($.VersionNumber)),
+      optional($.VersionNumber),
       $.ComponentTypeList,
       ']]'
     ),
@@ -1012,7 +1019,7 @@ module.exports = grammar({
 
     SetType: $ => choice(
       seq('SET', '{', '}'),
-      seq('SET', '{', $.ExtensionAndException, $.OptionalExtensionMarker, '}'),
+      seq('SET', '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}'),
       seq('SET', '{', $.ComponentTypeLists, '}')
     ),
 
@@ -1030,12 +1037,12 @@ module.exports = grammar({
 
     AlternativeTypeLists: $ => choice(
       $.RootAlternativeTypeList,
-      seq($.RootAlternativeTypeList, ',', $.ExtensionAndException, $.ExtensionAdditionAlternatives, $.OptionalExtensionMarker)
+      seq($.RootAlternativeTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditionAlternatives), optional($.OptionalExtensionMarker))
     ),
 
     RootAlternativeTypeList: $ => $.AlternativeTypeList,
 
-    ExtensionAdditionAlternatives: $ => optional(seq(',', $.ExtensionAdditionAlternativesList)),
+    ExtensionAdditionAlternatives: $ => seq(',', $.ExtensionAdditionAlternativesList),
 
     ExtensionAdditionAlternativesList: $ => choice(
       $.ExtensionAdditionAlternative,
@@ -1049,7 +1056,7 @@ module.exports = grammar({
 
     ExtensionAdditionAlternativesGroup: $ => seq(
       '[[',
-      optional(seq($.VersionNumber)),
+      optional($.VersionNumber),
       $.AlternativeTypeList,
       ']]'
     ),
@@ -1385,12 +1392,8 @@ module.exports = grammar({
 
     NamedConstraint: $ => seq(
       $.identifier,
-      $.ComponentConstraint
-    ),
-
-    ComponentConstraint: $ => seq(
       optional($.ValueConstraint),
-      optional($.PresenceConstraint)
+      optional($.PresenceConstraint),
     ),
 
     ValueConstraint: $ => $.Constraint,
@@ -1447,10 +1450,10 @@ module.exports = grammar({
 
     SubtypeConstraint: $ => $.ElementSetSpecs,
 
-    ExceptionSpec: $ => optional(seq(
+    ExceptionSpec: $ => seq(
       '!',
       $.ExceptionIdentification
-    )),
+    ),
 
     ExceptionIdentification: $ => choice(
       $.SignedNumber,
@@ -1505,7 +1508,7 @@ module.exports = grammar({
       seq('@.', optional($.Level), $.ComponentIdList)
     ),
 
-    Level: $ => optional(seq('.', optional($.Level))),
+    Level: $ => seq('.', optional($.Level)),
 
     ComponentIdList: $ => seq(
       $.identifier,
@@ -1735,11 +1738,11 @@ module.exports = grammar({
       'NaN'
     ),
 
-    XMLBitStringValue: $ => optional(choice(
+    XMLBitStringValue: $ => choice(
       $.XMLTypedValue,
       $.xmlbstring,
       $.XMLIdentifierList,
-    )),
+    ),
 
     xmlbstring: $ => /[01]*/,
 
@@ -1762,12 +1765,11 @@ module.exports = grammar({
 
     xmlhstring: $ => /[0-9A-Fa-f]*/,
 
-    // This is in the specification, I swear.
-    XMLNullValue: $ => optional('$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$'),
+    XMLNullValue: $ => '$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$',
 
-    XMLSequenceValue: $ => optional(choice(
+    XMLSequenceValue: $ => choice(
       $.XMLComponentValueList,
-    )),
+    ),
 
     XMLComponentValueList: $ => repeat1($.XMLNamedValue),
 
@@ -1775,10 +1777,10 @@ module.exports = grammar({
       '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
     ),
 
-    XMLSequenceOfValue: $ => optional(choice(
+    XMLSequenceOfValue: $ => choice(
       $.XMLValueList,
       $.XMLDelimitedItemList,
-    )),
+    ),
 
     XMLValueList: $ => repeat1($.XMLValueOrEmpty),
 
@@ -1794,12 +1796,12 @@ module.exports = grammar({
       seq('<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>')
     ),
 
-    XMLSetValue: $ => optional($.XMLComponentValueList),
+    XMLSetValue: $ => $.XMLComponentValueList,
 
-    XMLSetOfValue: $ => optional(choice(
+    XMLSetOfValue: $ => choice(
       $.XMLValueList,
       $.XMLDelimitedItemList,
-    )),
+    ),
 
     XMLChoiceValue: $ => seq(
       '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
@@ -1852,12 +1854,18 @@ module.exports = grammar({
 
     XMLIRIValue: $ => seq(
       $.FirstArcIdentifier, 
-      $.SubsequentArcIdentifier
+      repeat(seq(
+        '/',
+        $.ArcIdentifier
+      )),
     ),
 
     XMLRelativeIRIValue: $ => seq(
       $.FirstRelativeArcIdentifier,
-      $.SubsequentArcIdentifier
+      repeat(seq(
+        '/',
+        $.ArcIdentifier
+      )),
     ),
 
     XMLEmbeddedPDVValue: $ => $.XMLSequenceValue,

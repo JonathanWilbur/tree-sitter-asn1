@@ -50,16 +50,40 @@
           "value": "DEFINITIONS"
         },
         {
-          "type": "SYMBOL",
-          "name": "EncodingReferenceDefault"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "EncodingReferenceDefault"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "TagDefault"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "TagDefault"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "ExtensionDefault"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ExtensionDefault"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -70,12 +94,28 @@
           "value": "BEGIN"
         },
         {
-          "type": "SYMBOL",
-          "name": "ModuleBody"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ModuleBody"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "EncodingControlSections"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "EncodingControlSections"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -84,23 +124,15 @@
       ]
     },
     "EncodingReferenceDefault": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "INSTRUCTIONS"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "encodingreference"
-            }
-          ]
+          "type": "STRING",
+          "value": "INSTRUCTIONS"
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "encodingreference"
         }
       ]
     },
@@ -160,7 +192,7 @@
       ]
     },
     "DefinitiveObjIdComponentList": {
-      "type": "REPEAT",
+      "type": "REPEAT1",
       "content": {
         "type": "SYMBOL",
         "name": "DefinitiveObjIdComponent"
@@ -276,78 +308,95 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "EXPLICIT"
-                },
-                {
-                  "type": "STRING",
-                  "value": "TAGS"
-                }
-              ]
+              "type": "STRING",
+              "value": "EXPLICIT"
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "IMPLICIT"
-                },
-                {
-                  "type": "STRING",
-                  "value": "TAGS"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "AUTOMATIC"
-                },
-                {
-                  "type": "STRING",
-                  "value": "TAGS"
-                }
-              ]
+              "type": "STRING",
+              "value": "TAGS"
             }
           ]
         },
-        {
-          "type": "BLANK"
-        }
-      ]
-    },
-    "ExtensionDefault": {
-      "type": "CHOICE",
-      "members": [
         {
           "type": "SEQ",
           "members": [
             {
               "type": "STRING",
-              "value": "EXTENSIBILITY"
+              "value": "IMPLICIT"
             },
             {
               "type": "STRING",
-              "value": "IMPLIED"
+              "value": "TAGS"
             }
           ]
         },
         {
-          "type": "BLANK"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "AUTOMATIC"
+            },
+            {
+              "type": "STRING",
+              "value": "TAGS"
+            }
+          ]
+        }
+      ]
+    },
+    "ExtensionDefault": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "EXTENSIBILITY"
+        },
+        {
+          "type": "STRING",
+          "value": "IMPLIED"
         }
       ]
     },
     "ModuleBody": {
       "type": "CHOICE",
       "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "Exports"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "Imports"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "AssignmentList"
+            }
+          ]
+        },
         {
           "type": "SEQ",
           "members": [
@@ -360,61 +409,58 @@
               "name": "Imports"
             },
             {
-              "type": "SYMBOL",
-              "name": "AssignmentList"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "AssignmentList"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
-        },
-        {
-          "type": "BLANK"
         }
       ]
     },
     "Exports": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "STRING",
+          "value": "EXPORTS"
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
               "type": "STRING",
-              "value": "EXPORTS"
+              "value": "ALL"
             },
             {
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "STRING",
-                  "value": "ALL"
-                },
-                {
                   "type": "SYMBOL",
                   "name": "SymbolsExported"
+                },
+                {
+                  "type": "BLANK"
                 }
               ]
-            },
-            {
-              "type": "STRING",
-              "value": ";"
             }
           ]
         },
         {
-          "type": "BLANK"
+          "type": "STRING",
+          "value": ";"
         }
       ]
     },
     "SymbolsExported": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "SymbolList"
-        },
-        {
-          "type": "BLANK"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "SymbolList"
     },
     "SymbolList": {
       "type": "SEQ",
@@ -472,41 +518,33 @@
       ]
     },
     "Imports": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "STRING",
+          "value": "IMPORTS"
+        },
+        {
+          "type": "CHOICE",
           "members": [
-            {
-              "type": "STRING",
-              "value": "IMPORTS"
-            },
             {
               "type": "SYMBOL",
               "name": "SymbolsImported"
             },
             {
-              "type": "STRING",
-              "value": ";"
+              "type": "BLANK"
             }
           ]
         },
         {
-          "type": "BLANK"
+          "type": "STRING",
+          "value": ";"
         }
       ]
     },
     "SymbolsImported": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "SymbolsFromModuleList"
-        },
-        {
-          "type": "BLANK"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "SymbolsFromModuleList"
     },
     "SymbolsFromModuleList": {
       "type": "REPEAT1",
@@ -531,38 +569,38 @@
           "name": "GlobalModuleReference"
         },
         {
-          "type": "SYMBOL",
-          "name": "SelectionOption"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "SelectionOption"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
     "SelectionOption": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "STRING",
+          "value": "WITH"
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
               "type": "STRING",
-              "value": "WITH"
+              "value": "SUCCESSORS"
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "SUCCESSORS"
-                },
-                {
-                  "type": "STRING",
-                  "value": "DESCENDANTS"
-                }
-              ]
+              "type": "STRING",
+              "value": "DESCENDANTS"
             }
           ]
-        },
-        {
-          "type": "BLANK"
         }
       ]
     },
@@ -574,8 +612,16 @@
           "name": "modulereference"
         },
         {
-          "type": "SYMBOL",
-          "name": "AssignedIdentifier"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "AssignedIdentifier"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -583,20 +629,12 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "ObjectIdentifierValue"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "DefinedValue"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "ObjectIdentifierValue"
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "DefinedValue"
         }
       ]
     },
@@ -630,7 +668,7 @@
       ]
     },
     "ObjIdComponentsList": {
-      "type": "REPEAT",
+      "type": "REPEAT1",
       "content": {
         "type": "SYMBOL",
         "name": "ObjIdComponents"
@@ -1201,7 +1239,7 @@
       ]
     },
     "VariableTypeValueFieldSpec": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "ALIAS",
@@ -1231,7 +1269,7 @@
       ]
     },
     "FixedTypeValueSetFieldSpec": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "ALIAS",
@@ -1261,7 +1299,7 @@
       ]
     },
     "VariableTypeValueSetFieldSpec": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "ALIAS",
@@ -1809,10 +1847,10 @@
       ]
     },
     "EncodingControlSections": {
-      "type": "REPEAT",
+      "type": "REPEAT1",
       "content": {
         "type": "SYMBOL",
-        "name": "EncodingControlSections"
+        "name": "EncodingControlSection"
       }
     },
     "EncodingControlSection": {
@@ -2779,8 +2817,20 @@
           "name": "FirstRelativeArcIdentifier"
         },
         {
-          "type": "SYMBOL",
-          "name": "SubsequentArcIdentifier"
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "/"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ArcIdentifier"
+              }
+            ]
+          }
         },
         {
           "type": "STRING",
@@ -2795,22 +2845,6 @@
     "ArcIdentifier": {
       "type": "PATTERN",
       "value": "[a-zA-Z0-9][a-zA-Z0-9-]*"
-    },
-    "SubsequentArcIdentifier": {
-      "type": "REPEAT",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "/"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "ArcIdentifier"
-          }
-        ]
-      }
     },
     "EmbeddedPDVValue": {
       "type": "SYMBOL",
@@ -3578,8 +3612,16 @@
               "name": "ExtensionAndException"
             },
             {
-              "type": "SYMBOL",
-              "name": "OptionalExtensionMarker"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "OptionalExtensionMarker"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "STRING",
@@ -3641,23 +3683,15 @@
       ]
     },
     "OptionalExtensionMarker": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "STRING",
-              "value": "..."
-            }
-          ]
+          "type": "STRING",
+          "value": ","
         },
         {
-          "type": "BLANK"
+          "type": "STRING",
+          "value": "..."
         }
       ]
     },
@@ -3684,12 +3718,28 @@
               "name": "ExtensionAndException"
             },
             {
-              "type": "SYMBOL",
-              "name": "ExtensionAdditions"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExtensionAdditions"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
-              "type": "SYMBOL",
-              "name": "OptionalExtensionMarker"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "OptionalExtensionMarker"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
         },
@@ -3709,8 +3759,16 @@
               "name": "ExtensionAndException"
             },
             {
-              "type": "SYMBOL",
-              "name": "ExtensionAdditions"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExtensionAdditions"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "SYMBOL",
@@ -3734,8 +3792,16 @@
               "name": "ExtensionAndException"
             },
             {
-              "type": "SYMBOL",
-              "name": "ExtensionAdditions"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExtensionAdditions"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "SYMBOL",
@@ -3759,12 +3825,28 @@
               "name": "ExtensionAndException"
             },
             {
-              "type": "SYMBOL",
-              "name": "ExtensionAdditions"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExtensionAdditions"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
-              "type": "SYMBOL",
-              "name": "OptionalExtensionMarker"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "OptionalExtensionMarker"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
         }
@@ -3788,23 +3870,15 @@
       ]
     },
     "ExtensionAdditions": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAdditionList"
-            }
-          ]
+          "type": "STRING",
+          "value": ","
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "ExtensionAdditionList"
         }
       ]
     },
@@ -3858,13 +3932,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "VersionNumber"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "VersionNumber"
             },
             {
               "type": "BLANK"
@@ -4064,8 +4133,16 @@
               "name": "ExtensionAndException"
             },
             {
-              "type": "SYMBOL",
-              "name": "OptionalExtensionMarker"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "OptionalExtensionMarker"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "STRING",
@@ -4179,12 +4256,28 @@
               "name": "ExtensionAndException"
             },
             {
-              "type": "SYMBOL",
-              "name": "ExtensionAdditionAlternatives"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ExtensionAdditionAlternatives"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
-              "type": "SYMBOL",
-              "name": "OptionalExtensionMarker"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "OptionalExtensionMarker"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
         }
@@ -4195,23 +4288,15 @@
       "name": "AlternativeTypeList"
     },
     "ExtensionAdditionAlternatives": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExtensionAdditionAlternativesList"
-            }
-          ]
+          "type": "STRING",
+          "value": ","
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "ExtensionAdditionAlternativesList"
         }
       ]
     },
@@ -4265,13 +4350,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "VersionNumber"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "VersionNumber"
             },
             {
               "type": "BLANK"
@@ -5567,15 +5647,6 @@
           "name": "identifier"
         },
         {
-          "type": "SYMBOL",
-          "name": "ComponentConstraint"
-        }
-      ]
-    },
-    "ComponentConstraint": {
-      "type": "SEQ",
-      "members": [
-        {
           "type": "CHOICE",
           "members": [
             {
@@ -5902,23 +5973,15 @@
       "name": "ElementSetSpecs"
     },
     "ExceptionSpec": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "!"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ExceptionIdentification"
-            }
-          ]
+          "type": "STRING",
+          "value": "!"
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "ExceptionIdentification"
         }
       ]
     },
@@ -6209,31 +6272,23 @@
       ]
     },
     "Level": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "."
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "Level"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
+          "type": "STRING",
+          "value": "."
         },
         {
-          "type": "BLANK"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "Level"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -7180,24 +7235,16 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "XMLTypedValue"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "xmlbstring"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "XMLIdentifierList"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "XMLTypedValue"
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "xmlbstring"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "XMLIdentifierList"
         }
       ]
     },
@@ -7262,26 +7309,11 @@
       ]
     },
     "TextList": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "TextList"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            }
-          ]
-        }
-      ]
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "identifier"
+      }
     },
     "XMLOctetStringValue": {
       "type": "CHOICE",
@@ -7301,55 +7333,24 @@
       "value": "[0-9A-Fa-f]*"
     },
     "XMLNullValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$"
-        },
-        {
-          "type": "BLANK"
-        }
-      ]
+      "type": "STRING",
+      "value": "$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$"
     },
     "XMLSequenceValue": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "XMLComponentValueList"
-            }
-          ]
-        },
-        {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "XMLComponentValueList"
         }
       ]
     },
     "XMLComponentValueList": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLNamedValue"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "XMLComponentValueList"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "XMLNamedValue"
-            }
-          ]
-        }
-      ]
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "XMLNamedValue"
+      }
     },
     "XMLNamedValue": {
       "type": "SEQ",
@@ -7388,44 +7389,21 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "XMLValueList"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "XMLDelimitedItemList"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "XMLValueList"
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "XMLDelimitedItemList"
         }
       ]
     },
     "XMLValueList": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLValueOrEmpty"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "XMLValueOrEmpty"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "XMLValueList"
-            }
-          ]
-        }
-      ]
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "XMLValueOrEmpty"
+      }
     },
     "XMLValueOrEmpty": {
       "type": "CHOICE",
@@ -7454,26 +7432,11 @@
       ]
     },
     "XMLDelimitedItemList": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLDelimitedItem"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "XMLDelimitedItem"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "XMLDelimitedItemList"
-            }
-          ]
-        }
-      ]
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "XMLDelimitedItem"
+      }
     },
     "XMLDelimitedItem": {
       "type": "CHOICE",
@@ -7547,35 +7510,19 @@
       ]
     },
     "XMLSetValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLComponentValueList"
-        },
-        {
-          "type": "BLANK"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "XMLComponentValueList"
     },
     "XMLSetOfValue": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "XMLValueList"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "XMLDelimitedItemList"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "XMLValueList"
         },
         {
-          "type": "BLANK"
+          "type": "SYMBOL",
+          "name": "XMLDelimitedItemList"
         }
       ]
     },
@@ -7769,8 +7716,20 @@
           "name": "FirstArcIdentifier"
         },
         {
-          "type": "SYMBOL",
-          "name": "SubsequentArcIdentifier"
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "/"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ArcIdentifier"
+              }
+            ]
+          }
         }
       ]
     },
@@ -7782,8 +7741,20 @@
           "name": "FirstRelativeArcIdentifier"
         },
         {
-          "type": "SYMBOL",
-          "name": "SubsequentArcIdentifier"
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "/"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ArcIdentifier"
+              }
+            ]
+          }
         }
       ]
     },
