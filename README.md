@@ -5,8 +5,9 @@ Work in progress, but almost done.
 ## To Do
 
 - [ ] Encoding Control Nottion
-- [ ] Highlighting
-- [ ] `XMLValueAssignment`
+- [x] Highlighting
+- [x] `XMLValueAssignment`
+- [ ] Line comments
 - [ ] Clean up conflicts
 - [ ] Tests
 - [ ] Documentation

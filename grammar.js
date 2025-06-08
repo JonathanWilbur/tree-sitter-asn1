@@ -56,6 +56,14 @@ module.exports = grammar({
     [$.ObjIdComponents, $.DefinedValue],
     [$.ReferencedObjects, $.Object],
     [$.objectsetreference, $.DefinedType],
+    [$.XMLTypedValue, $.XMLValueOrEmpty],
+    [$.XMLValueList],
+    [$.XMLNamedValue, $.XMLValueOrEmpty, $.XMLChoiceValue],
+    [$.XMLTypedValue, $.XMLValueOrEmpty, $.XMLDelimitedItem],
+    [$.XMLNamedValue, $.XMLValueOrEmpty],
+    [$.XMLValueOrEmpty, $.XMLDelimitedItem],
+    [$.XMLNamedValue, $.XMLChoiceValue],
+    [$.XMLTypedValue, $.XMLDelimitedItem],
   ],
 
   extras: $ => [
@@ -373,7 +381,7 @@ module.exports = grammar({
       prec(1, $.ValueSetTypeAssignment),
       $.ValueAssignment,
       $.ObjectAssignment,
-      // $.XMLValueAssignment, // TODO: Re-enable
+      $.XMLValueAssignment,
     ),
 
     ObjectClassAssignment: $ => seq(
@@ -1612,7 +1620,7 @@ module.exports = grammar({
     ),
 
     NonParameterizedTypeName: $ => seq(
-      optional($.modulereference),
+      optional(seq($.modulereference, '.')),
       alias($.uppercased_identifier, 'typereference'),
     ),
 
@@ -1626,10 +1634,10 @@ module.exports = grammar({
       $.XMLBooleanValue,
       $.XMLCharacterStringValue,
       $.XMLChoiceValue,
-      $.XMLEmbeddedPDVValue,
-      $.XMLEnumeratedValue,
-      $.XMLExternalValue,
-      $.XMLInstanceOfValue,
+      // $.XMLEmbeddedPDVValue,
+      // $.XMLEnumeratedValue,
+      // $.XMLExternalValue,
+      // $.XMLInstanceOfValue,
       $.XMLIntegerValue,
       $.XMLIRIValue,
       $.XMLNullValue,
@@ -1637,12 +1645,12 @@ module.exports = grammar({
       $.XMLOctetStringValue,
       $.XMLRealValue,
       $.XMLRelativeIRIValue,
-      $.XMLRelativeOIDValue,
+      // $.XMLRelativeOIDValue,
       $.XMLSequenceValue,
       $.XMLSequenceOfValue,
-      $.XMLSetValue,
-      $.XMLSetOfValue,
-      $.XMLPrefixedValue,
+      // $.XMLSetValue,
+      // $.XMLSetOfValue,
+      // $.XMLPrefixedValue,
       $.XMLTimeValue
     ),
 
@@ -1663,27 +1671,16 @@ module.exports = grammar({
 
     XMLIntegerValue: $ => choice(
       $.XMLSignedNumber,
-      $.EmptyElementInteger,
-      $.TextInteger
+      // $.EmptyElementInteger,
+      // $.TextInteger
     ),
 
     XMLSignedNumber: $ => choice(
-      $.number,
+      // $.number,
       seq('-', $.number)
     ),
 
     EmptyElementInteger: $ => seq('<', $.identifier, '/>'),
-
-    TextInteger: $ => $.identifier,
-
-    XMLEnumeratedValue: $ => choice(
-      $.EmptyElementEnumerated,
-      $.TextEnumerated
-    ),
-
-    EmptyElementEnumerated: $ => seq('<', $.identifier, '/>'),
-
-    TextEnumerated: $ => $.identifier,
 
     XMLRealValue: $ => choice(
       $.XMLNumericRealValue,
@@ -1713,7 +1710,7 @@ module.exports = grammar({
     ),
 
     XMLBitStringValue: $ => choice(
-      $.XMLTypedValue,
+      // $.XMLTypedValue,
       $.xmlbstring,
       $.XMLIdentifierList,
     ),
@@ -1725,15 +1722,12 @@ module.exports = grammar({
       $.TextList
     ),
 
-    EmptyElementList: $ => choice(
-      seq('<', $.identifier, '/>'),
-      seq($.EmptyElementList, '<', $.identifier, '/>')
-    ),
+    EmptyElementList: $ => prec.right(repeat1(seq('<', $.identifier, '/>'))),
 
-    TextList: $ => repeat1($.identifier),
+    TextList: $ => prec.right(repeat1($.identifier)),
 
     XMLOctetStringValue: $ => choice(
-      $.XMLTypedValue,
+      // $.XMLTypedValue,
       $.xmlhstring
     ),
 
@@ -1745,7 +1739,7 @@ module.exports = grammar({
       $.XMLComponentValueList,
     ),
 
-    XMLComponentValueList: $ => repeat1($.XMLNamedValue),
+    XMLComponentValueList: $ => prec.right(repeat1($.XMLNamedValue)),
 
     XMLNamedValue: $ => seq(
       '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
@@ -1763,48 +1757,37 @@ module.exports = grammar({
       seq('<', $.NonParameterizedTypeName, '/>')
     ),
 
-    XMLDelimitedItemList: $ => repeat1($.XMLDelimitedItem),
+    XMLDelimitedItemList: $ => prec.right(repeat1($.XMLDelimitedItem)),
 
     XMLDelimitedItem: $ => choice(
       seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
-      seq('<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>')
-    ),
-
-    XMLSetValue: $ => $.XMLComponentValueList,
-
-    XMLSetOfValue: $ => choice(
-      $.XMLValueList,
-      $.XMLDelimitedItemList,
+      // seq('<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>')
     ),
 
     XMLChoiceValue: $ => seq(
       '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
     ),
 
-    XMLPrefixedValue: $ => $.XMLValue,
-
     XMLObjectClassFieldValue: $ => choice(
       $.XMLOpenTypeFieldVal,
-      $.XMLFixedTypeFieldVal
+      // $.XMLFixedTypeFieldVal
     ),
 
     XMLOpenTypeFieldVal: $ => choice(
       $.XMLTypedValue,
-      $.xmlhstring
+      // $.xmlhstring
     ),
-
-    XMLFixedTypeFieldVal: $ => $.XMLBuiltinValue,
 
     XMLObjectIdentifierValue: $ => $.XMLObjIdComponentList,
 
-    XMLObjIdComponentList: $ => choice(
+    XMLObjIdComponentList: $ => prec.right(seq(
       $.XMLObjIdComponent,
-      seq($.XMLObjIdComponent, '.', $.XMLObjIdComponentList)
-    ),
+      repeat(seq('.', $.XMLObjIdComponentList))
+    )),
 
     XMLObjIdComponent: $ => choice(
-      $.identifier,  // NameForm
-      $.XMLNumberForm,
+      // $.identifier,
+      // $.XMLNumberForm,
       $.XMLNameAndNumberForm
     ),
 
@@ -1814,37 +1797,21 @@ module.exports = grammar({
       $.identifier, '(', $.XMLNumberForm, ')'
     ),
 
-    XMLRelativeOIDValue: $ => $.XMLRelativeOIDComponentList,
-
-    XMLRelativeOIDComponentList: $ => choice(
-      $.XMLRelativeOIDComponent,
-      seq($.XMLRelativeOIDComponent, '.', $.XMLRelativeOIDComponentList)
-    ),
-
-    XMLRelativeOIDComponent: $ => choice(
-      $.XMLNumberForm,
-      $.XMLNameAndNumberForm
-    ),
-
-    XMLIRIValue: $ => seq(
+    XMLIRIValue: $ => prec.right(seq(
       $.FirstArcIdentifier, 
       repeat(seq(
         '/',
         $.ArcIdentifier
       )),
-    ),
+    )),
 
-    XMLRelativeIRIValue: $ => seq(
+    XMLRelativeIRIValue: $ => prec.right(seq(
       $.FirstRelativeArcIdentifier,
       repeat(seq(
         '/',
         $.ArcIdentifier
       )),
-    ),
-
-    XMLEmbeddedPDVValue: $ => $.XMLSequenceValue,
-
-    XMLExternalValue: $ => $.XMLSequenceValue,
+    )),
 
     XMLTimeValue: $ => $.xmltstring,
 
@@ -1852,16 +1819,12 @@ module.exports = grammar({
 
     XMLCharacterStringValue: $ => choice(
       $.XMLRestrictedCharacterStringValue,
-      $.XMLUnrestrictedCharacterStringValue
+      // $.XMLUnrestrictedCharacterStringValue
     ),
 
     XMLRestrictedCharacterStringValue: $ => $.xmlcstring,
 
     xmlcstring: $ => /[^<&]*/,  // Simplified, should exclude XML reserved chars
-
-    XMLUnrestrictedCharacterStringValue: $ => $.XMLSequenceValue,
-
-    XMLInstanceOfValue: $ => $.XMLValue,
 
     ReferencedType: $ => choice(
       $.DefinedType,

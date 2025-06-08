@@ -171,6 +171,10 @@
         {
           "type": "ValueSetTypeAssignment",
           "named": true
+        },
+        {
+          "type": "XMLValueAssignment",
+          "named": true
         }
       ]
     }
@@ -1344,6 +1348,63 @@
     }
   },
   {
+    "type": "EmptyElementBoolean",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "xmlfalse",
+          "named": true
+        },
+        {
+          "type": "xmltrue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EmptyElementList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EmptyElementReal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "xmlminusinfinity",
+          "named": true
+        },
+        {
+          "type": "xmlnotanumber",
+          "named": true
+        },
+        {
+          "type": "xmlplusinfinity",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "EncodingControlSection",
     "named": true,
     "fields": {},
@@ -1921,6 +1982,21 @@
         },
         {
           "type": "VariableTypeValueSetFieldSpec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "FirstArcIdentifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ArcIdentifier",
           "named": true
         }
       ]
@@ -2635,6 +2711,21 @@
       "types": [
         {
           "type": "NamedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "NonParameterizedTypeName",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "modulereference",
           "named": true
         }
       ]
@@ -4496,6 +4587,59 @@
     }
   },
   {
+    "type": "TextBoolean",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "false",
+          "named": true
+        },
+        {
+          "type": "true",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TextList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TextReal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "INF",
+          "named": true
+        },
+        {
+          "type": "NaN",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "TimeOfDayType",
     "named": true,
     "fields": {},
@@ -5220,6 +5364,632 @@
     }
   },
   {
+    "type": "XMLBitStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLIdentifierList",
+          "named": true
+        },
+        {
+          "type": "xmlbstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLBooleanValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "EmptyElementBoolean",
+          "named": true
+        },
+        {
+          "type": "TextBoolean",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLBuiltinValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLBitStringValue",
+          "named": true
+        },
+        {
+          "type": "XMLBooleanValue",
+          "named": true
+        },
+        {
+          "type": "XMLCharacterStringValue",
+          "named": true
+        },
+        {
+          "type": "XMLChoiceValue",
+          "named": true
+        },
+        {
+          "type": "XMLIRIValue",
+          "named": true
+        },
+        {
+          "type": "XMLIntegerValue",
+          "named": true
+        },
+        {
+          "type": "XMLNullValue",
+          "named": true
+        },
+        {
+          "type": "XMLObjectIdentifierValue",
+          "named": true
+        },
+        {
+          "type": "XMLOctetStringValue",
+          "named": true
+        },
+        {
+          "type": "XMLRealValue",
+          "named": true
+        },
+        {
+          "type": "XMLRelativeIRIValue",
+          "named": true
+        },
+        {
+          "type": "XMLSequenceOfValue",
+          "named": true
+        },
+        {
+          "type": "XMLSequenceValue",
+          "named": true
+        },
+        {
+          "type": "XMLTimeValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLCharacterStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLRestrictedCharacterStringValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLChoiceValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLValue",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLComponentValueList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLNamedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLDelimitedItem",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NonParameterizedTypeName",
+          "named": true
+        },
+        {
+          "type": "XMLValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLDelimitedItemList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLDelimitedItem",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLIRIValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ArcIdentifier",
+          "named": true
+        },
+        {
+          "type": "FirstArcIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLIdentifierList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "EmptyElementList",
+          "named": true
+        },
+        {
+          "type": "TextList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLIntegerValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLSignedNumber",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLNameAndNumberForm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLNumberForm",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLNamedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLValue",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLNumberForm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLNumericRealValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "realnumber",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLObjIdComponent",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLNameAndNumberForm",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLObjIdComponentList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLObjIdComponent",
+          "named": true
+        },
+        {
+          "type": "XMLObjIdComponentList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLObjectClassFieldValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLOpenTypeFieldVal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLObjectIdentifierValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLObjIdComponentList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLOctetStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "xmlhstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLOpenTypeFieldVal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLTypedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLRealValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLNumericRealValue",
+          "named": true
+        },
+        {
+          "type": "XMLSpecialRealValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLRelativeIRIValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ArcIdentifier",
+          "named": true
+        },
+        {
+          "type": "FirstRelativeArcIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLRestrictedCharacterStringValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "xmlcstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLSequenceOfValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLDelimitedItemList",
+          "named": true
+        },
+        {
+          "type": "XMLValueList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLSequenceValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLComponentValueList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLSignedNumber",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLSpecialRealValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "EmptyElementReal",
+          "named": true
+        },
+        {
+          "type": "TextReal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLTimeValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "xmltstring",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLTypedValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "NonParameterizedTypeName",
+          "named": true
+        },
+        {
+          "type": "XMLValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLBuiltinValue",
+          "named": true
+        },
+        {
+          "type": "XMLObjectClassFieldValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLValueAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLTypedValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLValueList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "XMLValueOrEmpty",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLValueOrEmpty",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "NonParameterizedTypeName",
+          "named": true
+        },
+        {
+          "type": "XMLValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "block_comment",
     "named": true,
     "fields": {}
@@ -5328,6 +6098,10 @@
     "named": false
   },
   {
+    "type": "/>",
+    "named": false
+  },
+  {
     "type": "0",
     "named": false
   },
@@ -5345,6 +6119,14 @@
   },
   {
     "type": "<",
+    "named": false
+  },
+  {
+    "type": "</",
+    "named": false
+  },
+  {
+    "type": ">",
     "named": false
   },
   {
@@ -5540,6 +6322,10 @@
     "named": true
   },
   {
+    "type": "INF",
+    "named": true
+  },
+  {
     "type": "INSTANCE",
     "named": true
   },
@@ -5577,6 +6363,10 @@
   },
   {
     "type": "NULL",
+    "named": true
+  },
+  {
+    "type": "NaN",
     "named": true
   },
   {
@@ -5736,6 +6526,10 @@
     "named": true
   },
   {
+    "type": "XMLNullValue",
+    "named": true
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -5769,6 +6563,10 @@
   },
   {
     "type": "encodingreference",
+    "named": true
+  },
+  {
+    "type": "false",
     "named": true
   },
   {
@@ -5813,6 +6611,10 @@
     "named": true
   },
   {
+    "type": "true",
+    "named": true
+  },
+  {
     "type": "tstring",
     "named": true
   },
@@ -5834,11 +6636,11 @@
   },
   {
     "type": "valuereference",
-    "named": false
+    "named": true
   },
   {
     "type": "valuereference",
-    "named": true
+    "named": false
   },
   {
     "type": "valuesetfieldreference",
@@ -5847,6 +6649,42 @@
   {
     "type": "word",
     "named": false
+  },
+  {
+    "type": "xmlbstring",
+    "named": true
+  },
+  {
+    "type": "xmlcstring",
+    "named": true
+  },
+  {
+    "type": "xmlfalse",
+    "named": true
+  },
+  {
+    "type": "xmlhstring",
+    "named": true
+  },
+  {
+    "type": "xmlminusinfinity",
+    "named": true
+  },
+  {
+    "type": "xmlnotanumber",
+    "named": true
+  },
+  {
+    "type": "xmlplusinfinity",
+    "named": true
+  },
+  {
+    "type": "xmltrue",
+    "named": true
+  },
+  {
+    "type": "xmltstring",
+    "named": true
   },
   {
     "type": "{",
