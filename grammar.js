@@ -15,57 +15,47 @@ module.exports = grammar({
   // TODO: Is this going to slow down the parser a lot or cause errors?
   conflicts: $ => [
     [$.UsefulType, $.DefinedType],
-    [$.SimpleDefinedType, $.objectsetreference],
-    [$.ParameterizedValueSetType, $.ParameterizedType],
     [$.objectsetreference, $.ExternalTypeReference],
     [$.objectsetreference, $.DefinedType, $.UsefulType],
-    [$.objectsetreference, $.DefinedType, $.SimpleDefinedType, $.UsefulType],
     [$.NameForm, $.objectreference],
-    // [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue, $.DefaultSyntax, $.DefinedSyntax],
     [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue],
     [$.ObjIdComponents, $.SignedNumber],
     [$.ObjIdComponents, $.SignedNumber, $.NumberForm],
-    // [$.TableColumn, $.TableRow, $.Group, $.Plane, $.Row, $.Cell],
     [$.SignedNumber, $.Group, $.TableColumn],
-    // [$.SignedNumber, $.Group, $.TableColumn, $.Plane],
-    // [$.SignedNumber, $.Group, $.TableColumn, $.Plane, $.Row],
-    // [$.SignedNumber, $.Group, $.TableColumn, $.Plane, $.Row, $.Cell],
     [$.RestrictedCharacterStringValue, $.CharsDefn], // TODO: I feel like this can be fixed.
     [$.EnumeratedValue, $.NamedValue],
     [$.EnumeratedValue, $.IdentifierList],
-    [$.ObjectIdentifierValue, $.ReferencedValue],
 
     // TODO: AI generated these. Review if these are needed.
-    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm, $.CharsDefn],
-    [$.ObjectIdentifierValue, $.ReferencedValue, $.RelativeOIDComponents, $.NumberForm],
     [$.ReferencedValue, $.CharsDefn],
-    [$.ObjIdComponents, $.DefinedValue],
-    [$.DefinedValue, $.SimpleDefinedValue],
     [$.ValueList, $.Setting],
     [$.ValueFromObject, $.ObjectSetFromObjects, $.ObjectFromObject, $.TypeFromObject],
     [$.ComponentValueList, $.NamedValueList],
-    [$.ParameterizedObject, $.Object],
     [$.ObjectSetElements, $.Setting],
     [$.BitStringValue, $.OctetStringValue],
-    [$.ObjIdComponents, $.RelativeOIDComponents],
     [$.Setting, $.TypeConstraint],
     [$.ObjectSetElements, $.Setting],
     [$.ObjectSetElements, $.ComponentRelationConstraint],
     [$.ElementSetSpecs, $.ObjectSetSpec],
     [$.ObjIdComponents, $.NumberForm],
-    [$.ObjectIdentifierValue, $.RelativeOIDComponents, $.NumberForm],
     [$.ExtensionAdditions, $.ExtensionAdditionList],
     [$.BitStringType],
     [$.SequenceValue, $.SetValue],
     [$.SequenceOfValue, $.SetOfValue],
-    [$.RelativeOIDComponents, $.NumberForm],
     [$.ValueList, $.Setting],
     [$.SingleValue, $.Setting, $.ValueList],
     [$.ValueFromObject, $.ObjectFromObject, $.TypeFromObject],
     [$.ValueFromObject, $.TypeFromObject],
     [$.Group, $.TableColumn],
-    [$.ExtensionAdditionAlternatives, $.ExtensionAdditionAlternativesList],
-    [$.ValueFromObject, $.ObjectFromObject]
+    [$.ValueFromObject, $.ObjectFromObject],
+    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm, $.CharsDefn],
+    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm],
+    [$.SignedNumber, $.NumberForm],
+    [$.RelativeOIDComponents, $.NumberForm],
+    [$.ObjIdComponents, $.ExternalValueReference],
+    [$.ObjIdComponents, $.DefinedValue],
+    [$.ReferencedObjects, $.Object],
+    [$.objectsetreference, $.DefinedType],
   ],
 
   extras: $ => [
@@ -89,62 +79,155 @@ module.exports = grammar({
 
     any_identifier: $ => /[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*/,
 
+    DEFINITIONS: $ => 'DEFINITIONS',
+    BEGIN: $ => 'BEGIN',
+    END: $ => 'END',
+    EXPORTS: $ => 'EXPORTS',
+    IMPORTS: $ => 'IMPORTS',
+    CLASS: $ => 'CLASS',
+    WITH: $ => 'WITH',
+    SUCCESSORS: $ => 'SUCCESSORS',
+    DESCENDANTS: $ => 'DESCENDANTS',
+    INSTRUCTIONS: $ => 'INSTRUCTIONS',
+    AUTOMATIC: $ => 'AUTOMATIC',
+    IMPLIED: $ => 'IMPLIED',
+    EXPLICIT: $ => 'EXPLICIT',
+    IMPLICIT: $ => 'IMPLICIT',
+    ALL: $ => 'ALL',
+    TAGS: $ => 'TAGS',
+    EXTENSIBILITY: $ => 'EXTENSIBILITY',
+    TYPE_IDENTIFIER: $ => 'TYPE-IDENTIFIER',
+    ABSTRACT_SYNTAX: $ => 'ABSTRACT-SYNTAX',
+    UNIQUE: $ => 'UNIQUE',
+    FROM: $ => 'FROM',
+    SYNTAX: $ => 'SYNTAX',
+    CONTAINING: $ => 'CONTAINING',
+    NULL: $ => 'NULL',
+    TRUE: $ => 'TRUE',
+    FALSE: $ => 'FALSE',
+    OCTET: $ => 'OCTET',
+    STRING: $ => 'STRING',
+    BIT: $ => 'BIT',
+    SEQUENCE: $ => 'SEQUENCE',
+    SET: $ => 'SET',
+    OF: $ => 'OF',
+    DEFAULT: $ => 'DEFAULT',
+    OPTIONAL: $ => 'OPTIONAL',
+    PLUS_INFINITY: $ => 'PLUS-INFINITY',
+    MINUS_INFINITY: $ => 'MINUS-INFINITY',
+    NOT_A_NUMBER: $ => 'NOT-A-NUMBER',
+    CHOICE: $ => 'CHOICE',
+    COMPONENTS: $ => 'COMPONENTS',
+    INTEGER: $ => 'INTEGER',
+    ENUMERATED: $ => 'ENUMERATED',
+    REAL: $ => 'REAL',
+    BMPString: $ => 'BMPString',
+    GeneralString: $ => 'GeneralString',
+    GraphicString: $ => 'GraphicString',
+    IA5String: $ => 'IA5String',
+    ISO646String: $ => 'ISO646String',
+    NumericString: $ => 'NumericString',
+    PrintableString: $ => 'PrintableString',
+    TeletexString: $ => 'TeletexString',
+    T61String: $ => 'T61String',
+    UniversalString: $ => 'UniversalString',
+    UTF8String: $ => 'UTF8String',
+    VideotexString: $ => 'VideotexString',
+    VisibleString: $ => 'VisibleString',
+    UNIVERSAL: $ => 'UNIVERSAL',
+    APPLICATION: $ => 'APPLICATION',
+    PRIVATE: $ => 'PRIVATE',
+    CHARACTER: $ => 'CHARACTER',
+    EMBEDDED: $ => 'EMBEDDED',
+    PDV: $ => 'PDV',
+    MIN: $ => 'MIN',
+    MAX: $ => 'MAX',
+    EXCEPT: $ => 'EXCEPT',
+    INTERSECTION: $ => 'INTERSECTION',
+    INCLUDES: $ => 'INCLUDES',
+    INSTANCE: $ => 'INSTANCE',
+    OBJECT: $ => 'OBJECT',
+    IDENTIFIER: $ => 'IDENTIFIER',
+    UNION: $ => 'UNION',
+    PRESENT: $ => 'PRESENT',
+    ABSENT: $ => 'ABSENT',
+    PATTERN: $ => 'PATTERN',
+    SETTINGS: $ => 'SETTINGS',
+    ENCODED: $ => 'ENCODED',
+    BY: $ => 'BY',
+    CONSTRAINED: $ => 'CONSTRAINED',
+    SIZE: $ => 'SIZE',
+    true: $ => 'true',
+    false: $ => 'false',
+    xmltrue: $ => '<true/>',
+    xmlfalse: $ => '<false/>',
+    xmlplusinfinity: $ => '<PLUS-INFINITY/>',
+    xmlminusinfinity: $ => '<MINUS-INFINITY/>',
+    xmlnotanumber: $ => '<NOT-A-NUMBER/>',
+    INF: $ => 'INF',
+    NaN: $ => 'NaN',
+    BOOLEAN: $ => 'BOOLEAN',
+    RELATIVE_OID: $ => 'RELATIVE-OID',
+    OID_IRI: $ => 'OID-IRI',
+    RELATIVE_OID_IRI: $ => 'RELATIVE-OID-IRI',
+    EXTERNAL: $ => 'EXTERNAL',
+    TIME: $ => 'TIME',
+    DATE: $ => 'DATE',
+    DATE_TIME: $ => 'DATE-TIME',
+    DURATION: $ => 'DURATION',
+    TIME_OF_DAY: $ => 'TIME-OF-DAY',
+    COMPONENT: $ => 'COMPONENT',
+
     ModuleDefinition: $ => seq(
       $.ModuleIdentifier,
-      'DEFINITIONS',
+      $.DEFINITIONS,
       optional($.EncodingReferenceDefault),
       optional($.TagDefault),
       optional($.ExtensionDefault),
       '::=',
-      'BEGIN',
+      $.BEGIN,
       optional($.ModuleBody),
       optional($.EncodingControlSections),
-      'END',
+      $.END,
     ),
 
     EncodingReferenceDefault: $ => seq(
-      'INSTRUCTIONS',
+      $.INSTRUCTIONS,
       $.encodingreference,
     ),
 
     encodingreference: $ => /[A-Z][A-Z0-9\-]+/,
 
-    ModuleIdentifier: $ => seq(
+    ModuleIdentifier: $ => prec.right(seq(
       $.modulereference,
       optional($.DefinitiveIdentification),
-    ),
+    )),
 
-    DefinitiveIdentification: $ => choice(
+    DefinitiveIdentification: $ => prec.right(seq(
       $.DefinitiveOID,
-      $.DefinitiveOIDandIRI,
-    ),
+      optional($.IRIValue),
+    )),
 
     DefinitiveOID: $ => seq('{', $.DefinitiveObjIdComponentList, '}'),
 
     DefinitiveObjIdComponentList: $ => repeat1($.DefinitiveObjIdComponent),
 
     DefinitiveObjIdComponent: $ => choice(
-      $.NameForm,
+      // $.NameForm,
       $.DefinitiveNumberForm,
       $.DefinitiveNameAndNumberForm,
     ),
 
     NameForm: $ => $.lowercased_identifier,
-    DefinitiveNumberForm: $ => choice(
-      '0',
-      /[1-9][0-9]*/,
-    ),
-    DefinitiveNameAndNumberForm: $ => seq(
+    DefinitiveNumberForm: $ => $.number,
+    DefinitiveNameAndNumberForm: $ => prec.right(seq(
       $.lowercased_identifier,
-      '(',
-      $.DefinitiveNumberForm,
-      ')',
-    ),
-
-    DefinitiveOIDandIRI: $ => seq(
-      $.DefinitiveOID,
-      $.IRIValue,
-    ),
+      optional(seq(
+        '(',
+        $.DefinitiveNumberForm,
+        ')',
+      )),
+    )),
 
     IRIValue: $ => seq(
       '"',
@@ -158,12 +241,12 @@ module.exports = grammar({
     valuereference: $ => /[a-z][a-zA-Z0-9-]*/,
 
     TagDefault: $ => choice(
-      seq('EXPLICIT', 'TAGS'),
-      seq('IMPLICIT', 'TAGS'),
-      seq('AUTOMATIC', 'TAGS'),
+      seq($.EXPLICIT, $.TAGS),
+      seq($.IMPLICIT, $.TAGS),
+      seq($.AUTOMATIC, $.TAGS),
     ),
 
-    ExtensionDefault: $ => seq('EXTENSIBILITY', 'IMPLIED'),
+    ExtensionDefault: $ => seq($.EXTENSIBILITY, $.IMPLIED),
 
     // In the ABNF, all of these are optional, but tree-sitter does not allow that.
     // So this grammar rule requires either AssignmentList or Exports and Imports.
@@ -181,9 +264,9 @@ module.exports = grammar({
     ),
 
     Exports: $ => seq(
-      'EXPORTS',
+      $.EXPORTS,
       choice(
-        'ALL',
+        $.ALL,
         optional($.SymbolsExported),
       ),
       ';',
@@ -196,11 +279,11 @@ module.exports = grammar({
       repeat(seq(',', $.Symbol))
     ),
 
-    Symbol: $ => choice(
+    Symbol: $ => $.PossiblyParameterizedReference,
+
+    PossiblyParameterizedReference: $ => seq(
       $.Reference,
-      // Reference is a prefix of ParameterizedReference, but tree-sitter has a
-      // look-ahead of one token, which should disambiguate.
-      $.ParameterizedReference,
+      optional(seq('{', '}')),
     ),
 
     // Reference ::=
@@ -210,79 +293,54 @@ module.exports = grammar({
     //   | objectreference
     //   | objectsetreference
     Reference: $ => /[a-zA-Z][a-zA-Z0-9\-]*/,
-
-    ParameterizedReference: $ => seq(
-      $.Reference,
-      '{}',
-    ),
   
-    Imports: $ => seq(
-      'IMPORTS',
-      optional($.SymbolsImported),
+    Imports: $ => prec.right(seq(
+      $.IMPORTS,
+      repeat($.SymbolsFromModule),
       ';',
-    ),
-
-    SymbolsImported: $ => $.SymbolsFromModuleList,
-
-    SymbolsFromModuleList: $ => repeat1($.SymbolsFromModule),
+    )),
 
     SymbolsFromModule: $ => seq(
       $.SymbolList,
-      'FROM',
+      $.FROM,
       $.GlobalModuleReference,
       optional($.SelectionOption),
     ),
 
     SelectionOption: $ => seq(
-      'WITH',
+      $.WITH,
       choice(
-        'SUCCESSORS',
-        'DESCENDANTS',
+        $.SUCCESSORS,
+        $.DESCENDANTS,
       ),
     ),
 
-    GlobalModuleReference: $ => seq(
+    GlobalModuleReference: $ => prec.right(seq(
       $.modulereference,
       optional($.AssignedIdentifier),
-    ),
+    )),
 
     AssignedIdentifier: $ => choice(
       $.ObjectIdentifierValue,
       $.DefinedValue,
     ),
 
-    ObjectIdentifierValue: $ => seq(
-      '{',
-      optional($.DefinedValue),
-      $.ObjIdComponentsList,
-      '}',
-    ),
+    ObjectIdentifierValue: $ => seq('{', $.ObjIdComponentsList, '}'),
 
     ObjIdComponentsList: $ => repeat1($.ObjIdComponents),
 
     ObjIdComponents: $ => choice(
-      $.NameForm,
       $.number,
-      $.NameAndNumberForm,
-      $.ExternalValueReference,
-      $.ParameterizedValue,
+      seq($.NameForm, optional(seq('(', $.NumberForm, ')'))),
+      seq($.modulereference, '.', $.valuereference, optional($.ActualParameterList)),
+      seq($.valuereference, optional($.ActualParameterList)),
     ),
 
-    DefinedValue: $ => choice(
-      $.ExternalValueReference,
-      prec(-1, $.valuereference),
-      prec(1, $.ParameterizedValue),
-    ),
-
-    ParameterizedValue: $ => seq(
-      $.SimpleDefinedValue,
-      $.ActualParameterList,
-    ),
-
-    SimpleDefinedValue: $ => choice(
-      $.ExternalValueReference,
+    DefinedValue: $ => prec.right(seq(
+      optional($.modulereference),
       $.valuereference,
-    ),
+      optional($.ActualParameterList),
+    )),
 
     ActualParameterList: $ => seq(
       '{',
@@ -332,8 +390,8 @@ module.exports = grammar({
       '}',
     ),
 
-    Parameter: $ => choice(
-      prec(1, seq($.ParamGovernor, ':', $.DummyReference)),
+    Parameter: $ => seq(
+      optional(seq($.ParamGovernor, ':')),
       $.DummyReference,
     ),
 
@@ -343,13 +401,12 @@ module.exports = grammar({
     ),
 
     Governor: $ => choice(
-      prec(1, $.DefinedObjectClass),
+      $.DefinedObjectClass,
       $.Type,
     ),
 
     ObjectClass: $ => choice(
-      prec(1, $.ParameterizedObjectClass),
-      $.DefinedObjectClass,
+      seq($.DefinedObjectClass, optional($.ActualParameterList)),
       $.ObjectClassDefn,
     ),
 
@@ -360,13 +417,8 @@ module.exports = grammar({
     ),
 
     UsefulObjectClassReference: $ => choice(
-      'TYPE-IDENTIFIER',
-      'ABSTRACT-SYNTAX',
-    ),
-
-    ParameterizedObjectClass: $ => seq(
-      $.DefinedObjectClass,
-      $.ActualParameterList,
+      $.TYPE_IDENTIFIER,
+      $.ABSTRACT_SYNTAX,
     ),
 
     ExternalObjectClassReference: $ => seq(
@@ -376,7 +428,7 @@ module.exports = grammar({
     ),
 
     ObjectClassDefn: $ => seq(
-      'CLASS',
+      $.CLASS,
       '{',
       $.FieldSpec,
       repeat(seq(',', $.FieldSpec)),
@@ -402,7 +454,7 @@ module.exports = grammar({
     FixedTypeValueFieldSpec: $ => seq(
       alias($.lowercased_field_ref, 'valuefieldreference'),
       $.Type,
-      optional('UNIQUE'),
+      optional($.UNIQUE),
       optional($.ValueOptionalitySpec),
     ),
 
@@ -437,28 +489,28 @@ module.exports = grammar({
     ),
 
     TypeOptionalitySpec: $ => choice(
-      'OPTIONAL',
-      seq('DEFAULT', $.Type),
+      $.OPTIONAL,
+      seq($.DEFAULT, $.Type),
     ),
 
     ValueOptionalitySpec: $ => choice(
-      'OPTIONAL',
-      seq('DEFAULT', $.Value),
+      $.OPTIONAL,
+      seq($.DEFAULT, $.Value),
     ),
 
     ValueSetOptionalitySpec: $ => choice(
-      'OPTIONAL',
-      seq('DEFAULT', $.ValueSet),
+      $.OPTIONAL,
+      seq($.DEFAULT, $.ValueSet),
     ),
 
     ObjectOptionalitySpec: $ => choice(
-      'OPTIONAL',
-      seq('DEFAULT', $.Object),
+      $.OPTIONAL,
+      seq($.DEFAULT, $.Object),
     ),
 
     ObjectSetOptionalitySpec: $ => choice(
-      'OPTIONAL',
-      seq('DEFAULT', $.ObjectSet),
+      $.OPTIONAL,
+      seq($.DEFAULT, $.ObjectSet),
     ),
 
     FieldName: $ => seq(
@@ -470,8 +522,8 @@ module.exports = grammar({
     ),
 
     WithSyntaxSpec: $ => seq(
-      'WITH',
-      'SYNTAX',
+      $.WITH,
+      $.SYNTAX,
       $.SyntaxList,
     ),
 
@@ -597,8 +649,8 @@ module.exports = grammar({
     ),
     
     BooleanValue: $ => choice(
-      'TRUE',
-      'FALSE'
+      $.TRUE,
+      $.FALSE
     ),
     
     IntegerValue: $ => choice(
@@ -612,7 +664,10 @@ module.exports = grammar({
       seq('-', $.number)
     ),
     
-    number: $ => /[0-9]+/,
+    number: $ => choice(
+      '0',
+      /[1-9][0-9]*/,
+    ),
     
     EnumeratedValue: $ => $.identifier,
     
@@ -630,9 +685,9 @@ module.exports = grammar({
     realnumber: $ => /[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?/,
     
     SpecialRealValue: $ => choice(
-      'PLUS-INFINITY',
-      'MINUS-INFINITY',
-      'NOT-A-NUMBER'
+      $.PLUS_INFINITY,
+      $.MINUS_INFINITY,
+      $.NOT_A_NUMBER
     ),
     
     BitStringValue: $ => choice(
@@ -640,7 +695,7 @@ module.exports = grammar({
       prec(1, $.hstring),
       seq('{', $.IdentifierList, '}'),
       seq('{', '}'),
-      seq('CONTAINING', $.Value)
+      seq($.CONTAINING, $.Value)
     ),
     
     bstring: $ => /'[01]*'B/,
@@ -655,13 +710,13 @@ module.exports = grammar({
     OctetStringValue: $ => choice(
       $.bstring,
       $.hstring,
-      seq('CONTAINING', $.Value)
+      seq($.CONTAINING, $.Value)
     ),
     
-    NullValue: $ => prec(1, 'NULL'),
+    NullValue: $ => prec(1, $.NULL),
     
     SequenceValue: $ => choice(
-      seq('{', $.ComponentValueList, '}'),
+      seq('{', $.ComponentValueList, '}'), 
       seq('{', '}')
     ),
     
@@ -727,8 +782,7 @@ module.exports = grammar({
     ),
     
     ReferencedObjects: $ => choice(
-      $.DefinedObject,
-      $.ParameterizedObject,
+      seq($.DefinedObject, optional($.ActualParameterList)),
       $.DefinedObjectSet,
       $.ParameterizedObjectSet
     ),
@@ -745,11 +799,6 @@ module.exports = grammar({
     ),
     
     objectreference: $ => $.lowercased_identifier,
-    
-    ParameterizedObject: $ => seq(
-      $.DefinedObject,
-      $.ActualParameterList
-    ),
     
     DefinedObjectSet: $ => choice(
       prec(1, $.ExternalObjectSetReference),
@@ -780,7 +829,7 @@ module.exports = grammar({
     RelativeOIDComponents: $ => choice(
       $.NumberForm,
       $.NameAndNumberForm,
-      $.DefinedValue
+      $.DefinedValue,
     ),
     
     NumberForm: $ => choice(
@@ -881,7 +930,7 @@ module.exports = grammar({
     
     // InstanceOfValue: $ => $.Value,
 
-    Type: $ => prec.left(seq(
+    Type: $ => prec.right(seq(
       choice(
         $.BuiltinType,
         $.ReferencedType,
@@ -920,11 +969,11 @@ module.exports = grammar({
       $.TimeOfDayType
     ),
 
-    BooleanType: $ => 'BOOLEAN',
+    BooleanType: $ => $.BOOLEAN,
 
     IntegerType: $ => choice(
-      'INTEGER',
-      prec(1, seq('INTEGER', '{', $.NamedNumberList, '}')),
+      $.INTEGER,
+      prec(1, seq($.INTEGER, '{', $.NamedNumberList, '}')),
     ),
 
     NamedNumberList: $ => seq(
@@ -938,7 +987,7 @@ module.exports = grammar({
     ),
 
     EnumeratedType: $ => seq(
-      'ENUMERATED',
+      $.ENUMERATED,
       '{',
       $.Enumerations,
       '}'
@@ -954,9 +1003,9 @@ module.exports = grammar({
 
     AdditionalEnumeration: $ => $.Enumeration,
 
-    Enumeration: $ => prec.left(choice(
+    Enumeration: $ => prec.right(seq(
       $.EnumerationItem,
-      seq($.EnumerationItem, ',', $.Enumeration)
+      repeat(seq(',', $.EnumerationItem))
     )),
 
     EnumerationItem: $ => choice(
@@ -964,11 +1013,11 @@ module.exports = grammar({
       $.NamedNumber
     ),
 
-    RealType: $ => 'REAL',
+    RealType: $ => $.REAL,
 
     BitStringType: $ => choice(
-      seq('BIT', 'STRING'),
-      seq('BIT', 'STRING', '{', $.NamedBitList, '}')
+      seq($.BIT, $.STRING),
+      seq($.BIT, $.STRING, '{', $.NamedBitList, '}')
     ),
 
     NamedBitList: $ => seq(
@@ -981,14 +1030,14 @@ module.exports = grammar({
       seq($.identifier, '(', $.DefinedValue, ')')
     ),
 
-    OctetStringType: $ => seq('OCTET', 'STRING'),
+    OctetStringType: $ => seq($.OCTET, $.STRING),
 
-    NullType: $ => 'NULL',
+    NullType: $ => $.NULL,
 
     SequenceType: $ => choice(
-      seq('SEQUENCE', '{', '}'),
-      prec(1,seq('SEQUENCE', '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}')),
-      seq('SEQUENCE', '{', $.ComponentTypeLists, '}')
+      seq($.SEQUENCE, '{', '}'),
+      prec(1,seq($.SEQUENCE, '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}')),
+      seq($.SEQUENCE, '{', $.ComponentTypeLists, '}')
     ),
 
     ExtensionAndException: $ => choice(
@@ -1031,16 +1080,16 @@ module.exports = grammar({
 
     VersionNumber: $ => seq($.number, ':'),
 
-    ComponentTypeList: $ => prec.left(seq(
+    ComponentTypeList: $ => prec.right(seq(
       $.ComponentType,
       repeat(seq(',', $.ComponentType)),
     )),
 
     ComponentType: $ => choice(
       $.NamedType,
-      seq($.NamedType, 'OPTIONAL'),
-      seq($.NamedType, 'DEFAULT', $.Value),
-      seq('COMPONENTS', 'OF', $.Type)
+      seq($.NamedType, $.OPTIONAL),
+      seq($.NamedType, $.DEFAULT, $.Value),
+      seq($.COMPONENTS, $.OF, $.Type)
     ),
 
     NamedType: $ => seq(
@@ -1049,23 +1098,23 @@ module.exports = grammar({
     ),
 
     SequenceOfType: $ => choice(
-      seq('SEQUENCE', 'OF', $.Type),
-      seq('SEQUENCE', 'OF', $.NamedType)
+      seq($.SEQUENCE, $.OF, $.Type),
+      seq($.SEQUENCE, $.OF, $.NamedType)
     ),
 
     SetType: $ => choice(
-      seq('SET', '{', '}'),
-      seq('SET', '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}'),
-      seq('SET', '{', $.ComponentTypeLists, '}')
+      seq($.SET, '{', '}'),
+      seq($.SET, '{', $.ExtensionAndException, optional($.OptionalExtensionMarker), '}'),
+      seq($.SET, '{', $.ComponentTypeLists, '}')
     ),
 
     SetOfType: $ => choice(
-      seq('SET', 'OF', $.Type),
-      seq('SET', 'OF', $.NamedType)
+      seq($.SET, $.OF, $.Type),
+      seq($.SET, $.OF, $.NamedType)
     ),
 
     ChoiceType: $ => seq(
-      'CHOICE',
+      $.CHOICE,
       '{',
       $.AlternativeTypeLists,
       '}'
@@ -1076,14 +1125,14 @@ module.exports = grammar({
       prec(1, seq($.RootAlternativeTypeList, ',', $.ExtensionAndException, optional($.ExtensionAdditionAlternatives), optional($.OptionalExtensionMarker)))
     ),
 
-    RootAlternativeTypeList: $ => prec.left($.AlternativeTypeList),
+    RootAlternativeTypeList: $ => $.AlternativeTypeList,
 
     ExtensionAdditionAlternatives: $ => seq(',', $.ExtensionAdditionAlternativesList),
 
-    ExtensionAdditionAlternativesList: $ => choice(
+    ExtensionAdditionAlternativesList: $ => prec.right(seq(
       $.ExtensionAdditionAlternative,
-      seq($.ExtensionAdditionAlternativesList, ',', $.ExtensionAdditionAlternative)
-    ),
+      repeat(seq(',', $.ExtensionAdditionAlternative)),
+    )),
 
     ExtensionAdditionAlternative: $ => choice(
       $.ExtensionAdditionAlternativesGroup,
@@ -1097,32 +1146,32 @@ module.exports = grammar({
       ']]'
     ),
 
-    AlternativeTypeList: $ => choice(
+    AlternativeTypeList: $ => prec.right(seq(
       $.NamedType,
-      seq($.AlternativeTypeList, ',', $.NamedType)
-    ),
+      repeat(seq(',', $.NamedType)),
+    )),
 
-    ObjectIdentifierType: $ => seq('OBJECT', 'IDENTIFIER'),
+    ObjectIdentifierType: $ => seq($.OBJECT, $.IDENTIFIER),
 
-    RelativeOIDType: $ => 'RELATIVE-OID',
+    RelativeOIDType: $ => $.RELATIVE_OID,
 
-    IRIType: $ => 'OID-IRI',
+    IRIType: $ => $.OID_IRI,
 
-    RelativeIRIType: $ => 'RELATIVE-OID-IRI',
+    RelativeIRIType: $ => $.RELATIVE_OID_IRI,
 
-    EmbeddedPDVType: $ => seq('EMBEDDED', 'PDV'),
+    EmbeddedPDVType: $ => seq($.EMBEDDED, $.PDV),
 
-    ExternalType: $ => 'EXTERNAL',
+    ExternalType: $ => $.EXTERNAL,
 
-    TimeType: $ => 'TIME',
+    TimeType: $ => $.TIME,
 
-    DateType: $ => 'DATE',
+    DateType: $ => $.DATE,
 
-    TimeOfDayType: $ => 'TIME-OF-DAY',
+    TimeOfDayType: $ => $.TIME_OF_DAY,
 
-    DateTimeType: $ => 'DATE-TIME',
+    DateTimeType: $ => $.DATE_TIME,
 
-    DurationType: $ => 'DURATION',
+    DurationType: $ => $.DURATION,
 
     CharacterStringType: $ => choice(
       $.RestrictedCharacterStringType,
@@ -1130,22 +1179,22 @@ module.exports = grammar({
     ),
 
     RestrictedCharacterStringType: $ => choice(
-      'BMPString',
-      'GeneralString',
-      'GraphicString',
-      'IA5String',
-      'ISO646String',
-      'NumericString',
-      'PrintableString',
-      'TeletexString',
-      'T61String',
-      'UniversalString',
-      'UTF8String',
-      'VideotexString',
-      'VisibleString'
+      $.BMPString,
+      $.GeneralString,
+      $.GraphicString,
+      $.IA5String,
+      $.ISO646String,
+      $.NumericString,
+      $.PrintableString,
+      $.TeletexString,
+      $.T61String,
+      $.UniversalString,
+      $.UTF8String,
+      $.VideotexString,
+      $.VisibleString
     ),
 
-    UnrestrictedCharacterStringType: $ => seq('CHARACTER', 'STRING'),
+    UnrestrictedCharacterStringType: $ => seq($.CHARACTER, $.STRING),
 
     PrefixedType: $ => choice(
       $.TaggedType,
@@ -1154,8 +1203,8 @@ module.exports = grammar({
 
     TaggedType: $ => choice(
       seq($.Tag, $.Type),
-      seq($.Tag, 'IMPLICIT', $.Type),
-      seq($.Tag, 'EXPLICIT', $.Type)
+      seq($.Tag, $.IMPLICIT, $.Type),
+      seq($.Tag, $.EXPLICIT, $.Type)
     ),
 
     Tag: $ => seq(
@@ -1172,9 +1221,9 @@ module.exports = grammar({
     ),
 
     Class: $ => choice(
-      'UNIVERSAL',
-      'APPLICATION',
-      'PRIVATE'
+      $.UNIVERSAL,
+      $.APPLICATION,
+      $.PRIVATE
     ),
 
     EncodingPrefixedType: $ => seq(
@@ -1197,7 +1246,7 @@ module.exports = grammar({
       $.FieldName
     ),
 
-    InstanceOfType: $ => seq('INSTANCE', 'OF', $.DefinedObjectClass),
+    InstanceOfType: $ => seq($.INSTANCE, $.OF, $.DefinedObjectClass),
 
     ValueSet: $ => seq(
       '{',
@@ -1217,7 +1266,7 @@ module.exports = grammar({
 
     ElementSetSpec: $ => choice(
       $.Unions,
-      seq('ALL', $.Exclusions)
+      seq($.ALL, $.Exclusions)
     ),
 
     Unions: $ => choice(
@@ -1241,11 +1290,11 @@ module.exports = grammar({
 
     Elems: $ => $.Elements,
 
-    Exclusions: $ => seq('EXCEPT', $.Elements),
+    Exclusions: $ => seq($.EXCEPT, $.Elements),
 
-    UnionMark: $ => choice('|', 'UNION'),
+    UnionMark: $ => choice('|', $.UNION),
 
-    IntersectionMark: $ => choice('^', 'INTERSECTION'),
+    IntersectionMark: $ => choice('^', $.INTERSECTION),
 
     Elements: $ => choice(
       $.SubtypeElements,
@@ -1268,7 +1317,7 @@ module.exports = grammar({
     SingleValue: $ => $.Value,
 
     ContainedSubtype: $ => seq(
-      'INCLUDES', // Non-optional is already handled in SubtypeElements
+      $.INCLUDES, // Non-optional is already handled in SubtypeElements
       $.Type
     ),
 
@@ -1290,12 +1339,12 @@ module.exports = grammar({
 
     LowerEndValue: $ => choice(
       $.Value,
-      'MIN'
+      $.MIN
     ),
 
     UpperEndValue: $ => choice(
       $.Value,
-      'MAX'
+      $.MAX
     ),
 
     ObjectSetElements: $ => choice(
@@ -1312,10 +1361,9 @@ module.exports = grammar({
     ),
 
     Object: $ => choice(
-      $.DefinedObject,
+      seq($.DefinedObject, optional($.ActualParameterList)),
       $.ObjectDefn,
       $.ObjectFromObject,
-      $.ParameterizedObject
     ),
 
     ObjectDefn: $ => choice(
@@ -1381,20 +1429,20 @@ module.exports = grammar({
     ),
 
     PermittedAlphabet: $ => seq(
-      'FROM',
+      $.FROM,
       $.Constraint
     ),
 
     SizeConstraint: $ => seq(
-      'SIZE',
+      $.SIZE,
       $.Constraint
     ),
 
     TypeConstraint: $ => $.Type,
 
     InnerTypeConstraints: $ => choice(
-      seq('WITH', 'COMPONENT', $.SingleTypeConstraint),
-      seq('WITH', 'COMPONENTS', $.MultipleTypeConstraints)
+      seq($.WITH, $.COMPONENT, $.SingleTypeConstraint),
+      seq($.WITH, $.COMPONENTS, $.MultipleTypeConstraints)
     ),
 
     SingleTypeConstraint: $ => $.Constraint,
@@ -1432,30 +1480,30 @@ module.exports = grammar({
     ValueConstraint: $ => $.Constraint,
 
     PresenceConstraint: $ => choice(
-      'PRESENT',
-      'ABSENT',
-      'OPTIONAL'
+      $.PRESENT,
+      $.ABSENT,
+      $.OPTIONAL
     ),
 
     PatternConstraint: $ => seq(
-      'PATTERN',
+      $.PATTERN,
       $.Value
     ),
 
     PropertySettings: $ => seq(
-      'SETTINGS',
+      $.SETTINGS,
       /\"[^\"]*\"/
     ),
 
     TypeWithConstraint: $ => choice(
-      seq('SET', $.Constraint, 'OF', $.Type),
-      seq('SET', $.SizeConstraint, 'OF', $.Type),
-      seq('SEQUENCE', $.Constraint, 'OF', $.Type),
-      seq('SEQUENCE', $.SizeConstraint, 'OF', $.Type),
-      seq('SET', $.Constraint, 'OF', $.NamedType),
-      seq('SET', $.SizeConstraint, 'OF', $.NamedType),
-      seq('SEQUENCE', $.Constraint, 'OF', $.NamedType),
-      seq('SEQUENCE', $.SizeConstraint, 'OF', $.NamedType)
+      seq($.SET, $.Constraint, 'OF', $.Type),
+      seq($.SET, $.SizeConstraint, 'OF', $.Type),
+      seq($.SEQUENCE, $.Constraint, 'OF', $.Type),
+      seq($.SEQUENCE, $.SizeConstraint, 'OF', $.Type),
+      seq($.SET, $.Constraint, 'OF', $.NamedType),
+      seq($.SET, $.SizeConstraint, 'OF', $.NamedType),
+      seq($.SEQUENCE, $.Constraint, 'OF', $.NamedType),
+      seq($.SEQUENCE, $.SizeConstraint, 'OF', $.NamedType)
     ),
 
     Constraint: $ => seq(
@@ -1490,8 +1538,8 @@ module.exports = grammar({
     ),
 
     UserDefinedConstraint: $ => seq(
-      'CONSTRAINED',
-      'BY',
+      $.CONSTRAINED,
+      $.BY,
       '{',
       optional($.UserDefinedConstraintParameter),
       repeat(seq(',', $.UserDefinedConstraintParameter)),
@@ -1538,9 +1586,9 @@ module.exports = grammar({
     ),
 
     ContentsConstraint: $ => choice(
-      seq('CONTAINING', $.Type),
-      seq('ENCODED', 'BY', $.Value),
-      seq('CONTAINING', $.Type, 'ENCODED', 'BY', $.Value)
+      seq($.CONTAINING, $.Type),
+      seq($.ENCODED, $.BY, $.Value),
+      seq($.CONTAINING, $.Type, $.ENCODED, $.BY, $.Value)
     ),
 
     block_comment: $ => seq(
@@ -1553,101 +1601,8 @@ module.exports = grammar({
       '*/'
     ),
 
+    // FIXME: This is not a valid comment, it should be a line comment
     line_comment: $ => token(seq('--', /[^\n]*/)),
-
-    keyword: $ => token(choice(
-      'ABSENT',
-      'ENCODED',
-      'INTERSECTION',
-      'SEQUENCE',
-      'ABSTRACT-SYNTAX',
-      'ENCODING-CONTROL',
-      'ISO646String',
-      'SET',
-      'ALL',
-      'END',
-      'MAX',
-      'SETTINGS',
-      'APPLICATION',
-      'ENUMERATED',
-      'MIN',
-      'SIZE',
-      'AUTOMATIC',
-      'EXCEPT',
-      'MINUS-INFINITY',
-      'STRING',
-      'BEGIN',
-      'EXPLICIT',
-      'NOT-A-NUMBER',
-      'SYNTAX',
-      'BIT',
-      'EXPORTS',
-      'NULL',
-      'T61String',
-      'BMPString',
-      'EXTENSIBILITY',
-      'NumericString',
-      'TAGS',
-      'BOOLEAN',
-      'EXTERNAL',
-      'OBJECT',
-      'TeletexString',
-      'BY',
-      'FALSE',
-      'ObjectDescriptor',
-      'TIME',
-      'CHARACTER',
-      'FROM',
-      'OCTET',
-      'TIME-OF-DAY',
-      'CHOICE',
-      'GeneralizedTime',
-      'OF',
-      'TRUE',
-      'CLASS',
-      'GeneralString',
-      'OID-IRI',
-      'TYPE-IDENTIFIER',
-      'COMPONENT',
-      'GraphicString',
-      'OPTIONAL',
-      'UNION',
-      'COMPONENTS',
-      'IA5String',
-      'PATTERN',
-      'UNIQUE',
-      'CONSTRAINED',
-      'IDENTIFIER',
-      'PDV',
-      'UNIVERSAL',
-      'CONTAINING',
-      'IMPLICIT',
-      'PLUS-INFINITY',
-      'UniversalString',
-      'DATE',
-      'IMPLIED',
-      'PRESENT',
-      'UTCTime',
-      'DATE-TIME',
-      'IMPORTS',
-      'PrintableString',
-      'UTF8String',
-      'DEFAULT',
-      'INCLUDES',
-      'PRIVATE',
-      'VideotexString',
-      'DEFINITIONS',
-      'INSTANCE',
-      'REAL',
-      'VisibleString',
-      'DURATION',
-      'INSTRUCTIONS',
-      'RELATIVE-OID',
-      'WITH',
-      'EMBEDDED',
-      'INTEGER',
-      'RELATIVE-OID-IRI',
-    )),
 
     identifier: $ => /[a-zA-Z][a-zA-Z0-9-]*/,
 
@@ -1656,13 +1611,10 @@ module.exports = grammar({
       seq('<', $.NonParameterizedTypeName, '/>')
     ),
 
-    NonParameterizedTypeName: $ => choice(
-      $.ExternalTypeReference,
+    NonParameterizedTypeName: $ => seq(
+      optional($.modulereference),
       alias($.uppercased_identifier, 'typereference'),
-      $.xmlasn1typename
     ),
-
-    xmlasn1typename: $ => /[A-Za-z][A-Za-z0-9\-]*/,
 
     XMLValue: $ => choice(
       $.XMLBuiltinValue,
@@ -1700,13 +1652,13 @@ module.exports = grammar({
     ),
 
     EmptyElementBoolean: $ => choice(
-      '<true/>',
-      '<false/>'
+      $.xmltrue,
+      $.xmlfalse
     ),
 
     TextBoolean: $ => choice(
-      'true',
-      'false'
+      $.true,
+      $.false
     ),
 
     XMLIntegerValue: $ => choice(
@@ -1749,15 +1701,15 @@ module.exports = grammar({
     ),
 
     EmptyElementReal: $ => choice(
-      '<PLUS-INFINITY/>',
-      '<MINUS-INFINITY/>',
-      '<NOT-A-NUMBER/>'
+      $.xmlplusinfinity,
+      $.xmlminusinfinity,
+      $.xmlnotanumber
     ),
 
     TextReal: $ => choice(
-      'INF',
-      seq('-', 'INF'),
-      'NaN'
+      $.INF,
+      seq('-', $.INF),
+      $.NaN
     ),
 
     XMLBitStringValue: $ => choice(
@@ -1918,32 +1870,16 @@ module.exports = grammar({
       prec(1, $.TypeFromObject),
     ),
 
-    DefinedType: $ => choice(
-      $.ExternalTypeReference,
+    DefinedType: $ => prec.right(seq(
+      optional($.modulereference),
       alias($.uppercased_identifier, 'typereference'),
-      $.ParameterizedType,
-      $.ParameterizedValueSetType
-    ),
-
-    ParameterizedType: $ => seq(
-      $.SimpleDefinedType,
-      $.ActualParameterList
-    ),
-
-    SimpleDefinedType: $ => choice(
-      prec(1, $.ExternalTypeReference),
-      alias($.uppercased_identifier, 'typereference')
-    ),
+      optional($.ActualParameterList),
+    )),
 
     ExternalTypeReference: $ => seq(
       $.modulereference,
       '.',
       alias($.uppercased_identifier, 'typereference')
-    ),
-
-    ParameterizedValueSetType: $ => seq(
-      $.SimpleDefinedType,
-      $.ActualParameterList
     ),
 
     UsefulType: $ => alias($.uppercased_identifier, 'typereference'),

@@ -88,10 +88,6 @@
       "required": true,
       "types": [
         {
-          "type": "AlternativeTypeList",
-          "named": true
-        },
-        {
           "type": "NamedType",
           "named": true
         }
@@ -218,11 +214,19 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
+          "type": "BIT",
+          "named": true
+        },
+        {
           "type": "NamedBitList",
+          "named": true
+        },
+        {
+          "type": "STRING",
           "named": true
         }
       ]
@@ -233,9 +237,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "CONTAINING",
+          "named": true
+        },
         {
           "type": "IdentifierList",
           "named": true
@@ -256,9 +264,38 @@
     }
   },
   {
+    "type": "BooleanType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "BOOLEAN",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "BooleanValue",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "FALSE",
+          "named": true
+        },
+        {
+          "type": "TRUE",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "BuiltinType",
@@ -585,11 +622,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "AlternativeTypeLists",
+          "named": true
+        },
+        {
+          "type": "CHOICE",
           "named": true
         }
       ]
@@ -617,7 +658,25 @@
   {
     "type": "Class",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "APPLICATION",
+          "named": true
+        },
+        {
+          "type": "PRIVATE",
+          "named": true
+        },
+        {
+          "type": "UNIVERSAL",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "ClassNumber",
@@ -681,7 +740,23 @@
       "required": true,
       "types": [
         {
+          "type": "COMPONENTS",
+          "named": true
+        },
+        {
+          "type": "DEFAULT",
+          "named": true
+        },
+        {
           "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "OF",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
           "named": true
         },
         {
@@ -799,9 +874,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "INCLUDES",
+          "named": true
+        },
         {
           "type": "Type",
           "named": true
@@ -818,11 +897,53 @@
       "required": true,
       "types": [
         {
+          "type": "BY",
+          "named": true
+        },
+        {
+          "type": "CONTAINING",
+          "named": true
+        },
+        {
+          "type": "ENCODED",
+          "named": true
+        },
+        {
           "type": "Type",
           "named": true
         },
         {
           "type": "Value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DateTimeType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DATE_TIME",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DateType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "DATE",
           "named": true
         }
       ]
@@ -939,19 +1060,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
-          "type": "ExternalTypeReference",
+          "type": "ActualParameterList",
           "named": true
         },
         {
-          "type": "ParameterizedType",
-          "named": true
-        },
-        {
-          "type": "ParameterizedValueSetType",
+          "type": "modulereference",
           "named": true
         }
       ]
@@ -962,15 +1079,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "ExternalValueReference",
+          "type": "ActualParameterList",
           "named": true
         },
         {
-          "type": "ParameterizedValue",
+          "type": "modulereference",
           "named": true
         },
         {
@@ -985,7 +1102,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -993,7 +1110,7 @@
           "named": true
         },
         {
-          "type": "DefinitiveOIDandIRI",
+          "type": "IRIValue",
           "named": true
         }
       ]
@@ -1021,7 +1138,17 @@
   {
     "type": "DefinitiveNumberForm",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "DefinitiveOID",
@@ -1033,25 +1160,6 @@
       "types": [
         {
           "type": "DefinitiveObjIdComponentList",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "DefinitiveOIDandIRI",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "DefinitiveOID",
-          "named": true
-        },
-        {
-          "type": "IRIValue",
           "named": true
         }
       ]
@@ -1071,10 +1179,6 @@
         },
         {
           "type": "DefinitiveNumberForm",
-          "named": true
-        },
-        {
-          "type": "NameForm",
           "named": true
         }
       ]
@@ -1111,13 +1215,32 @@
     }
   },
   {
-    "type": "ElementSetSpec",
+    "type": "DurationType",
     "named": true,
     "fields": {},
     "children": {
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "DURATION",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ElementSetSpec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ALL",
+          "named": true
+        },
         {
           "type": "Exclusions",
           "named": true
@@ -1189,7 +1312,21 @@
   {
     "type": "EmbeddedPDVType",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "EMBEDDED",
+          "named": true
+        },
+        {
+          "type": "PDV",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "EmbeddedPDVValue",
@@ -1279,9 +1416,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "INSTRUCTIONS",
+          "named": true
+        },
         {
           "type": "encodingreference",
           "named": true
@@ -1294,9 +1435,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "ENUMERATED",
+          "named": true
+        },
         {
           "type": "Enumerations",
           "named": true
@@ -1327,10 +1472,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "Enumeration",
-          "named": true
-        },
         {
           "type": "EnumerationItem",
           "named": true
@@ -1427,9 +1568,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "EXCEPT",
+          "named": true
+        },
         {
           "type": "Elements",
           "named": true
@@ -1442,9 +1587,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "ALL",
+          "named": true
+        },
+        {
+          "type": "EXPORTS",
+          "named": true
+        },
         {
           "type": "SymbolsExported",
           "named": true
@@ -1535,10 +1688,6 @@
         {
           "type": "ExtensionAdditionAlternative",
           "named": true
-        },
-        {
-          "type": "ExtensionAdditionAlternativesList",
-          "named": true
         }
       ]
     }
@@ -1614,7 +1763,21 @@
   {
     "type": "ExtensionDefault",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "EXTENSIBILITY",
+          "named": true
+        },
+        {
+          "type": "IMPLIED",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "ExtensionEndMarker",
@@ -1675,7 +1838,7 @@
     }
   },
   {
-    "type": "ExternalTypeReference",
+    "type": "ExternalType",
     "named": true,
     "fields": {},
     "children": {
@@ -1683,7 +1846,7 @@
       "required": true,
       "types": [
         {
-          "type": "modulereference",
+          "type": "EXTERNAL",
           "named": true
         }
       ]
@@ -1699,25 +1862,6 @@
       "types": [
         {
           "type": "SequenceValue",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ExternalValueReference",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "modulereference",
-          "named": true
-        },
-        {
-          "type": "valuereference",
           "named": true
         }
       ]
@@ -1807,6 +1951,10 @@
       "types": [
         {
           "type": "Type",
+          "named": true
+        },
+        {
+          "type": "UNIQUE",
           "named": true
         },
         {
@@ -1942,6 +2090,21 @@
     }
   },
   {
+    "type": "IRIType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "OID_IRI",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "IRIValue",
     "named": true,
     "fields": {}
@@ -1966,11 +2129,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
-          "type": "SymbolsImported",
+          "type": "IMPORTS",
+          "named": true
+        },
+        {
+          "type": "SymbolsFromModule",
           "named": true
         }
       ]
@@ -1981,15 +2148,27 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "COMPONENT",
+          "named": true
+        },
+        {
+          "type": "COMPONENTS",
+          "named": true
+        },
         {
           "type": "MultipleTypeConstraints",
           "named": true
         },
         {
           "type": "SingleTypeConstraint",
+          "named": true
+        },
+        {
+          "type": "WITH",
           "named": true
         }
       ]
@@ -2000,11 +2179,19 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "DefinedObjectClass",
+          "named": true
+        },
+        {
+          "type": "INSTANCE",
+          "named": true
+        },
+        {
+          "type": "OF",
           "named": true
         }
       ]
@@ -2015,9 +2202,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "INTEGER",
+          "named": true
+        },
         {
           "type": "NamedNumberList",
           "named": true
@@ -2066,7 +2257,17 @@
   {
     "type": "IntersectionMark",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "INTERSECTION",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "Intersections",
@@ -2117,8 +2318,12 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "MIN",
+          "named": true
+        },
         {
           "type": "Value",
           "named": true
@@ -2172,6 +2377,18 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "BEGIN",
+          "named": true
+        },
+        {
+          "type": "DEFINITIONS",
+          "named": true
+        },
+        {
+          "type": "END",
+          "named": true
+        },
         {
           "type": "EncodingControlSections",
           "named": true
@@ -2426,12 +2643,32 @@
   {
     "type": "NullType",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "NULL",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "NullValue",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "NULL",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "NumberForm",
@@ -2472,19 +2709,20 @@
     }
   },
   {
+    "type": "OF",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "ObjIdComponents",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "ExternalValueReference",
-          "named": true
-        },
-        {
-          "type": "NameAndNumberForm",
+          "type": "ActualParameterList",
           "named": true
         },
         {
@@ -2492,11 +2730,19 @@
           "named": true
         },
         {
-          "type": "ParameterizedValue",
+          "type": "NumberForm",
+          "named": true
+        },
+        {
+          "type": "modulereference",
           "named": true
         },
         {
           "type": "number",
+          "named": true
+        },
+        {
+          "type": "valuereference",
           "named": true
         }
       ]
@@ -2522,9 +2768,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
         {
           "type": "DefinedObject",
           "named": true
@@ -2535,10 +2785,6 @@
         },
         {
           "type": "ObjectFromObject",
-          "named": true
-        },
-        {
-          "type": "ParameterizedObject",
           "named": true
         }
       ]
@@ -2572,19 +2818,19 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
         {
           "type": "DefinedObjectClass",
           "named": true
         },
         {
           "type": "ObjectClassDefn",
-          "named": true
-        },
-        {
-          "type": "ParameterizedObjectClass",
           "named": true
         }
       ]
@@ -2617,6 +2863,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "CLASS",
+          "named": true
+        },
         {
           "type": "FieldSpec",
           "named": true
@@ -2707,20 +2957,30 @@
   {
     "type": "ObjectIdentifierType",
     "named": true,
-    "fields": {}
-  },
-  {
-    "type": "ObjectIdentifierValue",
-    "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "DefinedValue",
+          "type": "IDENTIFIER",
           "named": true
         },
+        {
+          "type": "OBJECT",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectIdentifierValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
         {
           "type": "ObjIdComponentsList",
           "named": true
@@ -2733,9 +2993,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "DEFAULT",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
+          "named": true
+        },
         {
           "type": "Object",
           "named": true
@@ -2851,9 +3119,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "DEFAULT",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
+          "named": true
+        },
         {
           "type": "ObjectSet",
           "named": true
@@ -2883,16 +3159,34 @@
   {
     "type": "OctetStringType",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "OCTET",
+          "named": true
+        },
+        {
+          "type": "STRING",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "OctetStringValue",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "CONTAINING",
+          "named": true
+        },
         {
           "type": "Value",
           "named": true
@@ -2997,44 +3291,6 @@
     }
   },
   {
-    "type": "ParameterizedObject",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ActualParameterList",
-          "named": true
-        },
-        {
-          "type": "DefinedObject",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ParameterizedObjectClass",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ActualParameterList",
-          "named": true
-        },
-        {
-          "type": "DefinedObjectClass",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "ParameterizedObjectSet",
     "named": true,
     "fields": {},
@@ -3048,78 +3304,6 @@
         },
         {
           "type": "DefinedObjectSet",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ParameterizedReference",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "Reference",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ParameterizedType",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ActualParameterList",
-          "named": true
-        },
-        {
-          "type": "SimpleDefinedType",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ParameterizedValue",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ActualParameterList",
-          "named": true
-        },
-        {
-          "type": "SimpleDefinedValue",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ParameterizedValueSetType",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ActualParameterList",
-          "named": true
-        },
-        {
-          "type": "SimpleDefinedType",
           "named": true
         }
       ]
@@ -3145,9 +3329,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "PATTERN",
+          "named": true
+        },
         {
           "type": "Value",
           "named": true
@@ -3160,11 +3348,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "Constraint",
+          "named": true
+        },
+        {
+          "type": "FROM",
           "named": true
         }
       ]
@@ -3180,6 +3372,21 @@
       "types": [
         {
           "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PossiblyParameterizedReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Reference",
           "named": true
         }
       ]
@@ -3207,12 +3414,40 @@
   {
     "type": "PresenceConstraint",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ABSENT",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
+          "named": true
+        },
+        {
+          "type": "PRESENT",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "PropertySettings",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "SETTINGS",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "Quadruple",
@@ -3242,6 +3477,21 @@
     }
   },
   {
+    "type": "RealType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "REAL",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "RealValue",
     "named": true,
     "fields": {},
@@ -3265,19 +3515,19 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "ActualParameterList",
+          "named": true
+        },
         {
           "type": "DefinedObject",
           "named": true
         },
         {
           "type": "DefinedObjectSet",
-          "named": true
-        },
-        {
-          "type": "ParameterizedObject",
           "named": true
         },
         {
@@ -3328,6 +3578,21 @@
         },
         {
           "type": "ValueFromObject",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "RelativeIRIType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "RELATIVE_OID_IRI",
           "named": true
         }
       ]
@@ -3391,6 +3656,21 @@
     }
   },
   {
+    "type": "RelativeOIDType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "RELATIVE_OID",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "RelativeOIDValue",
     "named": true,
     "fields": {},
@@ -3427,7 +3707,65 @@
   {
     "type": "RestrictedCharacterStringType",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "BMPString",
+          "named": true
+        },
+        {
+          "type": "GeneralString",
+          "named": true
+        },
+        {
+          "type": "GraphicString",
+          "named": true
+        },
+        {
+          "type": "IA5String",
+          "named": true
+        },
+        {
+          "type": "ISO646String",
+          "named": true
+        },
+        {
+          "type": "NumericString",
+          "named": true
+        },
+        {
+          "type": "PrintableString",
+          "named": true
+        },
+        {
+          "type": "T61String",
+          "named": true
+        },
+        {
+          "type": "TeletexString",
+          "named": true
+        },
+        {
+          "type": "UTF8String",
+          "named": true
+        },
+        {
+          "type": "UniversalString",
+          "named": true
+        },
+        {
+          "type": "VideotexString",
+          "named": true
+        },
+        {
+          "type": "VisibleString",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "RestrictedCharacterStringValue",
@@ -3534,7 +3872,25 @@
   {
     "type": "SelectionOption",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DESCENDANTS",
+          "named": true
+        },
+        {
+          "type": "SUCCESSORS",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "SelectionType",
@@ -3560,11 +3916,19 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "OF",
+          "named": true
+        },
+        {
+          "type": "SEQUENCE",
           "named": true
         },
         {
@@ -3599,7 +3963,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "ComponentTypeLists",
@@ -3611,6 +3975,10 @@
         },
         {
           "type": "OptionalExtensionMarker",
+          "named": true
+        },
+        {
+          "type": "SEQUENCE",
           "named": true
         }
       ]
@@ -3636,11 +4004,19 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "OF",
+          "named": true
+        },
+        {
+          "type": "SET",
           "named": true
         },
         {
@@ -3675,7 +4051,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "ComponentTypeLists",
@@ -3687,6 +4063,10 @@
         },
         {
           "type": "OptionalExtensionMarker",
+          "named": true
+        },
+        {
+          "type": "SET",
           "named": true
         }
       ]
@@ -3754,40 +4134,6 @@
     }
   },
   {
-    "type": "SimpleDefinedType",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "ExternalTypeReference",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "SimpleDefinedValue",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "ExternalValueReference",
-          "named": true
-        },
-        {
-          "type": "valuereference",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "SimpleTableConstraint",
     "named": true,
     "fields": {},
@@ -3837,11 +4183,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "Constraint",
+          "named": true
+        },
+        {
+          "type": "SIZE",
           "named": true
         }
       ]
@@ -3850,7 +4200,25 @@
   {
     "type": "SpecialRealValue",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "MINUS_INFINITY",
+          "named": true
+        },
+        {
+          "type": "NOT_A_NUMBER",
+          "named": true
+        },
+        {
+          "type": "PLUS_INFINITY",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "SubtypeConstraint",
@@ -3923,11 +4291,7 @@
       "required": true,
       "types": [
         {
-          "type": "ParameterizedReference",
-          "named": true
-        },
-        {
-          "type": "Reference",
+          "type": "PossiblyParameterizedReference",
           "named": true
         }
       ]
@@ -3972,6 +4336,10 @@
       "required": true,
       "types": [
         {
+          "type": "FROM",
+          "named": true
+        },
+        {
           "type": "GlobalModuleReference",
           "named": true
         },
@@ -3981,36 +4349,6 @@
         },
         {
           "type": "SymbolList",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "SymbolsFromModuleList",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "SymbolsFromModule",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "SymbolsImported",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "SymbolsFromModuleList",
           "named": true
         }
       ]
@@ -4106,7 +4444,29 @@
   {
     "type": "TagDefault",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AUTOMATIC",
+          "named": true
+        },
+        {
+          "type": "EXPLICIT",
+          "named": true
+        },
+        {
+          "type": "IMPLICIT",
+          "named": true
+        },
+        {
+          "type": "TAGS",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "TaggedType",
@@ -4117,11 +4477,49 @@
       "required": true,
       "types": [
         {
+          "type": "EXPLICIT",
+          "named": true
+        },
+        {
+          "type": "IMPLICIT",
+          "named": true
+        },
+        {
           "type": "Tag",
           "named": true
         },
         {
           "type": "Type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TimeOfDayType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "TIME_OF_DAY",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "TimeType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "TIME",
           "named": true
         }
       ]
@@ -4295,9 +4693,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "DEFAULT",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
+          "named": true
+        },
         {
           "type": "Type",
           "named": true
@@ -4319,6 +4725,14 @@
         },
         {
           "type": "NamedType",
+          "named": true
+        },
+        {
+          "type": "SEQUENCE",
+          "named": true
+        },
+        {
+          "type": "SET",
           "named": true
         },
         {
@@ -4350,7 +4764,17 @@
   {
     "type": "UnionMark",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "UNION",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "Unions",
@@ -4378,7 +4802,21 @@
   {
     "type": "UnrestrictedCharacterStringType",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "CHARACTER",
+          "named": true
+        },
+        {
+          "type": "STRING",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "UnrestrictedCharacterStringValue",
@@ -4401,8 +4839,12 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "MAX",
+          "named": true
+        },
         {
           "type": "Value",
           "named": true
@@ -4428,7 +4870,21 @@
   {
     "type": "UsefulObjectClassReference",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ABSTRACT_SYNTAX",
+          "named": true
+        },
+        {
+          "type": "TYPE_IDENTIFIER",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "UsefulType",
@@ -4441,8 +4897,16 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "BY",
+          "named": true
+        },
+        {
+          "type": "CONSTRAINED",
+          "named": true
+        },
         {
           "type": "UserDefinedConstraintParameter",
           "named": true
@@ -4581,9 +5045,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "DEFAULT",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
+          "named": true
+        },
         {
           "type": "Value",
           "named": true
@@ -4630,9 +5102,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "DEFAULT",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
+          "named": true
+        },
         {
           "type": "ValueSet",
           "named": true
@@ -4721,11 +5201,19 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
+          "type": "SYNTAX",
+          "named": true
+        },
+        {
           "type": "SyntaxList",
+          "named": true
+        },
+        {
+          "type": "WITH",
           "named": true
         }
       ]
@@ -4733,6 +5221,11 @@
   },
   {
     "type": "block_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "number",
     "named": true,
     "fields": {}
   },
@@ -4864,23 +5357,23 @@
   },
   {
     "type": "ABSENT",
-    "named": false
+    "named": true
   },
   {
-    "type": "ABSTRACT-SYNTAX",
-    "named": false
+    "type": "ABSTRACT_SYNTAX",
+    "named": true
   },
   {
     "type": "ALL",
-    "named": false
+    "named": true
   },
   {
     "type": "APPLICATION",
-    "named": false
+    "named": true
   },
   {
     "type": "AUTOMATIC",
-    "named": false
+    "named": true
   },
   {
     "type": "ArcIdentifier",
@@ -4888,70 +5381,74 @@
   },
   {
     "type": "BEGIN",
-    "named": false
+    "named": true
   },
   {
     "type": "BIT",
-    "named": false
+    "named": true
   },
   {
     "type": "BMPString",
-    "named": false
+    "named": true
+  },
+  {
+    "type": "BOOLEAN",
+    "named": true
   },
   {
     "type": "BY",
-    "named": false
-  },
-  {
-    "type": "BooleanType",
     "named": true
   },
   {
     "type": "CHARACTER",
-    "named": false
-  },
-  {
-    "type": "CHOICE",
-    "named": false
-  },
-  {
-    "type": "CLASS",
-    "named": false
-  },
-  {
-    "type": "COMPONENT",
-    "named": false
-  },
-  {
-    "type": "COMPONENTS",
-    "named": false
-  },
-  {
-    "type": "CONSTRAINED",
-    "named": false
-  },
-  {
-    "type": "CONTAINING",
-    "named": false
-  },
-  {
-    "type": "DEFAULT",
-    "named": false
-  },
-  {
-    "type": "DEFINITIONS",
-    "named": false
-  },
-  {
-    "type": "DESCENDANTS",
-    "named": false
-  },
-  {
-    "type": "DateTimeType",
     "named": true
   },
   {
-    "type": "DateType",
+    "type": "CHOICE",
+    "named": true
+  },
+  {
+    "type": "CLASS",
+    "named": true
+  },
+  {
+    "type": "COMPONENT",
+    "named": true
+  },
+  {
+    "type": "COMPONENTS",
+    "named": true
+  },
+  {
+    "type": "CONSTRAINED",
+    "named": true
+  },
+  {
+    "type": "CONTAINING",
+    "named": true
+  },
+  {
+    "type": "DATE",
+    "named": true
+  },
+  {
+    "type": "DATE_TIME",
+    "named": true
+  },
+  {
+    "type": "DEFAULT",
+    "named": true
+  },
+  {
+    "type": "DEFINITIONS",
+    "named": true
+  },
+  {
+    "type": "DESCENDANTS",
+    "named": true
+  },
+  {
+    "type": "DURATION",
     "named": true
   },
   {
@@ -4959,16 +5456,12 @@
     "named": false
   },
   {
-    "type": "DurationType",
+    "type": "EMBEDDED",
     "named": true
   },
   {
-    "type": "EMBEDDED",
-    "named": false
-  },
-  {
     "type": "ENCODED",
-    "named": false
+    "named": true
   },
   {
     "type": "ENCODING-CONTROL",
@@ -4976,159 +5469,159 @@
   },
   {
     "type": "END",
-    "named": false
+    "named": true
   },
   {
     "type": "ENUMERATED",
-    "named": false
+    "named": true
   },
   {
     "type": "EXCEPT",
-    "named": false
+    "named": true
   },
   {
     "type": "EXPLICIT",
-    "named": false
+    "named": true
   },
   {
     "type": "EXPORTS",
-    "named": false
+    "named": true
   },
   {
     "type": "EXTENSIBILITY",
-    "named": false
+    "named": true
+  },
+  {
+    "type": "EXTERNAL",
+    "named": true
   },
   {
     "type": "EncodingInstruction",
     "named": true
   },
   {
-    "type": "ExternalType",
+    "type": "FALSE",
     "named": true
   },
   {
-    "type": "FALSE",
-    "named": false
-  },
-  {
     "type": "FROM",
-    "named": false
+    "named": true
   },
   {
     "type": "GeneralString",
-    "named": false
+    "named": true
   },
   {
     "type": "GraphicString",
-    "named": false
+    "named": true
   },
   {
     "type": "IA5String",
-    "named": false
+    "named": true
   },
   {
     "type": "IDENTIFIER",
-    "named": false
+    "named": true
   },
   {
     "type": "IMPLICIT",
-    "named": false
+    "named": true
   },
   {
     "type": "IMPLIED",
-    "named": false
+    "named": true
   },
   {
     "type": "IMPORTS",
-    "named": false
+    "named": true
   },
   {
     "type": "INCLUDES",
-    "named": false
+    "named": true
   },
   {
     "type": "INSTANCE",
-    "named": false
+    "named": true
   },
   {
     "type": "INSTRUCTIONS",
-    "named": false
+    "named": true
   },
   {
     "type": "INTEGER",
-    "named": false
+    "named": true
   },
   {
     "type": "INTERSECTION",
-    "named": false
-  },
-  {
-    "type": "IRIType",
     "named": true
   },
   {
     "type": "ISO646String",
-    "named": false
+    "named": true
   },
   {
     "type": "MAX",
-    "named": false
+    "named": true
   },
   {
     "type": "MIN",
-    "named": false
+    "named": true
   },
   {
-    "type": "MINUS-INFINITY",
-    "named": false
+    "type": "MINUS_INFINITY",
+    "named": true
   },
   {
-    "type": "NOT-A-NUMBER",
-    "named": false
+    "type": "NOT_A_NUMBER",
+    "named": true
   },
   {
     "type": "NULL",
-    "named": false
+    "named": true
   },
   {
     "type": "NumericString",
-    "named": false
+    "named": true
   },
   {
     "type": "OBJECT",
-    "named": false
+    "named": true
   },
   {
     "type": "OCTET",
-    "named": false
+    "named": true
   },
   {
     "type": "OF",
     "named": false
   },
   {
+    "type": "OID_IRI",
+    "named": true
+  },
+  {
     "type": "OPTIONAL",
-    "named": false
+    "named": true
   },
   {
     "type": "PATTERN",
-    "named": false
+    "named": true
   },
   {
     "type": "PDV",
-    "named": false
+    "named": true
   },
   {
-    "type": "PLUS-INFINITY",
-    "named": false
+    "type": "PLUS_INFINITY",
+    "named": true
   },
   {
     "type": "PRESENT",
-    "named": false
+    "named": true
   },
   {
     "type": "PRIVATE",
-    "named": false
+    "named": true
   },
   {
     "type": "PrimitiveFieldName",
@@ -5136,10 +5629,18 @@
   },
   {
     "type": "PrintableString",
-    "named": false
+    "named": true
   },
   {
-    "type": "RealType",
+    "type": "REAL",
+    "named": true
+  },
+  {
+    "type": "RELATIVE_OID",
+    "named": true
+  },
+  {
+    "type": "RELATIVE_OID_IRI",
     "named": true
   },
   {
@@ -5147,100 +5648,92 @@
     "named": true
   },
   {
-    "type": "RelativeIRIType",
-    "named": true
-  },
-  {
-    "type": "RelativeOIDType",
-    "named": true
-  },
-  {
     "type": "SEQUENCE",
-    "named": false
+    "named": true
   },
   {
     "type": "SET",
-    "named": false
-  },
-  {
-    "type": "SETTINGS",
-    "named": false
-  },
-  {
-    "type": "SIZE",
-    "named": false
-  },
-  {
-    "type": "STRING",
-    "named": false
-  },
-  {
-    "type": "SUCCESSORS",
-    "named": false
-  },
-  {
-    "type": "SYNTAX",
-    "named": false
-  },
-  {
-    "type": "T61String",
-    "named": false
-  },
-  {
-    "type": "TAGS",
-    "named": false
-  },
-  {
-    "type": "TRUE",
-    "named": false
-  },
-  {
-    "type": "TYPE-IDENTIFIER",
-    "named": false
-  },
-  {
-    "type": "TeletexString",
-    "named": false
-  },
-  {
-    "type": "TimeOfDayType",
     "named": true
   },
   {
-    "type": "TimeType",
+    "type": "SETTINGS",
+    "named": true
+  },
+  {
+    "type": "SIZE",
+    "named": true
+  },
+  {
+    "type": "STRING",
+    "named": true
+  },
+  {
+    "type": "SUCCESSORS",
+    "named": true
+  },
+  {
+    "type": "SYNTAX",
+    "named": true
+  },
+  {
+    "type": "T61String",
+    "named": true
+  },
+  {
+    "type": "TAGS",
+    "named": true
+  },
+  {
+    "type": "TIME",
+    "named": true
+  },
+  {
+    "type": "TIME_OF_DAY",
+    "named": true
+  },
+  {
+    "type": "TRUE",
+    "named": true
+  },
+  {
+    "type": "TYPE_IDENTIFIER",
+    "named": true
+  },
+  {
+    "type": "TeletexString",
     "named": true
   },
   {
     "type": "UNION",
-    "named": false
+    "named": true
   },
   {
     "type": "UNIQUE",
-    "named": false
+    "named": true
   },
   {
     "type": "UNIVERSAL",
-    "named": false
+    "named": true
   },
   {
     "type": "UTF8String",
-    "named": false
+    "named": true
   },
   {
     "type": "UniversalString",
-    "named": false
+    "named": true
   },
   {
     "type": "VideotexString",
-    "named": false
+    "named": true
   },
   {
     "type": "VisibleString",
-    "named": false
+    "named": true
   },
   {
     "type": "WITH",
-    "named": false
+    "named": true
   },
   {
     "type": "[",
@@ -5300,10 +5793,6 @@
     "named": true
   },
   {
-    "type": "number",
-    "named": true
-  },
-  {
     "type": "objectclassreference",
     "named": false
   },
@@ -5345,11 +5834,11 @@
   },
   {
     "type": "valuereference",
-    "named": true
+    "named": false
   },
   {
     "type": "valuereference",
-    "named": false
+    "named": true
   },
   {
     "type": "valuesetfieldreference",
@@ -5361,10 +5850,6 @@
   },
   {
     "type": "{",
-    "named": false
-  },
-  {
-    "type": "{}",
     "named": false
   },
   {

@@ -37,5 +37,12 @@
     "rust": true,
     "swift": true,
     "zig": false
+  },
+  "theme": {
+    "variable": "blue",
+    "keyword": "purple",
+    "type": "green",
+    "identifier": "blue",
+    "number": "red"
   }
 }
