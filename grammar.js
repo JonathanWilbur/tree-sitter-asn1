@@ -95,6 +95,12 @@ module.exports = grammar({
     [$.XMLValueOrEmpty, $.XMLDelimitedItem],
     [$.XMLNamedValue, $.XMLChoiceValue],
     [$.XMLTypedValue, $.XMLDelimitedItem],
+
+    // Comma after a list item can continue the list or start "...".
+    // prec.right always continued the list and rejected valid extension markers.
+    [$.ComponentTypeList],
+    [$.Enumeration],
+    [$.AlternativeTypeList],
   ],
 
   extras: $ => [
@@ -112,8 +118,9 @@ module.exports = grammar({
     yellcased_identifier: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
 
     // Mixed-case identifiers (at least one lowercase letter). Used as `word` so
-    // Tail is not split into T + ail during keyword extraction.
-    uppercased_identifier: $ => /[A-Z][A-Z0-9-]*[a-z][A-Za-z0-9-]*/,
+    // Tail is not split into T + ail during keyword extraction. Single hyphens
+    // are allowed; `--` is not, so INTEGER--comment is not one token.
+    uppercased_identifier: $ => /[A-Z]([A-Z0-9]|-[A-Z0-9])*[a-z]([A-Za-z0-9]|-[A-Za-z0-9])*/,
 
     // Type and module names may be all-caps or mixed-case; object class names
     // may only be all-caps (yellcased_identifier).
@@ -480,7 +487,7 @@ module.exports = grammar({
       $.FieldSpec,
       repeat(seq(',', $.FieldSpec)),
       '}',
-      $.WithSyntaxSpec,
+      optional($.WithSyntaxSpec),
     ),
 
     FieldSpec: $ => choice(
@@ -587,6 +594,7 @@ module.exports = grammar({
 
     RequiredToken: $ => choice(
       prec(1, $.Literal),
+      alias($.anycased_field_ref, 'PrimitiveFieldName'),
       $.any_identifier,
     ),
 
@@ -925,7 +933,7 @@ module.exports = grammar({
       $.Tuple
     ),
     
-    cstring: $ => /"[^"]*"/,
+    cstring: $ => /"([^"]|"")*"/,
     
     CharacterStringList: $ => seq(
       '{',
@@ -1050,10 +1058,10 @@ module.exports = grammar({
 
     AdditionalEnumeration: $ => $.Enumeration,
 
-    Enumeration: $ => prec.right(seq(
+    Enumeration: $ => seq(
       $.EnumerationItem,
       repeat(seq(',', $.EnumerationItem))
-    )),
+    ),
 
     EnumerationItem: $ => choice(
       $.identifier,
@@ -1127,10 +1135,10 @@ module.exports = grammar({
 
     VersionNumber: $ => seq($.number, ':'),
 
-    ComponentTypeList: $ => prec.right(seq(
+    ComponentTypeList: $ => seq(
       $.ComponentType,
       repeat(seq(',', $.ComponentType)),
-    )),
+    ),
 
     ComponentType: $ => choice(
       $.NamedType,
@@ -1193,10 +1201,10 @@ module.exports = grammar({
       ']]'
     ),
 
-    AlternativeTypeList: $ => prec.right(seq(
+    AlternativeTypeList: $ => seq(
       $.NamedType,
       repeat(seq(',', $.NamedType)),
-    )),
+    ),
 
     ObjectIdentifierType: $ => seq($.OBJECT, $.IDENTIFIER),
 
@@ -1648,10 +1656,10 @@ module.exports = grammar({
       '*/'
     ),
 
-    // FIXME: This is not a valid comment, it should be a line comment
-    line_comment: $ => token(seq('--', /[^\n]*/)),
+    // `--` comments end at the next `--` or at end of line, whichever is first.
+    line_comment: $ => token(seq('--', /([^-\n]|-[^-\n])*/, optional('--'))),
 
-    identifier: $ => /[a-zA-Z][a-zA-Z0-9-]*/,
+    identifier: $ => /[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
 
     XMLTypedValue: $ => choice(
       seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
