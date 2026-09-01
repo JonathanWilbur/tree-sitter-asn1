@@ -1,0 +1,120 @@
+================================================================================
+SEQUENCE with extension marker after components
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+A ::= SEQUENCE { x INTEGER, ... }
+B ::= SEQUENCE { x INTEGER, ..., y BOOLEAN }
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (SequenceType
+                  (SEQUENCE)
+                  (ComponentTypeLists
+                    (RootComponentTypeList
+                      (ComponentTypeList
+                        (ComponentType
+                          (NamedType
+                            (identifier)
+                            (Type
+                              (BuiltinType
+                                (IntegerType
+                                  (INTEGER))))))))
+                    (ExtensionAndException)))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (SequenceType
+                  (SEQUENCE)
+                  (ComponentTypeLists
+                    (RootComponentTypeList
+                      (ComponentTypeList
+                        (ComponentType
+                          (NamedType
+                            (identifier)
+                            (Type
+                              (BuiltinType
+                                (IntegerType
+                                  (INTEGER))))))))
+                    (ExtensionAndException)
+                    (ExtensionAdditions
+                      (ExtensionAdditionList
+                        (ExtensionAddition
+                          (ComponentType
+                            (NamedType
+                              (identifier)
+                              (Type
+                                (BuiltinType
+                                  (BooleanType
+                                    (BOOLEAN)))))))))))))))))
+    (END)))
+
+================================================================================
+CHOICE and ENUMERATED with extension markers
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+C ::= CHOICE { a INTEGER, ... }
+E ::= ENUMERATED { v1(1), v2(2), ... }
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (ChoiceType
+                  (CHOICE)
+                  (AlternativeTypeLists
+                    (RootAlternativeTypeList
+                      (AlternativeTypeList
+                        (NamedType
+                          (identifier)
+                          (Type
+                            (BuiltinType
+                              (IntegerType
+                                (INTEGER)))))))
+                    (ExtensionAndException)))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (EnumeratedType
+                  (ENUMERATED)
+                  (Enumerations
+                    (RootEnumeration
+                      (Enumeration
+                        (EnumerationItem
+                          (NamedNumber
+                            (identifier)
+                            (SignedNumber
+                              (number))))
+                        (EnumerationItem
+                          (NamedNumber
+                            (identifier)
+                            (SignedNumber
+                              (number))))))))))))))
+    (END)))
