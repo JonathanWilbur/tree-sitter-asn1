@@ -1,0 +1,57 @@
+CertificateExtensions {joint-iso-itu-t ds(5) module(1)
+  certificateExtensions(26) 7} DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+
+SYNTAX-NAME ::= CLASS {
+  &ldapDesc               UTF8String,
+  &Type                   OPTIONAL,
+  &id                     OBJECT IDENTIFIER UNIQUE }
+WITH SYNTAX {
+  LDAP-DESC               &ldapDesc
+  [DIRECTORY SYNTAX       &Type]
+  ID                      &id }
+
+MATCHING-RULE ::= CLASS {
+  &ParentMatchingRules    MATCHING-RULE OPTIONAL,
+  &AssertionType          OPTIONAL,
+  &uniqueMatchIndicator   ATTRIBUTE OPTIONAL,
+  &ldapSyntax             SYNTAX-NAME.&id OPTIONAL,
+  &ldapName               SEQUENCE SIZE(1..MAX) OF UTF8String OPTIONAL,
+  &ldapDesc               UTF8String OPTIONAL,
+  &id                     OBJECT IDENTIFIER UNIQUE }
+WITH SYNTAX {
+  [PARENT                 &ParentMatchingRules]
+  [SYNTAX                 &AssertionType]
+  [UNIQUE-MATCH-INDICATOR &uniqueMatchIndicator]
+  [LDAP-SYNTAX            &ldapSyntax]
+  [LDAP-NAME              &ldapName]
+  [LDAP-DESC              &ldapDesc]
+  ID                      &id }
+
+ID    ::= OBJECT IDENTIFIER
+internet            ID ::= {iso(1) identified-organization(3) dod(6) internet(1)}
+ldap-dir            ID ::= {internet directory(1)}
+ldap-x509           ID ::= {ldap-dir x509(15)}
+id-ldx                                   ID ::= ldap-x509
+id-ldx-certExactAssertion OBJECT IDENTIFIER ::= {id-ldx 1}
+
+certExactAssertion SYNTAX-NAME ::= {
+  LDAP-DESC         "X.509 Certificate Exact Assertion"
+  DIRECTORY SYNTAX  CertificateExactAssertion
+  ID                id-ldx-certExactAssertion
+}
+
+CertificateExactAssertion ::= SEQUENCE {
+  serialNumber  INTEGER,
+  ...
+}
+
+certificateExactMatch MATCHING-RULE ::= {
+  SYNTAX       CertificateExactAssertion
+  LDAP-SYNTAX  certExactAssertion.&id
+  LDAP-NAME    {"certificateExactMatch"}
+  LDAP-DESC    "X.509 Certificate Exact Match"
+  ID           id-mr-certificateExactMatch
+}
+
+END

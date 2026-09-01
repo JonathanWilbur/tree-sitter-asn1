@@ -1,0 +1,25 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5)}
+DEFINITIONS ::=
+BEGIN
+
+-- Taken from ANSI X9.42.
+
+dhStatic-sha1 	OBJECT IDENTIFIER ::= { 2 5 34 1 } -- This is not the real OID. Just an example.
+
+ALGORITHM-ID ::= CLASS {
+    &id	OBJECT IDENTIFIER UNIQUE,
+    &Type OPTIONAL
+}
+WITH SYNTAX {
+    OID &id
+    [PARMS &Type]
+}
+
+KEY-AGREEMENT ::= ALGORITHM-ID
+
+NamedSchemes KEY-AGREEMENT ::= {
+    { OID  dhStatic-sha1 },
+    ...
+}
+
+END

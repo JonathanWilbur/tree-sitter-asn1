@@ -1,0 +1,53 @@
+-- ModuleDefinition ::=
+--     ModuleIdentifier
+--     DEFINITIONS
+--     EncodingReferenceDefault
+--     TagDefault
+--     ExtensionDefault
+--     "::="
+--     BEGIN
+--     ModuleBody
+--     EncodingControlSections
+--     END
+
+Obnoxious1 {joint-iso-itu-t ds(5) module(1)}
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+
+IMPORTS Referent FROM Obnoxious2 {joint-iso-itu-t ds(5) module(2)};
+
+AllowedAttributeAssignment ::= SEQUENCE {
+    holderDomain GeneralName,
+    COMPONENTS OF Referent,
+    ...,
+    holderDomain2 GeneralName DEFAULT { 1 5 9 }
+}
+
+END
+
+Obnoxious2 {joint-iso-itu-t ds(5) module(2)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+
+IMPORTS SuperReferent FROM Obnoxious3 {joint-iso-itu-t ds(5) module(3)};
+
+Referent ::= SEQUENCE {
+    id OBJECT IDENTIFIER,
+    thingy INTEGER,
+    COMPONENTS OF SuperReferent,
+    ...
+}
+
+END
+
+Obnoxious3 {joint-iso-itu-t ds(5) module(3)}
+DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+SuperReferent ::= SEQUENCE {
+    ultra-id OBJECT IDENTIFIER,
+    stuff INTEGER,
+    ...
+}
+
+END

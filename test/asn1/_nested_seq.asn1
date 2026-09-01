@@ -1,0 +1,25 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5) module(1) algorithmObjectIdentifiers(8) 8}
+DEFINITIONS ::=
+BEGIN
+
+AllowedAttributeAssignment ::= SEQUENCE {
+    holderDomain GeneralName,
+    hi SEQUENCE {
+        id INTEGER,
+        spanccy OBJECT IDENTIFIER
+    },
+    ...,
+    holderDomain2 GeneralName DEFAULT { 1 5 9 }
+}
+
+AllowedAttributeAssignment2 ::= SEQUENCE {
+    holderDomain GeneralName,
+    hi CHOICE {
+        id INTEGER,
+        spanccy OBJECT IDENTIFIER
+    },
+    ...,
+    holderDomain2 GeneralName DEFAULT { 1 5 9 }
+}
+
+END

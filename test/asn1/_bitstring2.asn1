@@ -1,0 +1,28 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+BigBoi ::= BIT STRING {
+    a(0),
+    b(1),
+    c(2)
+}
+
+emptyBits BigBoi ::= ''B
+emptyBytes BigBoi ::= ''H
+threeBits BigBoi ::= '101'B
+fullHexByte BigBoi ::= 'F0'H
+halfHexByte BigBoi ::= 'F'H
+identifiers BigBoi ::= { a, c }
+unrelatedCString PrintableString ::= "helloworld"
+unrelatedEmptyCString PrintableString ::= ""
+fourBits BigBoi ::= '1010'B
+
+-- This is not permissible, because cstrings cannot be single-quoted:
+-- singleQuotedCString PrintableString ::= 'helloworld'
+
+-- These are not permissible, because bstrings and hstrings cannot be double-quoted,
+-- however, these will be interpreted as a string followed by an identifier.
+-- threeBits BigBoi ::= "101"B
+-- fullHexByte BigBoi ::= "F0"H
+-- halfHexByte BigBoi ::= "F"H
+
+END

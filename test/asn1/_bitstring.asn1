@@ -1,0 +1,32 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5) module(1) algorithmObjectIdentifiers(8) 8}
+DEFINITIONS ::=
+BEGIN
+
+-- EXPORTS All
+
+/*
+The values defined in this module are primarily taking from various specifications and
+collected here for easy reference by other specifcations.
+
+Wen values are copied form an IETF RFC, the IETF RFC number is shown.
+
+When values are copied from the NIST Computer Security Objects Register (CSOR),
+the label CSOR is used.
+*/
+
+IMPORTS
+  algorithm, authenticationFramework
+    FROM UsefulDefinitions {joint-iso-itu-t ds(5) module(1) usefulDefinitions(0) 8}
+
+  ALGORITHM, AlgorithmIdentifier{}, SupportedAlgorithms, SupportedCurves
+    FROM AuthenticationFramework authenticationFramework;
+
+ClassList ::= BIT STRING {
+  unmarked      (0),
+  unclassified  (1),
+  restricted    (2),
+  confidential  (3),
+  secret        (4),
+  topSecret     (5)}
+
+END

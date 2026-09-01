@@ -1,0 +1,8 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+ValidityPeriod ::= SEQUENCE {
+   notBefore  DateTime OPTIONAL,
+   notAfter   DateTime  OPTIONAL
+}(ALL EXCEPT({ -- none; at least one component is present --  }))
+
+END

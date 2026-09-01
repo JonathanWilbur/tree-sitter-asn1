@@ -1,0 +1,25 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5) module(1) algorithmObjectIdentifiers(8) 8}
+DEFINITIONS ::=
+BEGIN
+
+SuperReferent ::= SEQUENCE {
+    ultra-id OBJECT IDENTIFIER,
+    stuff INTEGER,
+    ...
+}
+
+Referent ::= SEQUENCE {
+    id OBJECT IDENTIFIER,
+    thingy INTEGER,
+    COMPONENTS OF SuperReferent,
+    ...
+}
+
+AllowedAttributeAssignment ::= SEQUENCE {
+    holderDomain GeneralName,
+    COMPONENTS OF Referent,
+    ...,
+    holderDomain2 GeneralName DEFAULT { 1 5 9 }
+}
+
+END

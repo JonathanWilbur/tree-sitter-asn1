@@ -1,0 +1,7 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+ContentInfo ::= SEQUENCE {
+    contentType ContentType,
+    content [0] EXPLICIT ANY DEFINED BY contentType }
+
+END

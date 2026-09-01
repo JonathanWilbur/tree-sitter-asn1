@@ -1,0 +1,5 @@
+A {iso} DEFINITIONS ::= BEGIN
+SpecificExclusions ::= SET SIZE (1..MAX) OF CHOICE {
+    chopBefore  [0]  LocalName,
+    chopAfter   [1]  LocalName }
+END

@@ -1,0 +1,19 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5) module(1) algorithmObjectIdentifiers(8) 8}
+DEFINITIONS ::=
+BEGIN
+
+-- This should have a dependencyIndex of 1.
+Parent ::= SEQUENCE {
+    boring BOOLEAN,
+    children SEQUENCE OF Child,
+    ...
+}
+
+-- This should have a dependencyIndex of 0.
+Child ::= SEQUENCE {
+    age INTEGER,
+    parents SEQUENCE SIZE(2) OF Parent,
+    ...
+}
+
+END

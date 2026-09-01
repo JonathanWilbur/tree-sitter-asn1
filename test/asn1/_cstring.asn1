@@ -1,0 +1,13 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+c1 PrintableString ::= "helloworld"
+c2 PrintableString ::= "hello""world"
+c3 PrintableString ::= "foo""bar""baz"
+unrelatedInteger INTEGER ::= 7
+c4 PrintableString ::= "helloworld"
+c5 PrintableString ::= "hello
+world"
+c6 PrintableString ::= "hello
+                        world"
+
+END

@@ -1,0 +1,4 @@
+A {iso} DEFINITIONS ::= BEGIN
+CLASSY-BOI ::= CLASS { &id OBJECT IDENTIFIER }
+Typeyboi ::= CLASSY-BOI.&id
+END

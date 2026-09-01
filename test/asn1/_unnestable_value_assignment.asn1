@@ -1,0 +1,7 @@
+A {iso}
+DEFINITIONS ::=
+BEGIN
+
+asdf SEQUENCE { id INTEGER } ::= { id 5 }
+
+END

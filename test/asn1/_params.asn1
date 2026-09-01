@@ -1,0 +1,10 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+Alpha {SPANCCY:Boi,King} ::= SEQUENCE {
+    swag King,
+    spanccy Boi
+}
+
+Beta ::= Alpha{Me,You}
+
+END

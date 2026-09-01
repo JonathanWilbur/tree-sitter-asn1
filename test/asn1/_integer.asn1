@@ -1,0 +1,18 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5) module(1) algorithmObjectIdentifiers(8) 8}
+DEFINITIONS ::=
+BEGIN
+
+ShadowProblem ::= INTEGER {
+  invalidAgreementID         (1),
+  inactiveAgreement          (2),
+  invalidInformationReceived (3),
+  unsupportedStrategy        (4),
+  missedPrevious             (5),
+  fullUpdateRequired         (6),
+  unwillingToPerform         (7),
+  unsuitableTiming           (8),
+  updateAlreadyReceived      (9),
+  invalidSequencing          (10),
+  insufficientResources      (11) }
+
+END

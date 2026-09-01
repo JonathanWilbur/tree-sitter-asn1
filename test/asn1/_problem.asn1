@@ -1,0 +1,12 @@
+OSIProtocolSpecification {joint-iso-itu-t}
+DEFINITIONS ::=
+BEGIN
+
+-- ABSTRACT-SYNTAX.&Type is an ObjectClassFieldType
+-- {Protocols} is an ObjectSet
+-- {{Protocols}} is an ActualParametersList
+OsiBindError ::= SEQUENCE {
+    single-ASN1-type               ABSTRACT-SYNTAX.&Type(AAREerr-apdu{{Protocols}})
+}
+
+END

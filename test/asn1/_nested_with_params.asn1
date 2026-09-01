@@ -1,0 +1,25 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5) module(1) algorithmObjectIdentifiers(8) 8}
+DEFINITIONS ::=
+BEGIN
+
+Alpha {SPANCCY:Boi,SWAG:Lord} ::= SEQUENCE {
+    holderDomain GeneralName,
+    hi SEQUENCE {
+        swag Lord,
+        spanccy Boi
+    },
+    ...,
+    holderDomain2 GeneralName DEFAULT { 1 5 9 }
+}
+
+Beta {GUCCI:Mane} ::= SEQUENCE {
+    holderDomain GeneralName,
+    hi CHOICE {
+        id INTEGER,
+        gucci Mane
+    },
+    ...,
+    holderDomain2 GeneralName DEFAULT { 1 5 9 }
+}
+
+END

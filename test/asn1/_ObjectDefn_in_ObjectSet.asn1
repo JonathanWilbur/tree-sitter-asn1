@@ -1,0 +1,26 @@
+-- This is to test unnesting of ObjectDefn from ObjectSet.
+
+A {iso} DEFINITIONS ::= BEGIN
+
+CLASSYBOI ::= CLASS {
+    &id OBJECT IDENTIFIER,
+    &inner CLASSYBOI OPTIONAL
+}
+WITH SYNTAX {
+    IDENTIFIED BY &id
+    [HAVING &inner]
+}
+
+classA CLASSYBOI ::= {
+    IDENTIFIED BY { 1 2 3 }
+}
+
+Classes CLASSYBOI ::= {
+    classA | { IDENTIFIED BY { 4 5 6 } }
+}
+
+ClassesB CLASSYBOI ::= {
+    classA | Classes EXCEPT { IDENTIFIED BY { 4 5 6 } }
+}
+
+END

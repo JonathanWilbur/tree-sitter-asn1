@@ -1,0 +1,15 @@
+X9-84-Biometrics {iso}
+   DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+BIOMETRIC ::= CLASS {
+   &name  BIOMETRIC-IDENTIFIER  UNIQUE,
+   &Type  OPTIONAL
+}
+   WITH SYNTAX { BIOMETRIC &name [ DATA &Type ] }
+
+BIOMETRIC-IDENTIFIER ::= CHOICE {
+   oid  OBJECT IDENTIFIER,  -- complete object identifier
+   id   RELATIVE-OID        -- object identifier fragment
+}
+
+END

@@ -1,0 +1,11 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+UsageMeasurement ::= SEQUENCE {
+    durationTime INTEGER-- This is a comment, not a continuation of the identifier. --
+}
+
+UsageMeasurement2 ::= SEQUENCE {
+    durationTime INTEGER--This is also comment, not a continuation of the identifier.--
+}
+
+END

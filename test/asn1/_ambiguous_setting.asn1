@@ -1,0 +1,50 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+OPERATION ::= CLASS {
+  &ArgumentType   OPTIONAL,
+  &ResultType     OPTIONAL,
+  &Errors         ERROR OPTIONAL,
+  &operationCode  Code UNIQUE OPTIONAL }
+WITH SYNTAX {
+  [ARGUMENT       &ArgumentType]
+  [RESULT         &ResultType]
+  [ERRORS         &Errors]
+  [CODE           &operationCode] }
+
+ERROR ::= CLASS {
+  &ParameterType,
+  &errorCode      Code UNIQUE OPTIONAL }
+WITH SYNTAX {
+  PARAMETER       &ParameterType
+  [CODE           &errorCode] }
+
+Code ::= CHOICE {
+  local   INTEGER,
+  global  OBJECT IDENTIFIER,
+  ... }
+
+id-errcode-abandonFailed          Code ::= local:7
+
+AbandonFailedData ::= SET {
+  problem    [0]  AbandonProblem,
+  operation  [1]  InvokeId }
+
+abandonFailed ERROR ::= {
+  PARAMETER AbandonFailedData
+  CODE      id-errcode-abandonFailed }
+
+abandon OPERATION ::= {
+  ARGUMENT  AbandonArgument
+  RESULT    AbandonResult
+  ERRORS    {abandonFailed}
+  CODE      id-opcode-abandon }
+
+AbandonArgument ::= SEQUENCE {
+  invokeID  [0]  INTEGER,
+  ... }
+
+AbandonResult ::= CHOICE {
+  null          NULL,
+  ... }
+
+END

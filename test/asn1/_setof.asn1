@@ -1,0 +1,13 @@
+AlgorithmObjectIdentifiers {joint-iso-itu-t ds(5) module(1) algorithmObjectIdentifiers(8) 8}
+DEFINITIONS ::=
+BEGIN
+
+AllowedAttributeAssignments ::= SET OF SEQUENCE {
+  attributes              [0]  SET OF CHOICE {
+    attributeType           [0]  AttributeType,
+    attributeTypeandValues  [1]  Attribute{{SupportedAttributes}},
+    ... },
+  holderDomain            [1]  GeneralName,
+  ... }
+
+END

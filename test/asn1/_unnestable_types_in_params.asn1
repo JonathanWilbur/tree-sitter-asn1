@@ -1,0 +1,7 @@
+A {iso}
+DEFINITIONS ::=
+BEGIN
+
+Typeyboi {SEQUENCE { id INTEGER }:a, B} ::= INTEGER
+
+END

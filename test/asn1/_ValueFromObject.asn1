@@ -1,0 +1,10 @@
+A {iso} DEFINITIONS ::= BEGIN
+
+-- This is taken directly from Dubuisson, page 339.
+CLASS1 ::= CLASS { &obj CLASS2 }
+CLASS2 ::= CLASS { &val INTEGER }
+object1 CLASS1 ::= { &obj object2 }
+object2 CLASS2 ::= { &val 5 }
+value INTEGER ::= object1.&obj.&val
+
+END

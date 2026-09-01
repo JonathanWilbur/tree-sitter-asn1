@@ -1,0 +1,57 @@
+A {iso}
+DEFINITIONS ::=
+BEGIN
+
+CLASSYBOI ::= CLASS {
+    &id OBJECT IDENTIFIER,
+    &inner CLASSYBOI OPTIONAL
+}
+WITH SYNTAX {
+    IDENTIFIED BY &id
+    [HAVING &inner]
+}
+
+BOOP ::= CLASS {
+    &foo INTEGER,
+    &bar CLASSYBOI
+}
+WITH SYNTAX {
+    YEET &foo
+    YANG &bar
+}
+
+TYPEYCLASS ::= CLASS {
+    &Foo
+}
+
+outer1 CLASSYBOI ::= {
+    &id { iso 1 2 3 },
+    &inner {
+        &id { iso 1 2 3 }
+    }
+}
+
+outer2 CLASSYBOI ::= {
+    IDENTIFIED BY { iso 1 2 3 }
+    HAVING {
+        &id { iso 1 2 3 }
+    }
+}
+
+outer3 BOOP ::= {
+    &foo 1,
+    &bar {
+        IDENTIFIED BY { iso 1 2 3 }
+        HAVING {
+            &id { iso 1 2 3 }
+        }
+    }
+}
+
+outer4 TYPEYCLASS ::= {
+    &Foo SEQUENCE {
+        id INTEGER
+    }
+}
+
+END

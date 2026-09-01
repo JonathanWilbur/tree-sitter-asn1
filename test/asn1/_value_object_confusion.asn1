@@ -1,0 +1,19 @@
+ValueObjectAssignmentConfusion {iso} DEFINITIONS ::= BEGIN
+
+BIGINT ::= INTEGER
+
+definedValue BIGINT ::= 5
+
+CLASSYBOI ::= CLASS {
+    &Typeyboi
+}
+
+definedObject CLASSYBOI ::= {
+    &Typeyboi INTEGER
+}
+
+aliasValue BIGINT ::= definedValue
+
+aliasObject CLASSYBOI ::= definedObject
+
+END
