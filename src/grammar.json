@@ -16,7 +16,7 @@
     },
     "uppercased_identifier": {
       "type": "PATTERN",
-      "value": "[A-Z][A-Z0-9-]*[a-z][A-Za-z0-9-]*"
+      "value": "[A-Z]([A-Z0-9]|-[A-Z0-9])*[a-z]([A-Za-z0-9]|-[A-Za-z0-9])*"
     },
     "_upper_name": {
       "type": "CHOICE",
@@ -1609,8 +1609,16 @@
           "value": "}"
         },
         {
-          "type": "SYMBOL",
-          "name": "WithSyntaxSpec"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "WithSyntaxSpec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -2070,6 +2078,15 @@
             "type": "SYMBOL",
             "name": "Literal"
           }
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "anycased_field_ref"
+          },
+          "named": false,
+          "value": "PrimitiveFieldName"
         },
         {
           "type": "SYMBOL",
@@ -3339,7 +3356,7 @@
     },
     "cstring": {
       "type": "PATTERN",
-      "value": "\"[^\"]*\""
+      "value": "\"([^\"]|\"\")*\""
     },
     "CharacterStringList": {
       "type": "SEQ",
@@ -3867,33 +3884,29 @@
       "name": "Enumeration"
     },
     "Enumeration": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "EnumerationItem"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ","
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "EnumerationItem"
-                }
-              ]
-            }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EnumerationItem"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "EnumerationItem"
+              }
+            ]
           }
-        ]
-      }
+        }
+      ]
     },
     "EnumerationItem": {
       "type": "CHOICE",
@@ -4452,33 +4465,29 @@
       ]
     },
     "ComponentTypeList": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "ComponentType"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ","
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "ComponentType"
-                }
-              ]
-            }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ComponentType"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ComponentType"
+              }
+            ]
           }
-        ]
-      }
+        }
+      ]
     },
     "ComponentType": {
       "type": "CHOICE",
@@ -4867,33 +4876,29 @@
       ]
     },
     "AlternativeTypeList": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "NamedType"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ","
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "NamedType"
-                }
-              ]
-            }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NamedType"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedType"
+              }
+            ]
           }
-        ]
-      }
+        }
+      ]
     },
     "ObjectIdentifierType": {
       "type": "SEQ",
@@ -6911,14 +6916,26 @@
           },
           {
             "type": "PATTERN",
-            "value": "[^\\n]*"
+            "value": "([^-\\n]|-[^-\\n])*"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "--"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[a-zA-Z][a-zA-Z0-9-]*"
+      "value": "[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
     },
     "XMLTypedValue": {
       "type": "CHOICE",
@@ -8132,6 +8149,15 @@
     [
       "XMLTypedValue",
       "XMLDelimitedItem"
+    ],
+    [
+      "ComponentTypeList"
+    ],
+    [
+      "Enumeration"
+    ],
+    [
+      "AlternativeTypeList"
     ]
   ],
   "precedences": [],
