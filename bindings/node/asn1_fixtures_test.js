@@ -20,15 +20,15 @@ function listAsn1Fixtures(dir) {
 }
 
 function collectParseProblems(node, problems = []) {
-  if (node.type === "ERROR" || node.isMissing()) {
+  if (node.isError || node.isMissing) {
     const { row, column } = node.startPosition;
-    const label = node.isMissing() ? `MISSING ${node.type}` : "ERROR";
+    const label = node.isMissing ? `MISSING ${node.type}` : "ERROR";
     problems.push(`${label} at ${row + 1}:${column + 1}`);
     return problems;
   }
 
-  for (let i = 0; i < node.childCount; i++) {
-    collectParseProblems(node.child(i), problems);
+  for (const child of node.children) {
+    collectParseProblems(child, problems);
   }
 
   return problems;
