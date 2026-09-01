@@ -1,7 +1,7 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "asn1",
-  "word": "yellcased_identifier",
+  "word": "uppercased_identifier",
   "rules": {
     "source_file": {
       "type": "REPEAT",
@@ -11,8 +11,15 @@
       }
     },
     "yellcased_identifier": {
-      "type": "PATTERN",
-      "value": "[A-Z][A-Z0-9]*(-[A-Z0-9]+)*"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[A-Z][A-Z0-9]*(-[A-Z0-9]+)*"
+        }
+      }
     },
     "uppercased_identifier": {
       "type": "PATTERN",
@@ -696,12 +703,22 @@
       ]
     },
     "modulereference": {
-      "type": "PATTERN",
-      "value": "[A-Z][a-zA-Z0-9-]*"
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "uppercased_identifier"
+      },
+      "named": true,
+      "value": "modulereference"
     },
     "valuereference": {
-      "type": "PATTERN",
-      "value": "[a-z][a-zA-Z0-9-]*"
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "lowercased_identifier"
+      },
+      "named": true,
+      "value": "valuereference"
     },
     "TagDefault": {
       "type": "CHOICE",
@@ -1164,8 +1181,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "modulereference"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "modulereference"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "."
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -1325,7 +1351,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "yellcased_identifier"
+            "name": "uppercased_identifier"
           },
           "named": false,
           "value": "objectclassreference"
@@ -1499,7 +1525,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "yellcased_identifier"
+            "name": "uppercased_identifier"
           },
           "named": false,
           "value": "objectclassreference"
@@ -1534,7 +1560,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "yellcased_identifier"
+            "name": "uppercased_identifier"
           },
           "named": false,
           "value": "objectclassreference"
@@ -7692,8 +7718,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "modulereference"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "modulereference"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "."
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -7780,6 +7815,91 @@
       "DefinedType"
     ],
     [
+      "DefinedObjectClass",
+      "DefinedType",
+      "UsefulType"
+    ],
+    [
+      "NameForm",
+      "ObjIdComponents"
+    ],
+    [
+      "NameForm",
+      "ObjIdComponents",
+      "DefinedValue"
+    ],
+    [
+      "ObjIdComponents",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "NameForm",
+      "ObjIdComponents",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "DefinedObjectClass",
+      "objectsetreference",
+      "DefinedType"
+    ],
+    [
+      "ExternalObjectClassReference",
+      "objectsetreference",
+      "DefinedType"
+    ],
+    [
+      "DefinedObjectClass",
+      "objectsetreference",
+      "DefinedType",
+      "UsefulType"
+    ],
+    [
+      "DefinedValue",
+      "DefinedObjectClass",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
+      "objectsetreference",
+      "DefinedType"
+    ],
+    [
+      "DefinedObjectClass",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
+      "objectsetreference",
+      "DefinedType"
+    ],
+    [
+      "ObjIdComponents",
+      "DefinedValue",
+      "DefinedObjectClass",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
+      "objectsetreference",
+      "DefinedType"
+    ],
+    [
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
+      "objectsetreference"
+    ],
+    [
+      "ExternalObjectClassReference",
+      "DefinedType"
+    ],
+    [
+      "ExternalObjectClassReference",
+      "objectsetreference"
+    ],
+    [
       "objectsetreference",
       "ExternalTypeReference"
     ],
@@ -7787,10 +7907,6 @@
       "objectsetreference",
       "DefinedType",
       "UsefulType"
-    ],
-    [
-      "NameForm",
-      "objectreference"
     ],
     [
       "BitStringValue",
@@ -7983,7 +8099,10 @@
   ],
   "precedences": [],
   "externals": [],
-  "inline": [],
+  "inline": [
+    "modulereference",
+    "valuereference"
+  ],
   "supertypes": [],
   "reserved": {}
 }
