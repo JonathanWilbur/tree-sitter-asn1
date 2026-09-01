@@ -22,6 +22,7 @@ PCLIBDIR ?= $(LIBDIR)/pkgconfig
 PARSER := $(SRC_DIR)/parser.c
 EXTRAS := $(filter-out $(PARSER),$(wildcard $(SRC_DIR)/*.c))
 OBJS := $(patsubst %.c,%.o,$(PARSER) $(EXTRAS))
+ASN1_FIXTURES := $(wildcard test/asn1/*.asn1) $(wildcard test/asn1/*.asn)
 
 # flags
 ARFLAGS ?= rcs
@@ -95,5 +96,7 @@ clean:
 
 test:
 	$(TS) test
+	@test -n "$(ASN1_FIXTURES)" || { echo "No ASN.1 fixtures found in test/asn1" >&2; exit 1; }
+	$(TS) parse $(ASN1_FIXTURES) --quiet --stat
 
 .PHONY: all install uninstall clean test

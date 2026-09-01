@@ -41,11 +41,99 @@ pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
 #[cfg(test)]
 mod tests {
+    use std::fs;
+    use std::path::PathBuf;
+
+    fn fixtures_dir() -> PathBuf {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test/asn1")
+    }
+
+    fn asn1_fixtures() -> Vec<PathBuf> {
+        let mut files: Vec<PathBuf> = fs::read_dir(fixtures_dir())
+            .expect("test/asn1 should exist")
+            .filter_map(|entry| entry.ok().map(|e| e.path()))
+            .filter(|path| {
+                matches!(
+                    path.extension().and_then(|ext| ext.to_str()),
+                    Some("asn1") | Some("asn")
+                )
+            })
+            .collect();
+        files.sort();
+        files
+    }
+
+    fn collect_parse_problems(node: tree_sitter::Node, problems: &mut Vec<String>) {
+        if node.is_error() || node.is_missing() {
+            let start = node.start_position();
+            let label = if node.is_missing() {
+                format!("MISSING {}", node.kind())
+            } else {
+                "ERROR".to_string()
+            };
+            problems.push(format!(
+                "{} at {}:{}",
+                label,
+                start.row + 1,
+                start.column + 1
+            ));
+            return;
+        }
+
+        let mut cursor = node.walk();
+        for child in node.children(&mut cursor) {
+            collect_parse_problems(child, problems);
+        }
+    }
+
     #[test]
     fn test_can_load_grammar() {
         let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading ASN.1 parser");
+    }
+
+    #[test]
+    fn test_asn1_fixtures_parse_without_errors() {
+        let dir = fixtures_dir();
+        if !dir.is_dir() {
+            // Fixture modules live in the git repo, not the published crate.
+            return;
+        }
+
+        let files = asn1_fixtures();
+        assert!(
+            !files.is_empty(),
+            "expected at least one .asn or .asn1 file in test/asn1"
+        );
+
+        let mut parser = tree_sitter::Parser::new();
+        parser
+            .set_language(&super::LANGUAGE.into())
+            .expect("Error loading ASN.1 parser");
+
+        let mut failures = Vec::new();
+        for path in files {
+            let source = fs::read_to_string(&path)
+                .unwrap_or_else(|err| panic!("failed to read {}: {err}", path.display()));
+            let tree = parser.parse(&source, None).expect("parser returned None");
+            let mut problems = Vec::new();
+            collect_parse_problems(tree.root_node(), &mut problems);
+            if !problems.is_empty() {
+                failures.push(format!(
+                    "{}:\n  {}",
+                    path.file_name().unwrap().to_string_lossy(),
+                    problems.join("\n  ")
+                ));
+            }
+        }
+
+        assert!(
+            failures.is_empty(),
+            "{} ASN.1 fixture(s) parsed with errors:\n{}",
+            failures.len(),
+            failures.join("\n")
+        );
     }
 }
