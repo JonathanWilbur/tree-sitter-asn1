@@ -6025,6 +6025,10 @@
         {
           "type": "uppercased_identifier",
           "named": true
+        },
+        {
+          "type": "yellcased_identifier",
+          "named": true
         }
       ]
     }
@@ -6587,10 +6591,6 @@
     "named": true
   },
   {
-    "type": "modulereference",
-    "named": true
-  },
-  {
     "type": "objectclassreference",
     "named": false
   },
@@ -6620,10 +6620,6 @@
   },
   {
     "type": "typefieldreference",
-    "named": false
-  },
-  {
-    "type": "typereference",
     "named": false
   },
   {
@@ -6684,6 +6680,10 @@
   },
   {
     "type": "xmltstring",
+    "named": true
+  },
+  {
+    "type": "yellcased_identifier",
     "named": true
   },
   {

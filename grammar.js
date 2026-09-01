@@ -10,16 +10,47 @@
 module.exports = grammar({
   name: "asn1",
 
-  word: $ => $.yellcased_identifier,
+  // Keyword extraction matches this token first, then checks whether the
+  // captured text is a keyword. It must consume a complete mixed-case
+  // identifier (Tail, BMPString). All-caps keywords such as SEQUENCE do not
+  // match this pattern, so they stay ordinary string tokens and do not collide
+  // with yellcased_identifier (objectclassreference).
+  word: $ => $.uppercased_identifier,
+
+  inline: $ => [
+    $.modulereference,
+    $.valuereference,
+    $._upper_name,
+  ],
 
   // TODO: Is this going to slow down the parser a lot or cause errors?
   conflicts: $ => [
     [$.UsefulType, $.DefinedType],
+    // All-caps names can be types, modules, or object classes; mixed-case names
+    // share the word token. Disambiguate those overlapping non-terminals here.
+    [$.DefinedObjectClass, $.DefinedType, $.UsefulType],
+    [$.ObjIdComponents, $.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    [$.Literal, $.objectsetreference, $.DefinedType, $.UsefulType],
+    [$.Literal, $.DefinedType, $.UsefulType],
+    [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    [$.NameForm, $.ObjIdComponents],
+    [$.NameForm, $.ObjIdComponents, $.DefinedValue],
+    [$.ObjIdComponents, $.DefinedValue, $.objectreference],
+    [$.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
+    [$.DefinedValue, $.objectreference],
+    [$.DefinedObjectClass, $.objectsetreference, $.DefinedType],
+    [$.ExternalObjectClassReference, $.objectsetreference, $.DefinedType],
+    [$.DefinedObjectClass, $.objectsetreference, $.DefinedType, $.UsefulType],
+    [$.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    [$.ObjIdComponents, $.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    [$.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference],
+    [$.ExternalObjectClassReference, $.DefinedType],
+    [$.ExternalObjectClassReference, $.objectsetreference],
     [$.objectsetreference, $.ExternalTypeReference],
     [$.objectsetreference, $.DefinedType, $.UsefulType],
-    [$.NameForm, $.objectreference],
     [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue],
-    [$.ObjIdComponents, $.SignedNumber],
     [$.ObjIdComponents, $.SignedNumber, $.NumberForm],
     [$.SignedNumber, $.Group, $.TableColumn],
     [$.RestrictedCharacterStringValue, $.CharsDefn], // TODO: I feel like this can be fixed.
@@ -76,9 +107,17 @@ module.exports = grammar({
     source_file: $ => repeat($.ModuleDefinition),
 
     // TODO: This should prevent terminal hyphens. Apply it to other identifiers.
+    // All-caps identifiers: object class names, WITH SYNTAX words, and type or
+    // module names that happen to be all-caps.
     yellcased_identifier: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
 
-    uppercased_identifier: $ => /[A-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
+    // Mixed-case identifiers (at least one lowercase letter). Used as `word` so
+    // Tail is not split into T + ail during keyword extraction.
+    uppercased_identifier: $ => /[A-Z][A-Z0-9-]*[a-z][A-Za-z0-9-]*/,
+
+    // Type and module names may be all-caps or mixed-case; object class names
+    // may only be all-caps (yellcased_identifier).
+    _upper_name: $ => choice($.yellcased_identifier, $.uppercased_identifier),
     lowercased_identifier: $ => /[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
 
     uppercased_field_ref: $ => /&[A-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
@@ -245,8 +284,8 @@ module.exports = grammar({
 
     FirstArcIdentifier: $ => seq('/', $.ArcIdentifier),
 
-    modulereference: $ => /[A-Z][a-zA-Z0-9-]*/,
-    valuereference: $ => /[a-z][a-zA-Z0-9-]*/,
+    modulereference: $ => alias($._upper_name, $.modulereference),
+    valuereference: $ => alias($.lowercased_identifier, $.valuereference),
 
     TagDefault: $ => choice(
       seq($.EXPLICIT, $.TAGS),
@@ -345,7 +384,7 @@ module.exports = grammar({
     ),
 
     DefinedValue: $ => prec.right(seq(
-      optional($.modulereference),
+      optional(seq($.modulereference, '.')),
       $.valuereference,
       optional($.ActualParameterList),
     )),
@@ -563,14 +602,14 @@ module.exports = grammar({
     ),
 
     TypeAssignment: $ => seq(
-      alias($.uppercased_identifier, 'typereference'),
+      alias($._upper_name, 'typereference'),
       optional($.ParameterList),
       '::=',
       $.Type,
     ),
 
     ValueSetTypeAssignment: $ => seq(
-      alias($.uppercased_identifier, 'typereference'),
+      alias($._upper_name, 'typereference'),
       optional($.ParameterList),
       $.Type,
       '::=',
@@ -578,7 +617,7 @@ module.exports = grammar({
     ),
 
     ObjectSetAssignment: $ => seq(
-      alias($.uppercased_identifier, 'objectreference'),
+      alias($._upper_name, 'objectreference'),
       optional($.ParameterList),
       $.DefinedObjectClass,
       '::=',
@@ -819,7 +858,7 @@ module.exports = grammar({
       $.objectsetreference
     ),
     
-    objectsetreference: $ => $.uppercased_identifier,
+    objectsetreference: $ => $._upper_name,
     
     ParameterizedObjectSet: $ => seq(
       $.DefinedObjectSet,
@@ -1621,7 +1660,7 @@ module.exports = grammar({
 
     NonParameterizedTypeName: $ => seq(
       optional(seq($.modulereference, '.')),
-      alias($.uppercased_identifier, 'typereference'),
+      alias($._upper_name, 'typereference'),
     ),
 
     XMLValue: $ => choice(
@@ -1834,18 +1873,18 @@ module.exports = grammar({
     ),
 
     DefinedType: $ => prec.right(seq(
-      optional($.modulereference),
-      alias($.uppercased_identifier, 'typereference'),
+      optional(seq($.modulereference, '.')),
+      alias($._upper_name, 'typereference'),
       optional($.ActualParameterList),
     )),
 
     ExternalTypeReference: $ => seq(
       $.modulereference,
       '.',
-      alias($.uppercased_identifier, 'typereference')
+      alias($._upper_name, 'typereference')
     ),
 
-    UsefulType: $ => alias($.uppercased_identifier, 'typereference'),
+    UsefulType: $ => alias($._upper_name, 'typereference'),
 
     DummyReference: $ => $.Reference,
   },

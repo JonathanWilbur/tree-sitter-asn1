@@ -1,0 +1,311 @@
+================================================================================
+Qualified type name is not split by keyword extraction
+================================================================================
+
+CAP-1-2 DEFINITIONS ::= BEGIN
+Alert ::= SEQUENCE {
+    identifier XSD.Tail
+}
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (SequenceType
+                  (SEQUENCE)
+                  (ComponentTypeLists
+                    (RootComponentTypeList
+                      (ComponentTypeList
+                        (ComponentType
+                          (NamedType
+                            (identifier)
+                            (Type
+                              (ReferencedType
+                                (DefinedType
+                                  (modulereference))))))))))))))))
+    (END)))
+
+================================================================================
+Unqualified mixed-case and all-caps type names
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+Alert ::= SEQUENCE {
+    local LocalType,
+    allcaps FOO
+}
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (SequenceType
+                  (SEQUENCE)
+                  (ComponentTypeLists
+                    (RootComponentTypeList
+                      (ComponentTypeList
+                        (ComponentType
+                          (NamedType
+                            (identifier)
+                            (Type
+                              (ReferencedType
+                                (DefinedType)))))
+                        (ComponentType
+                          (NamedType
+                            (identifier)
+                            (Type
+                              (ReferencedType
+                                (DefinedType)))))))))))))))
+    (END)))
+
+================================================================================
+Type names that share a keyword prefix stay one token
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+A ::= SEQUENCEType
+B ::= SEQUENCE { opt OPTIONALType }
+C ::= UTF8String
+D ::= BMPString
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (ReferencedType
+                (DefinedType)))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (SequenceType
+                  (SEQUENCE)
+                  (ComponentTypeLists
+                    (RootComponentTypeList
+                      (ComponentTypeList
+                        (ComponentType
+                          (NamedType
+                            (identifier)
+                            (Type
+                              (ReferencedType
+                                (DefinedType)))))))))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (CharacterStringType
+                  (RestrictedCharacterStringType
+                    (UTF8String)))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (CharacterStringType
+                  (RestrictedCharacterStringType
+                    (BMPString)))))))))
+    (END)))
+
+================================================================================
+Qualified type with actual parameters
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+Alias ::= OtherModule.Thing { INTEGER }
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (ReferencedType
+                (DefinedType
+                  (modulereference)
+                  (ActualParameterList
+                    (ActualParameter
+                      (Type
+                        (BuiltinType
+                          (IntegerType
+                            (INTEGER)))))))))))))
+    (END)))
+
+================================================================================
+Qualified value reference
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+x INTEGER ::= XSD.val
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (ValueAssignment
+            (Type
+              (BuiltinType
+                (IntegerType
+                  (INTEGER))))
+            (Value
+              (ReferencedValue
+                (DefinedValue
+                  (modulereference)
+                  (valuereference))))))))
+    (END)))
+
+================================================================================
+Object class field type
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+AttrType ::= ATTRIBUTE.&Type
+UsefulField ::= TYPE-IDENTIFIER.&id
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (ObjectClassFieldType
+                  (DefinedObjectClass)
+                  (FieldName))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (ObjectClassFieldType
+                  (DefinedObjectClass
+                    (UsefulObjectClassReference
+                      (TYPE_IDENTIFIER)))
+                  (FieldName))))))))
+    (END)))
+
+================================================================================
+Object class assignment requires an all-caps name
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+ATTRIBUTE ::= CLASS {
+    &id OBJECT IDENTIFIER UNIQUE,
+    &Type
+} WITH SYNTAX {
+    ID
+}
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (ObjectClassAssignment
+            (ObjectClass
+              (ObjectClassDefn
+                (CLASS)
+                (FieldSpec
+                  (FixedTypeValueFieldSpec
+                    (Type
+                      (BuiltinType
+                        (ObjectIdentifierType
+                          (OBJECT)
+                          (IDENTIFIER))))
+                    (UNIQUE)))
+                (FieldSpec
+                  (TypeFieldSpec))
+                (WithSyntaxSpec
+                  (WITH)
+                  (SYNTAX)
+                  (SyntaxList
+                    (TokenOrGroupSpec
+                      (RequiredToken
+                        (Literal)))))))))))
+    (END)))
+
+================================================================================
+All-caps type names are still type assignments
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+FOO ::= INTEGER
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (IntegerType
+                  (INTEGER))))))))
+    (END)))
