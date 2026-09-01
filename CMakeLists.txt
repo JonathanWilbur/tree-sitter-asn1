@@ -61,6 +61,12 @@ file(GLOB QUERIES queries/*.scm)
 install(FILES ${QUERIES}
         DESTINATION "${CMAKE_INSTALL_DATADIR}/tree-sitter/queries/asn1")
 
-add_custom_target(ts-test "${TREE_SITTER_CLI}" test
+file(GLOB ASN1_FIXTURES
+     "${CMAKE_CURRENT_SOURCE_DIR}/test/asn1/*.asn1"
+     "${CMAKE_CURRENT_SOURCE_DIR}/test/asn1/*.asn")
+
+add_custom_target(ts-test
+                  COMMAND "${TREE_SITTER_CLI}" test
+                  COMMAND "${TREE_SITTER_CLI}" parse ${ASN1_FIXTURES} --quiet --stat
                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                   COMMENT "tree-sitter test")
