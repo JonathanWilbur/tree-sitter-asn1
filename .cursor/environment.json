@@ -1,0 +1,17 @@
+{
+  "name": "tree-sitter-asn1",
+  "install": "sudo apt-get update -qq && sudo apt-get install -y emscripten && npm install && npm install --no-save tree-sitter@^0.25.0 && npx tree-sitter generate && npx tree-sitter build --wasm",
+  "terminals": [
+    {
+      "name": "playground",
+      "command": "npx tree-sitter playground -q",
+      "description": "Interactive tree-sitter ASN.1 playground served at http://localhost:8000 for exercising the grammar against sample input."
+    }
+  ],
+  "ports": [
+    {
+      "name": "playground",
+      "port": 8000
+    }
+  ]
+}
