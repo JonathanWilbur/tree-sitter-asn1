@@ -364,7 +364,7 @@ module.exports = grammar({
     //   | objectclassreference
     //   | objectreference
     //   | objectsetreference
-    Reference: $ => /[a-zA-Z][a-zA-Z0-9\-]*/,
+    Reference: $ => token(prec(2, /[a-zA-Z][a-zA-Z0-9\-]*/)),
   
     Imports: $ => prec.right(seq(
       $.IMPORTS,
@@ -441,7 +441,7 @@ module.exports = grammar({
     AssignmentList: $ => repeat1($.Assignment),
 
     Assignment: $ => choice(
-      prec(2, $.ObjectClassAssignment),
+      $.ObjectClassAssignment,
       $.TypeAssignment,
       $.ObjectSetAssignment,
       prec(1, $.ValueSetTypeAssignment),
@@ -464,9 +464,9 @@ module.exports = grammar({
       '}',
     ),
 
-    Parameter: $ => seq(
-      optional(seq($.ParamGovernor, ':')),
-      $.DummyReference,
+    Parameter: $ => choice(
+      seq($.ParamGovernor, ':', $.DummyReference),
+      prec(3, $.DummyReference),
     ),
 
     ParamGovernor: $ => choice(

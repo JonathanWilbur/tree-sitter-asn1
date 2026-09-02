@@ -974,8 +974,15 @@
       ]
     },
     "Reference": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z][a-zA-Z0-9\\-]*"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 2,
+        "content": {
+          "type": "PATTERN",
+          "value": "[a-zA-Z][a-zA-Z0-9\\-]*"
+        }
+      }
     },
     "Imports": {
       "type": "PREC_RIGHT",
@@ -1344,12 +1351,8 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "PREC",
-          "value": 2,
-          "content": {
-            "type": "SYMBOL",
-            "name": "ObjectClassAssignment"
-          }
+          "type": "SYMBOL",
+          "name": "ObjectClassAssignment"
         },
         {
           "type": "SYMBOL",
@@ -1449,32 +1452,32 @@
       ]
     },
     "Parameter": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ParamGovernor"
-                },
-                {
-                  "type": "STRING",
-                  "value": ":"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "ParamGovernor"
             },
             {
-              "type": "BLANK"
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "DummyReference"
             }
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "DummyReference"
+          "type": "PREC",
+          "value": 3,
+          "content": {
+            "type": "SYMBOL",
+            "name": "DummyReference"
+          }
         }
       ]
     },
