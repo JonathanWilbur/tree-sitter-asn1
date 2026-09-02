@@ -641,7 +641,7 @@ module.exports = grammar({
       optional($.ParameterList),
       $.DefinedObjectClass,
       '::=',
-      $.Object,
+      $.ObjectSet,
     ),
 
     ObjectAssignment: $ => seq(
