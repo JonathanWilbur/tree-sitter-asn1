@@ -1103,7 +1103,7 @@
           "named": true
         },
         {
-          "type": "modulereference",
+          "type": "ExternalTypeReference",
           "named": true
         }
       ]
@@ -1229,6 +1229,21 @@
       "types": [
         {
           "type": "DefinitiveObjIdComponent",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DummyGovernor",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Reference",
           "named": true
         }
       ]
@@ -2005,6 +2020,21 @@
       "types": [
         {
           "type": "EXTERNAL",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExternalTypeReference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "modulereference",
           "named": true
         }
       ]
@@ -6356,10 +6386,6 @@
   {
     "type": "DURATION",
     "named": true
-  },
-  {
-    "type": "DummyGovernor",
-    "named": false
   },
   {
     "type": "EMBEDDED",

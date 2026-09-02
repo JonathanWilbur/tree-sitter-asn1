@@ -1,17 +1,23 @@
 /**
- * External scanner for IMPORTS AssignedIdentifier (DefinedValue form).
+ * External scanner for tree-sitter-asn1.
  *
- * After `FROM Modulereference`, a lowercased identifier may be either:
- *   - AssignedIdentifier (e.g. `informationFramework` then next Symbol), or
- *   - the first Symbol of the next SymbolsFromModule (e.g. `bitStringMatch,`).
+ * 1) IMPORTS AssignedIdentifier (DefinedValue form):
+ *    After `FROM Modulereference`, a lowercased identifier may be either:
+ *      - AssignedIdentifier (e.g. `informationFramework` then next Symbol), or
+ *      - the first Symbol of the next SymbolsFromModule (e.g. `bitStringMatch,`).
+ *    Reject the AssignedIdentifier token when the follower is `,` or `FROM`.
  *
- * Reject the AssignedIdentifier token when the follower is `,` or `FROM`.
+ * 2) Parameter bare dummy vs ParamGovernor:
+ *    Zero-width tokens decide whether a Parameter has a depth-0 `:` before
+ *    `,` / `}` (governed) or not (bare DummyReference). Type stays in grammar.js.
  */
 
 #include "tree_sitter/parser.h"
 
 enum TokenType {
   ASSIGNED_IDENTIFIER_DEFINED_VALUE,
+  BARE_PARAMETER,
+  GOVERNED_PARAMETER,
   ERROR_SENTINEL,
 };
 
@@ -189,6 +195,144 @@ static bool follower_is_comma_or_from(TSLexer *lexer) {
   return !is_id_continue(lexer->lookahead);
 }
 
+/** Skip a "cstring" with "" escapes. Assumes lookahead is '"'. */
+static void skip_cstring(TSLexer *lexer) {
+  advance(lexer); /* opening " */
+  while (!lexer->eof(lexer)) {
+    if (lexer->lookahead == '"') {
+      advance(lexer);
+      if (lexer->lookahead == '"') {
+        advance(lexer); /* escaped "" */
+        continue;
+      }
+      return;
+    }
+    advance(lexer);
+  }
+}
+
+/**
+ * Look ahead from the start of a Parameter for a depth-0 ':'.
+ * Returns true if governed (ParamGovernor ':' DummyReference), false if bare.
+ */
+static bool parameter_is_governed(TSLexer *lexer) {
+  int brace_depth = 0;
+  int bracket_depth = 0;
+  int paren_depth = 0;
+
+  while (!lexer->eof(lexer)) {
+    /* Comments / whitespace during peek use advance (after mark_end). */
+    if (is_space(lexer->lookahead)) {
+      advance(lexer);
+      continue;
+    }
+
+    if (lexer->lookahead == '-') {
+      advance(lexer);
+      if (lexer->lookahead == '-') {
+        advance(lexer);
+        while (!lexer->eof(lexer) && lexer->lookahead != '\n' && lexer->lookahead != '\r') {
+          if (lexer->lookahead == '-') {
+            advance(lexer);
+            if (lexer->lookahead == '-') {
+              advance(lexer);
+              break;
+            }
+            continue;
+          }
+          advance(lexer);
+        }
+        continue;
+      }
+      /* Lone '-': treat as ordinary character (e.g. in numbers). */
+      continue;
+    }
+
+    if (lexer->lookahead == '/') {
+      advance(lexer);
+      if (lexer->lookahead == '*') {
+        advance(lexer);
+        while (!lexer->eof(lexer)) {
+          if (lexer->lookahead == '*') {
+            advance(lexer);
+            if (lexer->lookahead == '/') {
+              advance(lexer);
+              break;
+            }
+            continue;
+          }
+          advance(lexer);
+        }
+        continue;
+      }
+      continue;
+    }
+
+    if (lexer->lookahead == '"') {
+      skip_cstring(lexer);
+      continue;
+    }
+
+    if (lexer->lookahead == '{') {
+      brace_depth++;
+      advance(lexer);
+      continue;
+    }
+    if (lexer->lookahead == '}') {
+      if (brace_depth == 0 && bracket_depth == 0 && paren_depth == 0) {
+        return false; /* end of ParameterList */
+      }
+      if (brace_depth > 0) {
+        brace_depth--;
+      }
+      advance(lexer);
+      continue;
+    }
+    if (lexer->lookahead == '[') {
+      bracket_depth++;
+      advance(lexer);
+      continue;
+    }
+    if (lexer->lookahead == ']') {
+      if (bracket_depth > 0) {
+        bracket_depth--;
+      }
+      advance(lexer);
+      continue;
+    }
+    if (lexer->lookahead == '(') {
+      paren_depth++;
+      advance(lexer);
+      continue;
+    }
+    if (lexer->lookahead == ')') {
+      if (paren_depth > 0) {
+        paren_depth--;
+      }
+      advance(lexer);
+      continue;
+    }
+    if (lexer->lookahead == ',') {
+      if (brace_depth == 0 && bracket_depth == 0 && paren_depth == 0) {
+        return false; /* next Parameter */
+      }
+      advance(lexer);
+      continue;
+    }
+    if (lexer->lookahead == ':') {
+      if (brace_depth == 0 && bracket_depth == 0 && paren_depth == 0) {
+        return true; /* ParamGovernor ':' DummyReference */
+      }
+      advance(lexer);
+      continue;
+    }
+
+    advance(lexer);
+  }
+
+  return false;
+}
+
 void *tree_sitter_asn1_external_scanner_create(void) {
   return NULL;
 }
@@ -214,6 +358,22 @@ bool tree_sitter_asn1_external_scanner_scan(void *payload, TSLexer *lexer, const
 
   /* Error recovery offers every external token; decline. */
   if (valid_symbols[ERROR_SENTINEL]) {
+    return false;
+  }
+
+  if (valid_symbols[BARE_PARAMETER] || valid_symbols[GOVERNED_PARAMETER]) {
+    skip_extras(lexer, true);
+    lexer->mark_end(lexer); /* zero-width */
+
+    bool governed = parameter_is_governed(lexer);
+    if (governed && valid_symbols[GOVERNED_PARAMETER]) {
+      lexer->result_symbol = GOVERNED_PARAMETER;
+      return true;
+    }
+    if (!governed && valid_symbols[BARE_PARAMETER]) {
+      lexer->result_symbol = BARE_PARAMETER;
+      return true;
+    }
     return false;
   }
 

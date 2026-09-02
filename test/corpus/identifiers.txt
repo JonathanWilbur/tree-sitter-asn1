@@ -34,7 +34,8 @@ END
                             (Type
                               (ReferencedType
                                 (DefinedType
-                                  (modulereference))))))))))))))))
+                                  (ExternalTypeReference
+                                    (modulereference)))))))))))))))))
     (END)))
 
 ================================================================================
@@ -164,7 +165,8 @@ END
             (Type
               (ReferencedType
                 (DefinedType
-                  (modulereference)
+                  (ExternalTypeReference
+                    (modulereference))
                   (ActualParameterList
                     (ActualParameter
                       (Type
@@ -286,6 +288,64 @@ END
                     (TokenOrGroupSpec
                       (RequiredToken
                         (Literal)))))))))))
+    (END)))
+
+================================================================================
+Mixed-case type names may be hyphenated before the first lowercase letter
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+RTSE-apdus ::= CHOICE {
+    rtorq-apdu [16] IMPLICIT RTORQapdu
+}
+X-500-Thing ::= Some-Type
+Trailing ::= Foo--note--
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (ChoiceType
+                  (CHOICE)
+                  (AlternativeTypeLists
+                    (RootAlternativeTypeList
+                      (AlternativeTypeList
+                        (NamedType
+                          (identifier
+                            (lowercased_identifier))
+                          (Type
+                            (BuiltinType
+                              (PrefixedType
+                                (TaggedType
+                                  (Tag
+                                    (ClassNumber
+                                      (number)))
+                                  (IMPLICIT)
+                                  (Type
+                                    (ReferencedType
+                                      (DefinedType))))))))))))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (ReferencedType
+                (DefinedType)))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (ReferencedType
+                (DefinedType)))))))
+    (line_comment)
     (END)))
 
 ================================================================================

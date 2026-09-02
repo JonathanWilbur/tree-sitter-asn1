@@ -23,9 +23,12 @@ module.exports = grammar({
     $._upper_name,
   ],
 
-  // DefinedValue AssignedIdentifier vs next SymbolList needs comma/FROM peek.
+  // AssignedIdentifier DefinedValue vs next Symbol needs comma/FROM peek.
+  // Parameter bare dummy vs ParamGovernor needs ':' peek (brace-aware).
   externals: $ => [
     $._assigned_identifier_defined_value,
+    $._bare_parameter,
+    $._governed_parameter,
     $.error_sentinel,
   ],
 
@@ -35,24 +38,24 @@ module.exports = grammar({
     // All-caps names can be types, modules, or object classes; mixed-case names
     // share the word token. Disambiguate those overlapping non-terminals here.
     [$.DefinedObjectClass, $.DefinedType, $.UsefulType],
-    [$.ObjIdComponents, $.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    // [$.ObjIdComponents, $.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
     [$.Literal, $.objectsetreference, $.DefinedType, $.UsefulType],
     [$.Literal, $.DefinedType, $.UsefulType],
-    [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    // [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    // [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
     [$.NameForm, $.ObjIdComponents],
     // [$.NameForm, $.ObjIdComponents, $.DefinedValue],
     [$.ObjIdComponents, $.DefinedValue, $.objectreference],
     // [$.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
     [$.DefinedValue, $.objectreference],
     [$.DefinedObjectClass, $.objectsetreference, $.DefinedType],
-    [$.ExternalObjectClassReference, $.objectsetreference, $.DefinedType],
+    // [$.ExternalObjectClassReference, $.objectsetreference, $.DefinedType],
     [$.DefinedObjectClass, $.objectsetreference, $.DefinedType, $.UsefulType],
-    [$.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    [$.ObjIdComponents, $.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    // [$.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    // [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
+    // [$.ObjIdComponents, $.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
     [$.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference],
-    [$.ExternalObjectClassReference, $.DefinedType],
+    // [$.ExternalObjectClassReference, $.DefinedType],
     [$.ExternalObjectClassReference, $.objectsetreference],
     [$.objectsetreference, $.ExternalTypeReference],
     [$.objectsetreference, $.DefinedType, $.UsefulType],
@@ -114,6 +117,18 @@ module.exports = grammar({
     [$.identifier, $.ObjIdComponents, $.DefinedValue, $.objectreference],
     [$.identifier, $.NameForm],
     [$.identifier, $.NameForm, $.ObjIdComponents, $.DefinedValue],
+
+    [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.ExternalObjectClassReference, $.ExternalTypeReference],
+    [$.ObjIdComponents, $.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.ObjIdComponents, $.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.DefinedType],
+    [$.ExternalObjectClassReference, $.objectsetreference, $.ExternalTypeReference],
   ],
 
   extras: $ => [
@@ -131,9 +146,12 @@ module.exports = grammar({
     yellcased_identifier: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
 
     // Mixed-case identifiers (at least one lowercase letter). Used as `word` so
-    // Tail is not split into T + ail during keyword extraction. Single hyphens
-    // are allowed; `--` is not, so INTEGER--comment is not one token.
-    uppercased_identifier: $ => /[A-Z]([A-Z0-9]|-[A-Z0-9])*[a-z]([A-Za-z0-9]|-[A-Za-z0-9])*/,
+    // Tail is not split into T + ail during keyword extraction. Each hyphen must
+    // be followed by an alphanumeric, which rules out both a trailing hyphen and
+    // `--`, so INTEGER--comment is not one token. The segment before the first
+    // lowercase letter is restricted to uppercase and digits; that is what keeps
+    // this disjoint from yellcased_identifier.
+    uppercased_identifier: $ => /[A-Z](-?[A-Z0-9])*-?[a-z](-?[A-Za-z0-9])*/,
 
     // Type and module names may be all-caps or mixed-case; object class names
     // may only be all-caps (yellcased_identifier).
@@ -358,13 +376,10 @@ module.exports = grammar({
       optional(seq('{', '}')),
     ),
 
-    // Reference ::=
-    //   typereference
-    //   | valuereference
-    //   | objectclassreference
-    //   | objectreference
-    //   | objectsetreference
-    Reference: $ => token(prec(2, /[a-zA-Z][a-zA-Z0-9\-]*/)),
+    // Reference as a token() with high precedence steals WITH (next import
+    // Symbol is also valid). Keep a plain regex; Parameter avoids opening
+    // DefinedType so DummyReference does not fight typereference tokens.
+    Reference: $ => /[a-zA-Z][a-zA-Z0-9\-]*/,
   
     Imports: $ => prec.right(seq(
       $.IMPORTS,
@@ -444,7 +459,7 @@ module.exports = grammar({
       $.ObjectClassAssignment,
       $.TypeAssignment,
       $.ObjectSetAssignment,
-      prec(1, $.ValueSetTypeAssignment),
+      $.ValueSetTypeAssignment,
       $.ValueAssignment,
       $.ObjectAssignment,
       $.XMLValueAssignment,
@@ -464,14 +479,16 @@ module.exports = grammar({
       '}',
     ),
 
+    // Scanner gates bare vs governed so Governor→Type does not steal {ToBeSigned}.
+    // _bare_parameter / _governed_parameter are zero-width lookahead tokens.
     Parameter: $ => choice(
-      seq($.ParamGovernor, ':', $.DummyReference),
-      prec(3, $.DummyReference),
+      seq($._governed_parameter, $.ParamGovernor, ':', $.DummyReference),
+      seq($._bare_parameter, $.DummyReference),
     ),
 
     ParamGovernor: $ => choice(
-      prec(1, $.Governor),
-      alias($.Reference, 'DummyGovernor'),
+      $.Governor,
+      alias($.DummyReference, 'DummyGovernor'),
     ),
 
     Governor: $ => choice(
@@ -629,11 +646,24 @@ module.exports = grammar({
       ']',
     ),
 
-    TypeAssignment: $ => seq(
-      alias($._upper_name, 'typereference'),
-      optional($.ParameterList),
-      '::=',
-      $.Type,
+    // TypeAssignment: $ => seq(
+    //   alias($._upper_name, 'typereference'),
+    //   optional($.ParameterList),
+    //   '::=',
+    //   $.Type,
+    // ),
+    TypeAssignment: $ => choice(
+      seq(
+        alias($._upper_name, 'typereference'),
+        $.ParameterList,
+        '::=',
+        $.Type,
+      ),
+      seq(
+        alias($._upper_name, 'typereference'),
+        '::=',
+        $.Type,
+      ),
     ),
 
     ValueSetTypeAssignment: $ => seq(
@@ -1653,7 +1683,7 @@ module.exports = grammar({
 
     TableConstraint: $ => choice(
       $.SimpleTableConstraint,
-      $.ComponentRelationConstraint
+      prec(1, $.ComponentRelationConstraint),
     ),
 
     SimpleTableConstraint: $ => $.ObjectSet,
@@ -1677,7 +1707,7 @@ module.exports = grammar({
 
     ComponentIdList: $ => seq(
       $.identifier,
-      repeat1(seq('.', $.identifier))
+      repeat(seq('.', $.identifier))
     ),
 
     ContentsConstraint: $ => choice(
@@ -1704,6 +1734,7 @@ module.exports = grammar({
       seq('<', $.NonParameterizedTypeName, '/>')
     ),
 
+    // TODO: Convert to choice. optional prefixes don't work.
     NonParameterizedTypeName: $ => seq(
       optional(seq($.modulereference, '.')),
       alias($._upper_name, 'typereference'),
@@ -1918,11 +1949,21 @@ module.exports = grammar({
       prec(1, $.TypeFromObject),
     ),
 
-    DefinedType: $ => prec.right(seq(
-      optional(seq($.modulereference, '.')),
-      alias($._upper_name, 'typereference'),
-      optional($.ActualParameterList),
-    )),
+    // DefinedType: $ => prec.right(seq(
+    //   optional(seq($.modulereference, '.')),
+    //   alias($._upper_name, 'typereference'),
+    //   optional($.ActualParameterList),
+    // )),
+    DefinedType: $ => choice(
+      seq(
+        $.ExternalTypeReference,
+        optional($.ActualParameterList),
+      ),
+      seq(
+        alias($._upper_name, 'typereference'),
+        optional($.ActualParameterList),
+      ),
+    ),
 
     ExternalTypeReference: $ => seq(
       $.modulereference,
