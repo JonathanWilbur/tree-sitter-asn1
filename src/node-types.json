@@ -1409,9 +1409,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "ENCODING_CONTROL",
+          "named": true
+        },
+        {
+          "type": "EncodingInstructionAssignmentList",
+          "named": true
+        },
         {
           "type": "encodingreference",
           "named": true
@@ -1429,6 +1437,64 @@
       "types": [
         {
           "type": "EncodingControlSection",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EncodingInstructionAssignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ALL",
+          "named": true
+        },
+        {
+          "type": "FROM",
+          "named": true
+        },
+        {
+          "type": "OF",
+          "named": true
+        },
+        {
+          "type": "SEQUENCE",
+          "named": true
+        },
+        {
+          "type": "cstring",
+          "named": true
+        },
+        {
+          "type": "lowercased_identifier",
+          "named": true
+        },
+        {
+          "type": "uppercased_identifier",
+          "named": true
+        },
+        {
+          "type": "yellcased_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "EncodingInstructionAssignmentList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "EncodingInstructionAssignment",
           "named": true
         }
       ]
@@ -6265,8 +6331,8 @@
     "named": true
   },
   {
-    "type": "ENCODING-CONTROL",
-    "named": false
+    "type": "ENCODING_CONTROL",
+    "named": true
   },
   {
     "type": "END",
@@ -6643,11 +6709,11 @@
   },
   {
     "type": "valuereference",
-    "named": true
+    "named": false
   },
   {
     "type": "valuereference",
-    "named": false
+    "named": true
   },
   {
     "type": "valuesetfieldreference",

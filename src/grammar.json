@@ -64,8 +64,26 @@
       "value": "BEGIN"
     },
     "END": {
-      "type": "STRING",
-      "value": "END"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "STRING",
+          "value": "END"
+        }
+      }
+    },
+    "ENCODING_CONTROL": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "STRING",
+          "value": "ENCODING-CONTROL"
+        }
+      }
     },
     "EXPORTS": {
       "type": "STRING",
@@ -2355,12 +2373,80 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "ENCODING-CONTROL"
+          "type": "SYMBOL",
+          "name": "ENCODING_CONTROL"
         },
         {
           "type": "SYMBOL",
           "name": "encodingreference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "EncodingInstructionAssignmentList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "EncodingInstructionAssignmentList": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "EncodingInstructionAssignment"
+      }
+    },
+    "EncodingInstructionAssignment": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "yellcased_identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_upper_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "lowercased_identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cstring"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FROM"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ALL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SEQUENCE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OF"
         }
       ]
     },

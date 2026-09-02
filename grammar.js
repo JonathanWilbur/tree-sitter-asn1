@@ -144,7 +144,8 @@ module.exports = grammar({
 
     DEFINITIONS: $ => 'DEFINITIONS',
     BEGIN: $ => 'BEGIN',
-    END: $ => 'END',
+    END: $ => token(prec(1, 'END')),
+    ENCODING_CONTROL: $ => token(prec(1, 'ENCODING-CONTROL')),
     EXPORTS: $ => 'EXPORTS',
     IMPORTS: $ => 'IMPORTS',
     CLASS: $ => 'CLASS',
@@ -666,15 +667,28 @@ module.exports = grammar({
     EncodingControlSections: $ => repeat1($.EncodingControlSection),
 
     EncodingControlSection: $ => seq(
-      'ENCODING-CONTROL',
+      $.ENCODING_CONTROL,
       $.encodingreference,
-      // FIXME:
-      // $.EncodingInstructionAssignmentList,
+      optional($.EncodingInstructionAssignmentList),
     ),
 
-    // EncodingInstructionAssignmentList: $ => token(prec(-1, /[^E]+|E(?!ND\b|NCODING-CONTROL\b)/)),
-    // EncodingInstructionAssignmentList: $ => repeat1($.EncodingInstructionAssignment),
-    // EncodingInstructionAssignment: $ => /(?!END|ENCODING-CONTROL)/,
+    // Encoding instructions are defined per encodingreference, but may be any
+    // token sequence other than END or ENCODING-CONTROL (see doc/asn1.bnf).
+    EncodingInstructionAssignmentList: $ => repeat1($.EncodingInstructionAssignment),
+
+    EncodingInstructionAssignment: $ => choice(
+      $.yellcased_identifier,
+      $._upper_name,
+      $.lowercased_identifier,
+      $.cstring,
+      ',',
+      ':',
+      '.',
+      $.FROM,
+      $.ALL,
+      $.SEQUENCE,
+      $.OF,
+    ),
 
     Value: $ => choice(
       $.BuiltinValue,
