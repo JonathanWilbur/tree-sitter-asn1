@@ -29,7 +29,8 @@ END
                       (ComponentTypeList
                         (ComponentType
                           (NamedType
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (Type
                               (ReferencedType
                                 (DefinedType
@@ -68,13 +69,15 @@ END
                       (ComponentTypeList
                         (ComponentType
                           (NamedType
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (Type
                               (ReferencedType
                                 (DefinedType)))))
                         (ComponentType
                           (NamedType
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (Type
                               (ReferencedType
                                 (DefinedType)))))))))))))))
@@ -117,7 +120,8 @@ END
                       (ComponentTypeList
                         (ComponentType
                           (NamedType
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (Type
                               (ReferencedType
                                 (DefinedType)))))))))))))

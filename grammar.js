@@ -35,9 +35,9 @@ module.exports = grammar({
     [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
     [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
     [$.NameForm, $.ObjIdComponents],
-    [$.NameForm, $.ObjIdComponents, $.DefinedValue],
+    // [$.NameForm, $.ObjIdComponents, $.DefinedValue],
     [$.ObjIdComponents, $.DefinedValue, $.objectreference],
-    [$.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
+    // [$.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
     [$.DefinedValue, $.objectreference],
     [$.DefinedObjectClass, $.objectsetreference, $.DefinedType],
     [$.ExternalObjectClassReference, $.objectsetreference, $.DefinedType],
@@ -81,7 +81,7 @@ module.exports = grammar({
     [$.ValueFromObject, $.ObjectFromObject],
     [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm, $.CharsDefn],
     [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm],
-    [$.SignedNumber, $.NumberForm],
+    // [$.SignedNumber, $.NumberForm],
     [$.RelativeOIDComponents, $.NumberForm],
     [$.ObjIdComponents, $.ExternalValueReference],
     [$.ObjIdComponents, $.DefinedValue],
@@ -101,6 +101,13 @@ module.exports = grammar({
     [$.ComponentTypeList],
     [$.Enumeration],
     [$.AlternativeTypeList],
+
+    [$.identifier, $.DefinedValue, $.objectreference],
+    [$.identifier, $.DefinedValue],
+    [$.identifier, $.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
+    [$.identifier, $.ObjIdComponents, $.DefinedValue, $.objectreference],
+    [$.identifier, $.NameForm],
+    [$.identifier, $.NameForm, $.ObjIdComponents, $.DefinedValue],
   ],
 
   extras: $ => [
@@ -130,8 +137,10 @@ module.exports = grammar({
     uppercased_field_ref: $ => /&[A-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
     lowercased_field_ref: $ => /&[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
     anycased_field_ref: $ => /&[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
-
     any_identifier: $ => /[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*/,
+    identifier: $ => $.lowercased_identifier,
+    // identifier: $ => alias($.lowercased_identifier, $.identifier),
+    // identifier: $ => /[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
 
     DEFINITIONS: $ => 'DEFINITIONS',
     BEGIN: $ => 'BEGIN',
@@ -1658,8 +1667,6 @@ module.exports = grammar({
 
     // `--` comments end at the next `--` or at end of line, whichever is first.
     line_comment: $ => token(seq('--', /([^-\n]|-[^-\n])*/, optional('--'))),
-
-    identifier: $ => /[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
 
     XMLTypedValue: $ => choice(
       seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),

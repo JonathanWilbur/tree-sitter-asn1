@@ -5995,6 +5995,21 @@
     "fields": {}
   },
   {
+    "type": "identifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "lowercased_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "number",
     "named": true,
     "fields": {}
@@ -6575,10 +6590,6 @@
   },
   {
     "type": "hstring",
-    "named": true
-  },
-  {
-    "type": "identifier",
     "named": true
   },
   {

@@ -27,7 +27,8 @@ END
                       (ComponentTypeList
                         (ComponentType
                           (NamedType
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (Type
                               (BuiltinType
                                 (IntegerType

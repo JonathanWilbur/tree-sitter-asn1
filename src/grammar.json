@@ -51,6 +51,10 @@
       "type": "PATTERN",
       "value": "[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*"
     },
+    "identifier": {
+      "type": "SYMBOL",
+      "name": "lowercased_identifier"
+    },
     "DEFINITIONS": {
       "type": "STRING",
       "value": "DEFINITIONS"
@@ -6933,10 +6937,6 @@
         ]
       }
     },
-    "identifier": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
-    },
     "XMLTypedValue": {
       "type": "CHOICE",
       "members": [
@@ -7882,17 +7882,6 @@
       "ObjIdComponents"
     ],
     [
-      "NameForm",
-      "ObjIdComponents",
-      "DefinedValue"
-    ],
-    [
-      "ObjIdComponents",
-      "DefinedValue",
-      "objectreference"
-    ],
-    [
-      "NameForm",
       "ObjIdComponents",
       "DefinedValue",
       "objectreference"
@@ -8094,10 +8083,6 @@
       "NumberForm"
     ],
     [
-      "SignedNumber",
-      "NumberForm"
-    ],
-    [
       "RelativeOIDComponents",
       "NumberForm"
     ],
@@ -8158,6 +8143,38 @@
     ],
     [
       "AlternativeTypeList"
+    ],
+    [
+      "identifier",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "identifier",
+      "DefinedValue"
+    ],
+    [
+      "identifier",
+      "NameForm",
+      "ObjIdComponents",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "identifier",
+      "ObjIdComponents",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "identifier",
+      "NameForm"
+    ],
+    [
+      "identifier",
+      "NameForm",
+      "ObjIdComponents",
+      "DefinedValue"
     ]
   ],
   "precedences": [],

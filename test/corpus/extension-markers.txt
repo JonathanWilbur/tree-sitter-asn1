@@ -28,7 +28,8 @@ END
                       (ComponentTypeList
                         (ComponentType
                           (NamedType
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (Type
                               (BuiltinType
                                 (IntegerType
@@ -45,7 +46,8 @@ END
                       (ComponentTypeList
                         (ComponentType
                           (NamedType
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (Type
                               (BuiltinType
                                 (IntegerType
@@ -56,7 +58,8 @@ END
                         (ExtensionAddition
                           (ComponentType
                             (NamedType
-                              (identifier)
+                              (identifier
+                                (lowercased_identifier))
                               (Type
                                 (BuiltinType
                                   (BooleanType
@@ -92,7 +95,8 @@ END
                     (RootAlternativeTypeList
                       (AlternativeTypeList
                         (NamedType
-                          (identifier)
+                          (identifier
+                            (lowercased_identifier))
                           (Type
                             (BuiltinType
                               (IntegerType
@@ -109,12 +113,14 @@ END
                       (Enumeration
                         (EnumerationItem
                           (NamedNumber
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (SignedNumber
                               (number))))
                         (EnumerationItem
                           (NamedNumber
-                            (identifier)
+                            (identifier
+                              (lowercased_identifier))
                             (SignedNumber
                               (number))))))))))))))
     (END)))

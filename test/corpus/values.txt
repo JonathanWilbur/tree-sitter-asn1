@@ -1,0 +1,34 @@
+================================================================================
+Choice value with lowercase alternative name
+================================================================================
+
+A DEFINITIONS ::= BEGIN
+id-errcode-abandonFailed Code ::= local:7
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (ValueAssignment
+            (Type
+              (ReferencedType
+                (DefinedType)))
+            (Value
+              (BuiltinValue
+                (ChoiceValue
+                  (identifier
+                    (lowercased_identifier))
+                  (Value
+                    (BuiltinValue
+                      (IntegerValue
+                        (SignedNumber
+                          (number))))))))))))
+    (END)))
