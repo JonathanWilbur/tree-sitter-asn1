@@ -241,6 +241,8 @@ module.exports = grammar({
     DURATION: $ => 'DURATION',
     TIME_OF_DAY: $ => 'TIME-OF-DAY',
     COMPONENT: $ => 'COMPONENT',
+    ANY: $ => 'ANY',
+    DEFINED: $ => 'DEFINED',
 
     ModuleDefinition: $ => seq(
       $.ModuleIdentifier,
@@ -1044,7 +1046,14 @@ module.exports = grammar({
       $.SetOfType,
       $.PrefixedType,
       $.TimeType,
-      $.TimeOfDayType
+      $.TimeOfDayType,
+      $.AnyType, // From ITU X.680, 1997 edition and earlier.
+    ),
+
+    // From ITU X.680, 1997 edition and earlier.
+    AnyType: $ => choice(
+      $.ANY,
+      seq($.ANY, $.DEFINED, $.BY, $.identifier),
     ),
 
     BooleanType: $ => $.BOOLEAN,

@@ -122,6 +122,33 @@
     }
   },
   {
+    "type": "AnyType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ANY",
+          "named": true
+        },
+        {
+          "type": "BY",
+          "named": true
+        },
+        {
+          "type": "DEFINED",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "AssignedIdentifier",
     "named": true,
     "fields": {},
@@ -309,6 +336,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "AnyType",
+          "named": true
+        },
         {
           "type": "BitStringType",
           "named": true
@@ -6235,6 +6266,10 @@
     "named": true
   },
   {
+    "type": "ANY",
+    "named": true
+  },
+  {
     "type": "APPLICATION",
     "named": true
   },
@@ -6304,6 +6339,10 @@
   },
   {
     "type": "DEFAULT",
+    "named": true
+  },
+  {
+    "type": "DEFINED",
     "named": true
   },
   {
@@ -6709,11 +6748,11 @@
   },
   {
     "type": "valuereference",
-    "named": false
+    "named": true
   },
   {
     "type": "valuereference",
-    "named": true
+    "named": false
   },
   {
     "type": "valuesetfieldreference",

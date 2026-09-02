@@ -465,6 +465,14 @@
       "type": "STRING",
       "value": "COMPONENT"
     },
+    "ANY": {
+      "type": "STRING",
+      "value": "ANY"
+    },
+    "DEFINED": {
+      "type": "STRING",
+      "value": "DEFINED"
+    },
     "ModuleDefinition": {
       "type": "SEQ",
       "members": [
@@ -3756,6 +3764,40 @@
         {
           "type": "SYMBOL",
           "name": "TimeOfDayType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "AnyType"
+        }
+      ]
+    },
+    "AnyType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ANY"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ANY"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "DEFINED"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "BY"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            }
+          ]
         }
       ]
     },
