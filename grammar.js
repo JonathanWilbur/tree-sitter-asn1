@@ -23,6 +23,12 @@ module.exports = grammar({
     $._upper_name,
   ],
 
+  // DefinedValue AssignedIdentifier vs next SymbolList needs comma/FROM peek.
+  externals: $ => [
+    $._assigned_identifier_defined_value,
+    $.error_sentinel,
+  ],
+
   // TODO: Is this going to slow down the parser a lot or cause errors?
   conflicts: $ => [
     [$.UsefulType, $.DefinedType],
@@ -381,14 +387,16 @@ module.exports = grammar({
       ),
     ),
 
-    GlobalModuleReference: $ => prec.right(seq(
+    GlobalModuleReference: $ => seq(
       $.modulereference,
       optional($.AssignedIdentifier),
-    )),
+    ),
 
+    // DefinedValue form is an external token: accept only when the following
+    // token is not "," or FROM (those start the next SymbolsFromModule).
     AssignedIdentifier: $ => choice(
       $.ObjectIdentifierValue,
-      $.DefinedValue,
+      alias($._assigned_identifier_defined_value, $.DefinedValue),
     ),
 
     ObjectIdentifierValue: $ => seq('{', $.ObjIdComponentsList, '}'),

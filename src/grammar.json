@@ -1053,29 +1053,25 @@
       ]
     },
     "GlobalModuleReference": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "modulereference"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "AssignedIdentifier"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "AssignedIdentifier"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "AssignedIdentifier": {
       "type": "CHOICE",
@@ -1085,8 +1081,13 @@
           "name": "ObjectIdentifierValue"
         },
         {
-          "type": "SYMBOL",
-          "name": "DefinedValue"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_assigned_identifier_defined_value"
+          },
+          "named": true,
+          "value": "DefinedValue"
         }
       ]
     },
@@ -8306,7 +8307,16 @@
     ]
   ],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "_assigned_identifier_defined_value"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "error_sentinel"
+    }
+  ],
   "inline": [
     "modulereference",
     "valuereference",
