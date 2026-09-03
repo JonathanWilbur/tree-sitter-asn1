@@ -1489,15 +1489,135 @@
     }
   },
   {
-    "type": "EncodingInstructionAssignment",
+    "type": "EncodingInstructionAssignmentList",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
+          "type": "ABSENT",
+          "named": true
+        },
+        {
+          "type": "ABSTRACT_SYNTAX",
+          "named": true
+        },
+        {
           "type": "ALL",
+          "named": true
+        },
+        {
+          "type": "APPLICATION",
+          "named": true
+        },
+        {
+          "type": "AUTOMATIC",
+          "named": true
+        },
+        {
+          "type": "BEGIN",
+          "named": true
+        },
+        {
+          "type": "BIT",
+          "named": true
+        },
+        {
+          "type": "BMPString",
+          "named": true
+        },
+        {
+          "type": "BOOLEAN",
+          "named": true
+        },
+        {
+          "type": "BY",
+          "named": true
+        },
+        {
+          "type": "CHARACTER",
+          "named": true
+        },
+        {
+          "type": "CHOICE",
+          "named": true
+        },
+        {
+          "type": "CLASS",
+          "named": true
+        },
+        {
+          "type": "COMPONENT",
+          "named": true
+        },
+        {
+          "type": "COMPONENTS",
+          "named": true
+        },
+        {
+          "type": "CONSTRAINED",
+          "named": true
+        },
+        {
+          "type": "CONTAINING",
+          "named": true
+        },
+        {
+          "type": "DATE",
+          "named": true
+        },
+        {
+          "type": "DATE_TIME",
+          "named": true
+        },
+        {
+          "type": "DEFAULT",
+          "named": true
+        },
+        {
+          "type": "DEFINITIONS",
+          "named": true
+        },
+        {
+          "type": "DURATION",
+          "named": true
+        },
+        {
+          "type": "EMBEDDED",
+          "named": true
+        },
+        {
+          "type": "ENCODED",
+          "named": true
+        },
+        {
+          "type": "ENUMERATED",
+          "named": true
+        },
+        {
+          "type": "EXCEPT",
+          "named": true
+        },
+        {
+          "type": "EXPLICIT",
+          "named": true
+        },
+        {
+          "type": "EXPORTS",
+          "named": true
+        },
+        {
+          "type": "EXTENSIBILITY",
+          "named": true
+        },
+        {
+          "type": "EXTERNAL",
+          "named": true
+        },
+        {
+          "type": "FALSE",
           "named": true
         },
         {
@@ -1505,7 +1625,135 @@
           "named": true
         },
         {
+          "type": "GeneralString",
+          "named": true
+        },
+        {
+          "type": "GraphicString",
+          "named": true
+        },
+        {
+          "type": "IA5String",
+          "named": true
+        },
+        {
+          "type": "IDENTIFIER",
+          "named": true
+        },
+        {
+          "type": "IMPLICIT",
+          "named": true
+        },
+        {
+          "type": "IMPLIED",
+          "named": true
+        },
+        {
+          "type": "IMPORTS",
+          "named": true
+        },
+        {
+          "type": "INCLUDES",
+          "named": true
+        },
+        {
+          "type": "INSTANCE",
+          "named": true
+        },
+        {
+          "type": "INSTRUCTIONS",
+          "named": true
+        },
+        {
+          "type": "INTEGER",
+          "named": true
+        },
+        {
+          "type": "INTERSECTION",
+          "named": true
+        },
+        {
+          "type": "ISO646String",
+          "named": true
+        },
+        {
+          "type": "MAX",
+          "named": true
+        },
+        {
+          "type": "MIN",
+          "named": true
+        },
+        {
+          "type": "MINUS_INFINITY",
+          "named": true
+        },
+        {
+          "type": "NOT_A_NUMBER",
+          "named": true
+        },
+        {
+          "type": "NULL",
+          "named": true
+        },
+        {
+          "type": "NumericString",
+          "named": true
+        },
+        {
+          "type": "OBJECT",
+          "named": true
+        },
+        {
+          "type": "OCTET",
+          "named": true
+        },
+        {
           "type": "OF",
+          "named": true
+        },
+        {
+          "type": "OID_IRI",
+          "named": true
+        },
+        {
+          "type": "OPTIONAL",
+          "named": true
+        },
+        {
+          "type": "PATTERN",
+          "named": true
+        },
+        {
+          "type": "PDV",
+          "named": true
+        },
+        {
+          "type": "PLUS_INFINITY",
+          "named": true
+        },
+        {
+          "type": "PRESENT",
+          "named": true
+        },
+        {
+          "type": "PRIVATE",
+          "named": true
+        },
+        {
+          "type": "PrintableString",
+          "named": true
+        },
+        {
+          "type": "REAL",
+          "named": true
+        },
+        {
+          "type": "RELATIVE_OID",
+          "named": true
+        },
+        {
+          "type": "RELATIVE_OID_IRI",
           "named": true
         },
         {
@@ -1513,11 +1761,115 @@
           "named": true
         },
         {
+          "type": "SET",
+          "named": true
+        },
+        {
+          "type": "SETTINGS",
+          "named": true
+        },
+        {
+          "type": "SIZE",
+          "named": true
+        },
+        {
+          "type": "STRING",
+          "named": true
+        },
+        {
+          "type": "SYNTAX",
+          "named": true
+        },
+        {
+          "type": "T61String",
+          "named": true
+        },
+        {
+          "type": "TAGS",
+          "named": true
+        },
+        {
+          "type": "TIME",
+          "named": true
+        },
+        {
+          "type": "TIME_OF_DAY",
+          "named": true
+        },
+        {
+          "type": "TRUE",
+          "named": true
+        },
+        {
+          "type": "TYPE_IDENTIFIER",
+          "named": true
+        },
+        {
+          "type": "TeletexString",
+          "named": true
+        },
+        {
+          "type": "UNION",
+          "named": true
+        },
+        {
+          "type": "UNIQUE",
+          "named": true
+        },
+        {
+          "type": "UNIVERSAL",
+          "named": true
+        },
+        {
+          "type": "UTF8String",
+          "named": true
+        },
+        {
+          "type": "UniversalString",
+          "named": true
+        },
+        {
+          "type": "VideotexString",
+          "named": true
+        },
+        {
+          "type": "VisibleString",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "anycased_field_ref",
+          "named": true
+        },
+        {
+          "type": "bstring",
+          "named": true
+        },
+        {
           "type": "cstring",
           "named": true
         },
         {
+          "type": "foreign_lexical_item",
+          "named": true
+        },
+        {
+          "type": "hstring",
+          "named": true
+        },
+        {
           "type": "lowercased_identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "realnumber",
           "named": true
         },
         {
@@ -1526,21 +1878,6 @@
         },
         {
           "type": "yellcased_identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "EncodingInstructionAssignmentList",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "EncodingInstructionAssignment",
           "named": true
         }
       ]
@@ -6200,6 +6537,10 @@
     "named": false
   },
   {
+    "type": "'",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -6269,6 +6610,10 @@
   },
   {
     "type": "</",
+    "named": false
+  },
+  {
+    "type": "=",
     "named": false
   },
   {
@@ -6704,6 +7049,10 @@
     "named": true
   },
   {
+    "type": "anycased_field_ref",
+    "named": true
+  },
+  {
     "type": "bstring",
     "named": true
   },
@@ -6717,6 +7066,10 @@
   },
   {
     "type": "false",
+    "named": true
+  },
+  {
+    "type": "foreign_lexical_item",
     "named": true
   },
   {
@@ -6774,11 +7127,11 @@
   },
   {
     "type": "valuereference",
-    "named": true
+    "named": false
   },
   {
     "type": "valuereference",
-    "named": false
+    "named": true
   },
   {
     "type": "valuesetfieldreference",

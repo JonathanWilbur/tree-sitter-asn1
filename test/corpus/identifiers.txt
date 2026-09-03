@@ -373,3 +373,36 @@ END
                 (IntegerType
                   (INTEGER))))))))
     (END)))
+
+================================================================================
+Type names beginning with END are not the END keyword
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+ENDING ::= INTEGER
+END-ish ::= BOOLEAN
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (IntegerType
+                  (INTEGER))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (BooleanType
+                  (BOOLEAN))))))))
+    (END)))

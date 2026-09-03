@@ -10,6 +10,13 @@
  * 2) Parameter bare dummy vs ParamGovernor:
  *    Zero-width tokens decide whether a Parameter has a depth-0 `:` before
  *    `,` / `}` (governed) or not (bare DummyReference). Type stays in grammar.js.
+ *
+ * 3) Encoding control section contents:
+ *    An encoding control section is written in whatever notation the
+ *    encodingreference names, which need not be built from X.680 lexical items
+ *    (X.692 spells encoding class references `#Outer`, for instance).
+ *    grammar.js enumerates the X.680 items so they keep their own node types;
+ *    this scanner supplies the rest as `foreign_lexical_item`.
  */
 
 #include "tree_sitter/parser.h"
@@ -18,6 +25,7 @@ enum TokenType {
   ASSIGNED_IDENTIFIER_DEFINED_VALUE,
   BARE_PARAMETER,
   GOVERNED_PARAMETER,
+  FOREIGN_LEXICAL_ITEM,
   ERROR_SENTINEL,
 };
 
@@ -41,6 +49,33 @@ static bool is_alnum(int32_t c) {
 
 static bool is_id_continue(int32_t c) {
   return is_alnum(c) || c == '-';
+}
+
+/** 12.1.6 counts NO-BREAK SPACE as white-space, and so does the /\s+/ extra. */
+static bool is_asn1_space(int32_t c) {
+  return is_space(c) || c == 0x00A0;
+}
+
+/**
+ * Can any X.680 lexical item begin with this character?
+ * Letters and digits start names and numbers (12.2-12.5, 12.8, 12.9), '&'
+ * starts a field reference, the quotes start bstring/hstring/cstring
+ * (12.10-12.17), and the rest are the single- and multi-character items of
+ * 12.20-12.24, 12.28, 12.29 and 12.37. '-' and '/' also start comments.
+ */
+static bool is_asn1_lexical_start(int32_t c) {
+  if (is_alnum(c)) {
+    return true;
+  }
+  switch (c) {
+    case '&': case '"': case '\'':
+    case '{': case '}': case '<': case '>': case ',': case '.': case '/':
+    case '(': case ')': case '[': case ']': case '-': case ':': case '=':
+    case ';': case '@': case '|': case '!': case '^':
+      return true;
+    default:
+      return false;
+  }
 }
 
 /**
@@ -359,6 +394,33 @@ bool tree_sitter_asn1_external_scanner_scan(void *payload, TSLexer *lexer, const
   /* Error recovery offers every external token; decline. */
   if (valid_symbols[ERROR_SENTINEL]) {
     return false;
+  }
+
+  if (valid_symbols[FOREIGN_LEXICAL_ITEM]) {
+    /* White-space must be consumed here: it is an anonymous extra, so the
+     * internal lexer would skip it and lex the following token in one call,
+     * never giving this scanner a second chance at it. Comments are named
+     * extras and so are real tokens; declining on '-' and '/' (both X.680
+     * lexical starts anyway) leaves them to the internal lexer, which keeps
+     * them in the tree. */
+    while (is_asn1_space(lexer->lookahead)) {
+      skip(lexer);
+    }
+
+    if (lexer->eof(lexer) || is_asn1_lexical_start(lexer->lookahead)) {
+      return false;
+    }
+
+    /* One token per run, so `#` in `#Outer` stops before the name. */
+    while (!lexer->eof(lexer) &&
+           !is_asn1_space(lexer->lookahead) &&
+           !is_asn1_lexical_start(lexer->lookahead)) {
+      advance(lexer);
+    }
+
+    lexer->mark_end(lexer);
+    lexer->result_symbol = FOREIGN_LEXICAL_ITEM;
+    return true;
   }
 
   if (valid_symbols[BARE_PARAMETER] || valid_symbols[GOVERNED_PARAMETER]) {

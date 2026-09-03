@@ -1,0 +1,324 @@
+================================================================================
+Encoding control section admits any name, literal or punctuation mark
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+A ::= INTEGER
+ENCODING-CONTROL XER
+    GLOBAL-DEFAULTS MODIFIED-ENCODINGS
+    NAME A AS "alert" &Field &field 12 3.5 '10'B 'AF'H
+    ::= ... .. [[ ]] </ /> { } < > , . / ( ) [ ] - : = ; @ | ! ^
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (IntegerType
+                  (INTEGER))))))))
+    (EncodingControlSections
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList
+          (yellcased_identifier)
+          (yellcased_identifier)
+          (yellcased_identifier)
+          (yellcased_identifier)
+          (yellcased_identifier)
+          (cstring)
+          (anycased_field_ref)
+          (anycased_field_ref)
+          (number)
+          (realnumber)
+          (bstring)
+          (hstring))))
+    (END)))
+
+================================================================================
+Encoding control section admits every reserved word but END
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+ENCODING-CONTROL PER
+    ABSENT ABSTRACT-SYNTAX ALL APPLICATION AUTOMATIC BEGIN BIT BMPString
+    BOOLEAN BY CHARACTER CHOICE CLASS COMPONENT COMPONENTS CONSTRAINED
+    CONTAINING DATE DATE-TIME DEFAULT DEFINITIONS DURATION EMBEDDED ENCODED
+    ENUMERATED EXCEPT EXPLICIT EXPORTS EXTENSIBILITY EXTERNAL FALSE FROM
+    GeneralString GraphicString IA5String IDENTIFIER IMPLICIT IMPLIED IMPORTS
+    INCLUDES INSTANCE INSTRUCTIONS INTEGER INTERSECTION ISO646String MAX MIN
+    MINUS-INFINITY NOT-A-NUMBER NULL NumericString OBJECT OCTET OF OID-IRI
+    OPTIONAL PATTERN PDV PLUS-INFINITY PRESENT PrintableString PRIVATE REAL
+    RELATIVE-OID RELATIVE-OID-IRI SEQUENCE SET SETTINGS SIZE STRING SYNTAX
+    T61String TAGS TeletexString TIME TIME-OF-DAY TRUE TYPE-IDENTIFIER UNION
+    UNIQUE UNIVERSAL UniversalString UTF8String VideotexString VisibleString
+    WITH
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (EncodingControlSections
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList
+          (ABSENT)
+          (ABSTRACT_SYNTAX)
+          (ALL)
+          (APPLICATION)
+          (AUTOMATIC)
+          (BEGIN)
+          (BIT)
+          (BMPString)
+          (BOOLEAN)
+          (BY)
+          (CHARACTER)
+          (CHOICE)
+          (CLASS)
+          (COMPONENT)
+          (COMPONENTS)
+          (CONSTRAINED)
+          (CONTAINING)
+          (DATE)
+          (DATE_TIME)
+          (DEFAULT)
+          (DEFINITIONS)
+          (DURATION)
+          (EMBEDDED)
+          (ENCODED)
+          (ENUMERATED)
+          (EXCEPT)
+          (EXPLICIT)
+          (EXPORTS)
+          (EXTENSIBILITY)
+          (EXTERNAL)
+          (FALSE)
+          (FROM)
+          (GeneralString)
+          (GraphicString)
+          (IA5String)
+          (IDENTIFIER)
+          (IMPLICIT)
+          (IMPLIED)
+          (IMPORTS)
+          (INCLUDES)
+          (INSTANCE)
+          (INSTRUCTIONS)
+          (INTEGER)
+          (INTERSECTION)
+          (ISO646String)
+          (MAX)
+          (MIN)
+          (MINUS_INFINITY)
+          (NOT_A_NUMBER)
+          (NULL)
+          (NumericString)
+          (OBJECT)
+          (OCTET)
+          (OF)
+          (OID_IRI)
+          (OPTIONAL)
+          (PATTERN)
+          (PDV)
+          (PLUS_INFINITY)
+          (PRESENT)
+          (PrintableString)
+          (PRIVATE)
+          (REAL)
+          (RELATIVE_OID)
+          (RELATIVE_OID_IRI)
+          (SEQUENCE)
+          (SET)
+          (SETTINGS)
+          (SIZE)
+          (STRING)
+          (SYNTAX)
+          (T61String)
+          (TAGS)
+          (TeletexString)
+          (TIME)
+          (TIME_OF_DAY)
+          (TRUE)
+          (TYPE_IDENTIFIER)
+          (UNION)
+          (UNIQUE)
+          (UNIVERSAL)
+          (UniversalString)
+          (UTF8String)
+          (VideotexString)
+          (VisibleString)
+          (WITH))))
+    (END)))
+
+================================================================================
+END and ENCODING-CONTROL inside a cstring are ordinary text
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+ENCODING-CONTROL XER
+    NAME "END is not an END here, nor is ENCODING-CONTROL" AS Alert
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (EncodingControlSections
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList
+          (yellcased_identifier)
+          (cstring)
+          (yellcased_identifier)
+          (uppercased_identifier))))
+    (END)))
+
+================================================================================
+Names that merely begin with END or ENCODING-CONTROL are not those keywords
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+ENCODING-CONTROL XER
+    ENDING END-ish ENCODING-CONTROLS ENCODING-CONTROL-ish DEFAULT-FOR-EMPTY
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (EncodingControlSections
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList
+          (yellcased_identifier)
+          (uppercased_identifier)
+          (yellcased_identifier)
+          (uppercased_identifier)
+          (yellcased_identifier))))
+    (END)))
+
+================================================================================
+Comments inside an encoding control section
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+ENCODING-CONTROL XER
+    NAME -- a line comment -- Alert /* a block comment */ AS "alert"
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (EncodingControlSections
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList
+          (yellcased_identifier)
+          (line_comment)
+          (uppercased_identifier)
+          (block_comment)
+          (yellcased_identifier)
+          (cstring))))
+    (END)))
+
+================================================================================
+Bare quotation mark and apostrophe are lexical items too
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+ENCODING-CONTROL XER
+    " '
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (EncodingControlSections
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList)))
+    (END)))
+
+================================================================================
+Several encoding control sections, one of them empty
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+A ::= BOOLEAN
+ENCODING-CONTROL XER
+    GLOBAL-DEFAULTS MODIFIED-ENCODINGS
+ENCODING-CONTROL PER
+ENCODING-CONTROL ECN
+    ALIGNED
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (BooleanType
+                  (BOOLEAN))))))))
+    (EncodingControlSections
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList
+          (yellcased_identifier)
+          (yellcased_identifier)))
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference))
+      (EncodingControlSection
+        (ENCODING_CONTROL)
+        (encodingreference)
+        (EncodingInstructionAssignmentList
+          (yellcased_identifier))))
+    (END)))

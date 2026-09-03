@@ -64,26 +64,12 @@
       "value": "BEGIN"
     },
     "END": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "STRING",
-          "value": "END"
-        }
-      }
+      "type": "STRING",
+      "value": "END"
     },
     "ENCODING_CONTROL": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "STRING",
-          "value": "ENCODING-CONTROL"
-        }
-      }
+      "type": "STRING",
+      "value": "ENCODING-CONTROL"
     },
     "EXPORTS": {
       "type": "STRING",
@@ -2422,11 +2408,24 @@
     "EncodingInstructionAssignmentList": {
       "type": "REPEAT1",
       "content": {
-        "type": "SYMBOL",
-        "name": "EncodingInstructionAssignment"
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_encoding_instruction_lexical_item"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_encoding_instruction_reserved_word"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "foreign_lexical_item"
+          }
+        ]
       }
     },
-    "EncodingInstructionAssignment": {
+    "_encoding_instruction_lexical_item": {
       "type": "CHOICE",
       "members": [
         {
@@ -2435,7 +2434,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_upper_name"
+          "name": "uppercased_identifier"
         },
         {
           "type": "SYMBOL",
@@ -2443,7 +2442,71 @@
         },
         {
           "type": "SYMBOL",
+          "name": "anycased_field_ref"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "realnumber"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "bstring"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hstring"
+        },
+        {
+          "type": "SYMBOL",
           "name": "cstring"
+        },
+        {
+          "type": "STRING",
+          "value": "::="
+        },
+        {
+          "type": "STRING",
+          "value": "..."
+        },
+        {
+          "type": "STRING",
+          "value": ".."
+        },
+        {
+          "type": "STRING",
+          "value": "[["
+        },
+        {
+          "type": "STRING",
+          "value": "]]"
+        },
+        {
+          "type": "STRING",
+          "value": "</"
+        },
+        {
+          "type": "STRING",
+          "value": "/>"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        },
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
         },
         {
           "type": "STRING",
@@ -2451,15 +2514,80 @@
         },
         {
           "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "STRING",
+          "value": "/"
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        },
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        },
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "STRING",
           "value": ":"
         },
         {
           "type": "STRING",
-          "value": "."
+          "value": "="
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        },
+        {
+          "type": "STRING",
+          "value": "'"
+        },
+        {
+          "type": "STRING",
+          "value": ";"
+        },
+        {
+          "type": "STRING",
+          "value": "@"
+        },
+        {
+          "type": "STRING",
+          "value": "|"
+        },
+        {
+          "type": "STRING",
+          "value": "!"
+        },
+        {
+          "type": "STRING",
+          "value": "^"
+        }
+      ]
+    },
+    "_encoding_instruction_reserved_word": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ABSENT"
         },
         {
           "type": "SYMBOL",
-          "name": "FROM"
+          "name": "ABSTRACT_SYNTAX"
         },
         {
           "type": "SYMBOL",
@@ -2467,11 +2595,335 @@
         },
         {
           "type": "SYMBOL",
-          "name": "SEQUENCE"
+          "name": "APPLICATION"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "AUTOMATIC"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BEGIN"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BIT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BMPString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BOOLEAN"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BY"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CHARACTER"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CHOICE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CLASS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "COMPONENT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "COMPONENTS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CONSTRAINED"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CONTAINING"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DATE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DATE_TIME"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DEFAULT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DEFINITIONS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DURATION"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EMBEDDED"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ENCODED"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ENUMERATED"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EXCEPT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EXPLICIT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EXPORTS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EXTENSIBILITY"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EXTERNAL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FALSE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FROM"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "GeneralString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "GraphicString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IA5String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IDENTIFIER"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IMPLICIT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IMPLIED"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IMPORTS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "INCLUDES"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "INSTANCE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "INSTRUCTIONS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "INTEGER"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "INTERSECTION"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ISO646String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "MAX"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "MIN"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "MINUS_INFINITY"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NOT_A_NUMBER"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NULL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NumericString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OBJECT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OCTET"
         },
         {
           "type": "SYMBOL",
           "name": "OF"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OID_IRI"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OPTIONAL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PATTERN"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PDV"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PLUS_INFINITY"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PRESENT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PrintableString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PRIVATE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "REAL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RELATIVE_OID"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RELATIVE_OID_IRI"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SEQUENCE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SET"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SETTINGS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SIZE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "STRING"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SYNTAX"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "T61String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TAGS"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TeletexString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TIME"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TIME_OF_DAY"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TRUE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TYPE_IDENTIFIER"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UNION"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UNIQUE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UNIVERSAL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UniversalString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UTF8String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "VideotexString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "VisibleString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "WITH"
         }
       ]
     },
@@ -8358,6 +8810,10 @@
     {
       "type": "SYMBOL",
       "name": "_governed_parameter"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "foreign_lexical_item"
     },
     {
       "type": "SYMBOL",

@@ -25,10 +25,14 @@ module.exports = grammar({
 
   // AssignedIdentifier DefinedValue vs next Symbol needs comma/FROM peek.
   // Parameter bare dummy vs ParamGovernor needs ':' peek (brace-aware).
+  // foreign_lexical_item covers encoding control section notation that is not
+  // built from X.680 lexical items. Keep this order in sync with the TokenType
+  // enum in src/scanner.c.
   externals: $ => [
     $._assigned_identifier_defined_value,
     $._bare_parameter,
     $._governed_parameter,
+    $.foreign_lexical_item,
     $.error_sentinel,
   ],
 
@@ -168,8 +172,11 @@ module.exports = grammar({
 
     DEFINITIONS: $ => 'DEFINITIONS',
     BEGIN: $ => 'BEGIN',
-    END: $ => token(prec(1, 'END')),
-    ENCODING_CONTROL: $ => token(prec(1, 'ENCODING-CONTROL')),
+    // No token(prec(...)) here: lexical precedence outranks match length, so a
+    // raised precedence would cut ENDING into END + ING. At equal length these
+    // string tokens already beat yellcased_identifier on match specificity.
+    END: $ => 'END',
+    ENCODING_CONTROL: $ => 'ENCODING-CONTROL',
     EXPORTS: $ => 'EXPORTS',
     IMPORTS: $ => 'IMPORTS',
     CLASS: $ => 'CLASS',
@@ -712,22 +719,162 @@ module.exports = grammar({
       optional($.EncodingInstructionAssignmentList),
     ),
 
-    // Encoding instructions are defined per encodingreference, but may be any
-    // token sequence other than END or ENCODING-CONTROL (see doc/asn1.bnf).
-    EncodingInstructionAssignmentList: $ => repeat1($.EncodingInstructionAssignment),
+    // The syntax of an encoding control section belongs to whichever
+    // specification the encodingreference names (X.691, X.692, X.693, ...), so
+    // this grammar only constrains it lexically: anything at all may appear
+    // apart from END, which terminates the module, and ENCODING-CONTROL, which
+    // starts the next section. Neither is listed below, so both end the list;
+    // as string tokens they outrank yellcased_identifier on that same text.
+    //
+    // The X.680 lexical items (clause 12, transcribed in doc/lexical-items.md)
+    // are spelled out so that they keep their own node types here. Notation
+    // that X.680 does not describe, such as the `#Outer` encoding class
+    // references of X.692, arrives as foreign_lexical_item from the external
+    // scanner.
+    EncodingInstructionAssignmentList: $ => repeat1(choice(
+      $._encoding_instruction_lexical_item,
+      $._encoding_instruction_reserved_word,
+      $.foreign_lexical_item,
+    )),
 
-    EncodingInstructionAssignment: $ => choice(
+    // Names (12.2-12.5, 12.25), literals (12.8-12.17) and the single- and
+    // multi-character items (12.20-12.24, 12.28, 12.29, 12.37). typereference,
+    // modulereference, encodingreference, objectclassreference and psname are
+    // all spellings of yellcased_identifier or uppercased_identifier;
+    // identifier and valuereference are lowercased_identifier; simplestring
+    // and tstring are shapes of cstring.
+    _encoding_instruction_lexical_item: $ => choice(
       $.yellcased_identifier,
-      $._upper_name,
+      $.uppercased_identifier,
       $.lowercased_identifier,
+      $.anycased_field_ref,
+      $.number,
+      $.realnumber,
+      $.bstring,
+      $.hstring,
       $.cstring,
+      '::=',
+      '...',
+      '..',
+      '[[',
+      ']]',
+      '</',
+      '/>',
+      '{',
+      '}',
+      '<',
+      '>',
       ',',
-      ':',
       '.',
-      $.FROM,
+      '/',
+      '(',
+      ')',
+      '[',
+      ']',
+      '-',
+      ':',
+      '=',
+      '"',
+      "'",
+      ';',
+      '@',
+      '|',
+      '!',
+      '^',
+    ),
+
+    // The reserved words of 12.38, minus END and ENCODING-CONTROL. Words that
+    // are not reserved (ANY, DEFINED, INF, NaN, true, false) are deliberately
+    // absent: inside an encoding control section they are ordinary names.
+    // GeneralizedTime, ObjectDescriptor and UTCTime have no token of their own
+    // in this grammar; they lex as uppercased_identifier.
+    _encoding_instruction_reserved_word: $ => choice(
+      $.ABSENT,
+      $.ABSTRACT_SYNTAX,
       $.ALL,
-      $.SEQUENCE,
+      $.APPLICATION,
+      $.AUTOMATIC,
+      $.BEGIN,
+      $.BIT,
+      $.BMPString,
+      $.BOOLEAN,
+      $.BY,
+      $.CHARACTER,
+      $.CHOICE,
+      $.CLASS,
+      $.COMPONENT,
+      $.COMPONENTS,
+      $.CONSTRAINED,
+      $.CONTAINING,
+      $.DATE,
+      $.DATE_TIME,
+      $.DEFAULT,
+      $.DEFINITIONS,
+      $.DURATION,
+      $.EMBEDDED,
+      $.ENCODED,
+      $.ENUMERATED,
+      $.EXCEPT,
+      $.EXPLICIT,
+      $.EXPORTS,
+      $.EXTENSIBILITY,
+      $.EXTERNAL,
+      $.FALSE,
+      $.FROM,
+      $.GeneralString,
+      $.GraphicString,
+      $.IA5String,
+      $.IDENTIFIER,
+      $.IMPLICIT,
+      $.IMPLIED,
+      $.IMPORTS,
+      $.INCLUDES,
+      $.INSTANCE,
+      $.INSTRUCTIONS,
+      $.INTEGER,
+      $.INTERSECTION,
+      $.ISO646String,
+      $.MAX,
+      $.MIN,
+      $.MINUS_INFINITY,
+      $.NOT_A_NUMBER,
+      $.NULL,
+      $.NumericString,
+      $.OBJECT,
+      $.OCTET,
       $.OF,
+      $.OID_IRI,
+      $.OPTIONAL,
+      $.PATTERN,
+      $.PDV,
+      $.PLUS_INFINITY,
+      $.PRESENT,
+      $.PrintableString,
+      $.PRIVATE,
+      $.REAL,
+      $.RELATIVE_OID,
+      $.RELATIVE_OID_IRI,
+      $.SEQUENCE,
+      $.SET,
+      $.SETTINGS,
+      $.SIZE,
+      $.STRING,
+      $.SYNTAX,
+      $.T61String,
+      $.TAGS,
+      $.TeletexString,
+      $.TIME,
+      $.TIME_OF_DAY,
+      $.TRUE,
+      $.TYPE_IDENTIFIER,
+      $.UNION,
+      $.UNIQUE,
+      $.UNIVERSAL,
+      $.UniversalString,
+      $.UTF8String,
+      $.VideotexString,
+      $.VisibleString,
+      $.WITH,
     ),
 
     Value: $ => choice(
