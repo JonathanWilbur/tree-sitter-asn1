@@ -293,7 +293,8 @@ module.exports = grammar({
       $.encodingreference,
     ),
 
-    encodingreference: $ => /[A-Z][A-Z0-9\-]+/,
+    // Same hyphen rules as typereference: no leading/trailing/double hyphen.
+    encodingreference: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
 
     ModuleIdentifier: $ => prec.right(seq(
       $.modulereference,
@@ -386,7 +387,8 @@ module.exports = grammar({
     // Reference as a token() with high precedence steals WITH (next import
     // Symbol is also valid). Keep a plain regex; Parameter avoids opening
     // DefinedType so DummyReference does not fight typereference tokens.
-    Reference: $ => /[a-zA-Z][a-zA-Z0-9\-]*/,
+    // Hyphen rules match X.680 §12.2/12.3: no trailing hyphen, no `--`.
+    Reference: $ => /[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
   
     Imports: $ => prec.right(seq(
       $.IMPORTS,
@@ -438,10 +440,14 @@ module.exports = grammar({
       optional($.ActualParameterList),
     )),
 
+    // Empty `{}` is valid (X.683): e.g. `SIGNED{}` after a ParameterList-less
+    // parameterization, and Symbols such as `HASH{}` / `SIGNED{}` in IMPORTS.
     ActualParameterList: $ => seq(
       '{',
-      $.ActualParameter,
-      repeat(seq(',', $.ActualParameter)),
+      optional(seq(
+        $.ActualParameter,
+        repeat(seq(',', $.ActualParameter)),
+      )),
       '}',
     ),
 
@@ -1121,7 +1127,11 @@ module.exports = grammar({
     
     FirstRelativeArcIdentifier: $ => $.ArcIdentifier,
     
-    ArcIdentifier: $ => /[a-zA-Z0-9][a-zA-Z0-9-]*/,
+    // Numeric arcs, or names with the usual non-terminal / non-double hyphen.
+    ArcIdentifier: $ => token(choice(
+      /[0-9]+/,
+      /[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
+    )),
     
     EmbeddedPDVValue: $ => $.SequenceValue,
     
@@ -1885,15 +1895,55 @@ module.exports = grammar({
       optional('--'),
     )),
 
+    // XMLNullValue is `empty` in X.680/X.693. Tree-sitter has no empty tokens,
+    // so null (and other empty XML values) are represented by omitting XMLValue
+    // between the tags rather than a sentinel / joke terminal.
     XMLTypedValue: $ => choice(
-      seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
+      seq('<', $.NonParameterizedTypeName, '>', optional($.XMLValue), '</', $.NonParameterizedTypeName, '>'),
       seq('<', $.NonParameterizedTypeName, '/>')
+    ),
+
+    // Keywords such as NULL / INTEGER always win over identifier regexes in the
+    // lexer, so XML tag names must accept those keyword tokens explicitly (in
+    // addition to ordinary typereferences via _upper_name).
+    _xml_keyword_type_name: $ => choice(
+      $.BOOLEAN,
+      $.INTEGER,
+      $.REAL,
+      $.NULL,
+      $.EXTERNAL,
+      $.ENUMERATED,
+      $.SEQUENCE,
+      $.SET,
+      $.CHOICE,
+      $.DATE,
+      $.TIME,
+      $.DATE_TIME,
+      $.DURATION,
+      $.TIME_OF_DAY,
+      $.OID_IRI,
+      $.RELATIVE_OID,
+      $.RELATIVE_OID_IRI,
+      $.ANY,
+      $.BMPString,
+      $.GeneralString,
+      $.GraphicString,
+      $.IA5String,
+      $.ISO646String,
+      $.NumericString,
+      $.PrintableString,
+      $.TeletexString,
+      $.T61String,
+      $.UniversalString,
+      $.UTF8String,
+      $.VideotexString,
+      $.VisibleString,
     ),
 
     // TODO: Convert to choice. optional prefixes don't work.
     NonParameterizedTypeName: $ => seq(
       optional(seq($.modulereference, '.')),
-      alias($._upper_name, 'typereference'),
+      alias(choice($._upper_name, $._xml_keyword_type_name), 'typereference'),
     ),
 
     XMLValue: $ => choice(
@@ -1910,9 +1960,11 @@ module.exports = grammar({
       // $.XMLEnumeratedValue,
       // $.XMLExternalValue,
       // $.XMLInstanceOfValue,
-      $.XMLIntegerValue,
+      // Prefer numeric forms over xmlhstring/xmlcstring/xmltstring when the
+      // text is a signed number (xmltstring also matches `-5`).
+      prec(2, $.XMLIntegerValue),
       $.XMLIRIValue,
-      $.XMLNullValue,
+      // XMLNullValue is empty — see optional($.XMLValue) on XMLTypedValue.
       $.XMLObjectIdentifierValue,
       $.XMLOctetStringValue,
       $.XMLRealValue,
@@ -1923,7 +1975,8 @@ module.exports = grammar({
       // $.XMLSetValue,
       // $.XMLSetOfValue,
       // $.XMLPrefixedValue,
-      $.XMLTimeValue
+      // Lower than XMLIntegerValue: xmltstring also matches bare signed numbers.
+      prec(-1, $.XMLTimeValue)
     ),
 
     XMLBooleanValue: $ => choice(
@@ -1947,10 +2000,9 @@ module.exports = grammar({
       // $.TextInteger
     ),
 
-    XMLSignedNumber: $ => choice(
-      // $.number,
-      seq('-', $.number)
-    ),
+    // One token so a signed integer is not swallowed by xmlcstring / xmlhstring
+    // (longest-match would otherwise take `-5` as a string).
+    XMLSignedNumber: $ => token(prec(1, /-?(0|[1-9][0-9]*)/)),
 
     EmptyElementInteger: $ => seq('<', $.identifier, '/>'),
 
@@ -1987,7 +2039,9 @@ module.exports = grammar({
       $.XMLIdentifierList,
     ),
 
-    xmlbstring: $ => /[01]*/,
+    // Non-empty: empty BIT STRING values use omitted XMLValue (see XMLTypedValue).
+    // A `*` form matched ε and competed with every other empty XML alternative.
+    xmlbstring: $ => /[01]+/,
 
     XMLIdentifierList: $ => choice(
       $.EmptyElementList,
@@ -2003,9 +2057,8 @@ module.exports = grammar({
       $.xmlhstring
     ),
 
-    xmlhstring: $ => /[0-9A-Fa-f]*/,
-
-    XMLNullValue: $ => '$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$',
+    // Non-empty: empty OCTET STRING values use omitted XMLValue.
+    xmlhstring: $ => /[0-9A-Fa-f]+/,
 
     XMLSequenceValue: $ => choice(
       $.XMLComponentValueList,
@@ -2014,7 +2067,7 @@ module.exports = grammar({
     XMLComponentValueList: $ => prec.right(repeat1($.XMLNamedValue)),
 
     XMLNamedValue: $ => seq(
-      '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
+      '<', $.identifier, '>', optional($.XMLValue), '</', $.identifier, '>'
     ),
 
     XMLSequenceOfValue: $ => choice(
@@ -2032,12 +2085,12 @@ module.exports = grammar({
     XMLDelimitedItemList: $ => prec.right(repeat1($.XMLDelimitedItem)),
 
     XMLDelimitedItem: $ => choice(
-      seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
+      seq('<', $.NonParameterizedTypeName, '>', optional($.XMLValue), '</', $.NonParameterizedTypeName, '>'),
       // seq('<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>')
     ),
 
     XMLChoiceValue: $ => seq(
-      '<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>'
+      '<', $.identifier, '>', optional($.XMLValue), '</', $.identifier, '>'
     ),
 
     XMLObjectClassFieldValue: $ => choice(
@@ -2087,7 +2140,9 @@ module.exports = grammar({
 
     XMLTimeValue: $ => $.xmltstring,
 
-    xmltstring: $ => /[0-9:.+\-ZT][0-9:.+\-ZT]*/,
+    // Require a time marker (`:` / `T` / `Z`) so a bare signed integer like
+    // `-5` is not lexed as xmltstring (which would beat XMLSignedNumber).
+    xmltstring: $ => token(/[0-9+\-.]*[:TZ][0-9:.+\-ZT]*/),
 
     XMLCharacterStringValue: $ => choice(
       $.XMLRestrictedCharacterStringValue,
@@ -2096,7 +2151,9 @@ module.exports = grammar({
 
     XMLRestrictedCharacterStringValue: $ => $.xmlcstring,
 
-    xmlcstring: $ => /[^<&]*/,  // Simplified, should exclude XML reserved chars
+    // Non-empty: empty character strings use omitted XMLValue. Simplified:
+    // should also exclude other XML reserved forms beyond raw `<` / `&`.
+    xmlcstring: $ => /[^<&]+/,
 
     ReferencedType: $ => choice(
       $.DefinedType,

@@ -1,0 +1,75 @@
+================================================================================
+XML null value is empty between tags
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+v ::= <NULL></NULL>
+w ::= <NULL/>
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (XMLValueAssignment
+            (XMLTypedValue
+              (NonParameterizedTypeName
+                (NULL))
+              (NonParameterizedTypeName
+                (NULL)))))
+        (Assignment
+          (XMLValueAssignment
+            (XMLTypedValue
+              (NonParameterizedTypeName
+                (NULL)))))))
+    (END)))
+
+================================================================================
+XML integer values may be positive or negative
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+pos ::= <INTEGER>5</INTEGER>
+neg ::= <INTEGER>-5</INTEGER>
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (XMLValueAssignment
+            (XMLTypedValue
+              (NonParameterizedTypeName
+                (INTEGER))
+              (XMLValue
+                (XMLBuiltinValue
+                  (XMLIntegerValue
+                    (XMLSignedNumber))))
+              (NonParameterizedTypeName
+                (INTEGER)))))
+        (Assignment
+          (XMLValueAssignment
+            (XMLTypedValue
+              (NonParameterizedTypeName
+                (INTEGER))
+              (XMLValue
+                (XMLBuiltinValue
+                  (XMLIntegerValue
+                    (XMLSignedNumber))))
+              (NonParameterizedTypeName
+                (INTEGER)))))))
+    (END)))

@@ -40,7 +40,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "ActualParameter",
@@ -5898,10 +5898,6 @@
           "named": true
         },
         {
-          "type": "XMLNullValue",
-          "named": true
-        },
-        {
           "type": "XMLObjectIdentifierValue",
           "named": true
         },
@@ -6318,21 +6314,6 @@
     }
   },
   {
-    "type": "XMLSignedNumber",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "number",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "XMLSpecialRealValue",
     "named": true,
     "fields": {},
@@ -6459,6 +6440,11 @@
     "fields": {}
   },
   {
+    "type": "encodingreference",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "identifier",
     "named": true,
     "fields": {},
@@ -6476,6 +6462,11 @@
   {
     "type": "number",
     "named": true,
+    "fields": {}
+  },
+  {
+    "type": "objectclassreference",
+    "named": false,
     "fields": {}
   },
   {
@@ -6527,6 +6518,151 @@
         }
       ]
     }
+  },
+  {
+    "type": "typereference",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ANY",
+          "named": true
+        },
+        {
+          "type": "BMPString",
+          "named": true
+        },
+        {
+          "type": "BOOLEAN",
+          "named": true
+        },
+        {
+          "type": "CHOICE",
+          "named": true
+        },
+        {
+          "type": "DATE",
+          "named": true
+        },
+        {
+          "type": "DATE_TIME",
+          "named": true
+        },
+        {
+          "type": "DURATION",
+          "named": true
+        },
+        {
+          "type": "ENUMERATED",
+          "named": true
+        },
+        {
+          "type": "EXTERNAL",
+          "named": true
+        },
+        {
+          "type": "GeneralString",
+          "named": true
+        },
+        {
+          "type": "GraphicString",
+          "named": true
+        },
+        {
+          "type": "IA5String",
+          "named": true
+        },
+        {
+          "type": "INTEGER",
+          "named": true
+        },
+        {
+          "type": "ISO646String",
+          "named": true
+        },
+        {
+          "type": "NULL",
+          "named": true
+        },
+        {
+          "type": "NumericString",
+          "named": true
+        },
+        {
+          "type": "OID_IRI",
+          "named": true
+        },
+        {
+          "type": "PrintableString",
+          "named": true
+        },
+        {
+          "type": "REAL",
+          "named": true
+        },
+        {
+          "type": "RELATIVE_OID",
+          "named": true
+        },
+        {
+          "type": "RELATIVE_OID_IRI",
+          "named": true
+        },
+        {
+          "type": "SEQUENCE",
+          "named": true
+        },
+        {
+          "type": "SET",
+          "named": true
+        },
+        {
+          "type": "T61String",
+          "named": true
+        },
+        {
+          "type": "TIME",
+          "named": true
+        },
+        {
+          "type": "TIME_OF_DAY",
+          "named": true
+        },
+        {
+          "type": "TeletexString",
+          "named": true
+        },
+        {
+          "type": "UTF8String",
+          "named": true
+        },
+        {
+          "type": "UniversalString",
+          "named": true
+        },
+        {
+          "type": "VideotexString",
+          "named": true
+        },
+        {
+          "type": "VisibleString",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "word",
+    "named": false,
+    "fields": {}
+  },
+  {
+    "type": "yellcased_identifier",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "!",
@@ -7021,7 +7157,7 @@
     "named": true
   },
   {
-    "type": "XMLNullValue",
+    "type": "XMLSignedNumber",
     "named": true
   },
   {
@@ -7061,10 +7197,6 @@
     "named": true
   },
   {
-    "type": "encodingreference",
-    "named": true
-  },
-  {
     "type": "false",
     "named": true
   },
@@ -7084,10 +7216,6 @@
   {
     "type": "lowercased_identifier",
     "named": true
-  },
-  {
-    "type": "objectclassreference",
-    "named": false
   },
   {
     "type": "objectfieldreference",
@@ -7138,10 +7266,6 @@
     "named": false
   },
   {
-    "type": "word",
-    "named": false
-  },
-  {
     "type": "xmlbstring",
     "named": true
   },
@@ -7175,10 +7299,6 @@
   },
   {
     "type": "xmltstring",
-    "named": true
-  },
-  {
-    "type": "yellcased_identifier",
     "named": true
   },
   {

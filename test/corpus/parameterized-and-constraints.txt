@@ -1,0 +1,118 @@
+================================================================================
+All-caps parameterized type assignment is not an object class assignment
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+SIGNED { ToBeSigned } ::= SEQUENCE {
+  toBeSigned ToBeSigned,
+  bits BIT STRING
+}
+A ::= SIGNED{}
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (ParameterList
+              (Parameter
+                (DummyReference
+                  (Reference))))
+            (Type
+              (BuiltinType
+                (SequenceType
+                  (SEQUENCE)
+                  (ComponentTypeLists
+                    (RootComponentTypeList
+                      (ComponentTypeList
+                        (ComponentType
+                          (NamedType
+                            (identifier
+                              (lowercased_identifier))
+                            (Type
+                              (ReferencedType
+                                (DefinedType)))))
+                        (ComponentType
+                          (NamedType
+                            (identifier
+                              (lowercased_identifier))
+                            (Type
+                              (BuiltinType
+                                (BitStringType
+                                  (BIT)
+                                  (STRING))))))))))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (ReferencedType
+                (DefinedType
+                  (ActualParameterList))))))))
+    (END)))
+
+================================================================================
+Component relation constraint with a single {@identifier}
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+A ::= ATTRIBUTE.&Type({SupportedAttributes}{@type})
+B ::= INTEGER ({S}{@a.b})
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (ObjectClassFieldType
+                  (DefinedObjectClass)
+                  (FieldName)))
+              (Constraint
+                (ConstraintSpec
+                  (GeneralConstraint
+                    (TableConstraint
+                      (ComponentRelationConstraint
+                        (DefinedObjectSet
+                          (objectsetreference
+                            (uppercased_identifier)))
+                        (AtNotation
+                          (ComponentIdList
+                            (identifier
+                              (lowercased_identifier))))))))))))
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (IntegerType
+                  (INTEGER)))
+              (Constraint
+                (ConstraintSpec
+                  (GeneralConstraint
+                    (TableConstraint
+                      (ComponentRelationConstraint
+                        (DefinedObjectSet
+                          (objectsetreference
+                            (yellcased_identifier)))
+                        (AtNotation
+                          (ComponentIdList
+                            (identifier
+                              (lowercased_identifier))
+                            (identifier
+                              (lowercased_identifier))))))))))))))
+    (END)))
