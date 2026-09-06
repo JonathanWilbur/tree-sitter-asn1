@@ -97,3 +97,61 @@ END
                         (TokenOrGroupSpec
                           (RequiredToken))))))))))))
     (END)))
+
+================================================================================
+Object set assignment with useful object class
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+MySet TYPE-IDENTIFIER ::= { { &id { 1 2 3 }, &Type INTEGER } }
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (ObjectSetAssignment
+            (DefinedObjectClass
+              (UsefulObjectClassReference
+                (TYPE_IDENTIFIER)))
+            (ObjectSet
+              (ObjectSetSpec
+                (RootElementSetSpec
+                  (ElementSetSpec
+                    (Unions
+                      (Intersections
+                        (IntersectionElements
+                          (Elements
+                            (ObjectSetElements
+                              (Object
+                                (ObjectDefn
+                                  (DefaultSyntax
+                                    (FieldSetting
+                                      (Setting
+                                        (Value
+                                          (BuiltinValue
+                                            (RelativeOIDValue
+                                              (RelativeOIDComponentsList
+                                                (RelativeOIDComponents
+                                                  (NumberForm
+                                                    (number)))
+                                                (RelativeOIDComponents
+                                                  (NumberForm
+                                                    (number)))
+                                                (RelativeOIDComponents
+                                                  (NumberForm
+                                                    (number)))))))))
+                                    (FieldSetting
+                                      (Setting
+                                        (Type
+                                          (BuiltinType
+                                            (IntegerType
+                                              (INTEGER))))))))))))))))))))))
+    (END)))
