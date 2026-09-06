@@ -49,7 +49,9 @@ jobs:
           test-node: true
           test-python: true
           test-go: true
-          test-swift: ${{ runner.os == 'macOS' }}
+          # setup-swift 6.1 cannot build against the Xcode 26 / Swift 6.3 SDK
+          # on macos-latest. Re-enable when the action tracks that toolchain.
+          test-swift: false
       - name: Parse sample files
         uses: tree-sitter/parse-action@v4
         id: parse-files
