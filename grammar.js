@@ -36,70 +36,75 @@ module.exports = grammar({
     $.error_sentinel,
   ],
 
-  // TODO: Is this going to slow down the parser a lot or cause errors?
   conflicts: $ => [
-    [$.UsefulType, $.DefinedType],
-    // All-caps names can be types, modules, or object classes; mixed-case names
-    // share the word token. Disambiguate those overlapping non-terminals here.
-    [$.DefinedObjectClass, $.DefinedType, $.UsefulType],
-    // [$.ObjIdComponents, $.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    [$.Literal, $.objectsetreference, $.DefinedType, $.UsefulType],
-    [$.Literal, $.DefinedType, $.UsefulType],
-    // [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    // [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    [$.NameForm, $.ObjIdComponents],
-    // [$.NameForm, $.ObjIdComponents, $.DefinedValue],
-    [$.ObjIdComponents, $.DefinedValue, $.objectreference],
-    // [$.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
-    [$.DefinedValue, $.objectreference],
+  // Declared GLR conflicts. Prefer resolving with prec / structure when
+  // possible; entries below are what `tree-sitter generate` still requires
+  // after folding UsefulType into DefinedType (plus the extension-list
+  // conflict needed so ", ..." is not absorbed into ExtensionAdditionList).
+    // --- Type / object-class / module name overlap ---
+    [$.objectsetreference, $.DefinedType],
+    [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.DefinedObjectClass, $.DefinedType],
+    [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
     [$.DefinedObjectClass, $.objectsetreference, $.DefinedType],
-    // [$.ExternalObjectClassReference, $.objectsetreference, $.DefinedType],
-    [$.DefinedObjectClass, $.objectsetreference, $.DefinedType, $.UsefulType],
-    // [$.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    // [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    // [$.ObjIdComponents, $.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.DefinedType],
-    [$.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference],
-    // [$.ExternalObjectClassReference, $.DefinedType],
-    [$.ExternalObjectClassReference, $.objectsetreference],
+    [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.DefinedValue, $.objectreference],
+    [$.identifier, $.DefinedValue, $.objectreference],
+    [$.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
     [$.objectsetreference, $.ExternalTypeReference],
-    [$.objectsetreference, $.DefinedType, $.UsefulType],
-    [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue],
+    [$.ExternalObjectClassReference, $.ExternalTypeReference],
+    [$.ExternalObjectClassReference, $.objectsetreference],
+    [$.identifier, $.DefinedValue],
+    [$.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference],
+    [$.ExternalObjectClassReference, $.objectsetreference, $.ExternalTypeReference],
+    // --- OID / value / number forms ---
+    [$.ObjIdComponents, $.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.identifier, $.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
+    [$.identifier, $.ObjIdComponents, $.DefinedValue, $.objectreference],
+    [$.identifier, $.NameForm],
+    [$.ObjIdComponents, $.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
+    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm],
+    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm, $.CharsDefn],
+    [$.ReferencedValue, $.CharsDefn],
     [$.ObjIdComponents, $.SignedNumber, $.NumberForm],
     [$.SignedNumber, $.Group, $.TableColumn],
-    [$.RestrictedCharacterStringValue, $.CharsDefn], // TODO: I feel like this can be fixed.
+    [$.RestrictedCharacterStringValue, $.CharsDefn],
+    [$.identifier, $.NameForm, $.ObjIdComponents, $.DefinedValue],
+    [$.RelativeOIDComponents, $.NumberForm],
+    [$.ObjIdComponents, $.NumberForm],
+    [$.ObjIdComponents, $.DefinedValue],
+    [$.NameForm, $.ObjIdComponents],
+    [$.ObjIdComponents, $.DefinedValue, $.objectreference],
+    [$.Group, $.TableColumn],
+    // --- Values that share brace or string shapes ---
     [$.EnumeratedValue, $.NamedValue],
     [$.EnumeratedValue, $.IdentifierList],
-
-    // TODO: AI generated these. Review if these are needed.
-    [$.ReferencedValue, $.CharsDefn],
-    [$.ValueList, $.Setting],
-    [$.ValueFromObject, $.ObjectSetFromObjects, $.ObjectFromObject, $.TypeFromObject],
     [$.ComponentValueList, $.NamedValueList],
-    [$.ObjectSetElements, $.Setting],
-    [$.BitStringValue, $.OctetStringValue],
-    [$.Setting, $.TypeConstraint],
-    [$.ObjectSetElements, $.Setting],
-    [$.ObjectSetElements, $.ComponentRelationConstraint],
-    [$.ElementSetSpecs, $.ObjectSetSpec],
-    [$.ObjIdComponents, $.NumberForm],
-    [$.ExtensionAdditions, $.ExtensionAdditionList],
-    [$.BitStringType],
+    [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue],
     [$.SequenceValue, $.SetValue],
     [$.SequenceOfValue, $.SetOfValue],
-    [$.ValueList, $.Setting],
-    [$.SingleValue, $.Setting, $.ValueList],
-    [$.ValueFromObject, $.ObjectFromObject, $.TypeFromObject],
-    [$.ValueFromObject, $.TypeFromObject],
-    [$.Group, $.TableColumn],
-    [$.ValueFromObject, $.ObjectFromObject],
-    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm, $.CharsDefn],
-    [$.ReferencedValue, $.RelativeOIDComponents, $.NumberForm],
-    // [$.SignedNumber, $.NumberForm],
-    [$.RelativeOIDComponents, $.NumberForm],
-    [$.ObjIdComponents, $.ExternalValueReference],
-    [$.ObjIdComponents, $.DefinedValue],
+    // --- Information-object Setting / FieldSetting ---
+    [$.Literal, $.DefinedType],
+    [$.Literal, $.objectsetreference, $.DefinedType],
+    [$.ValueList, $.SingleValue, $.Setting],
     [$.ReferencedObjects, $.Object],
-    [$.objectsetreference, $.DefinedType],
+    [$.Setting, $.TypeConstraint],
+    [$.ElementSetSpecs, $.ObjectSetSpec],
+    [$.ObjectSetElements, $.Setting],
+    [$.ObjectSetElements, $.ComponentRelationConstraint],
+    [$.ValueFromObject, $.ObjectFromObject, $.TypeFromObject],
+    [$.ValueList, $.Setting],
+    [$.ValueFromObject, $.ObjectSetFromObjects, $.ObjectFromObject, $.TypeFromObject],
+    [$.ValueFromObject, $.TypeFromObject],
+    [$.ValueFromObject, $.ObjectFromObject],
+    // --- Extension and list comma vs "..." ---
+    [$.ComponentTypeList],
+    [$.AlternativeTypeList],
+    [$.Enumeration],
+    // Comma after an extension addition may continue the list or start
+    // OptionalExtensionMarker (", ...").
+    [$.ExtensionAdditions, $.ExtensionAdditionList],
+    // --- XML values ---
     [$.XMLTypedValue, $.XMLValueOrEmpty],
     [$.XMLValueList],
     [$.XMLNamedValue, $.XMLValueOrEmpty, $.XMLChoiceValue],
@@ -108,31 +113,6 @@ module.exports = grammar({
     [$.XMLValueOrEmpty, $.XMLDelimitedItem],
     [$.XMLNamedValue, $.XMLChoiceValue],
     [$.XMLTypedValue, $.XMLDelimitedItem],
-
-    // Comma after a list item can continue the list or start "...".
-    // prec.right always continued the list and rejected valid extension markers.
-    [$.ComponentTypeList],
-    [$.Enumeration],
-    [$.AlternativeTypeList],
-
-    [$.identifier, $.DefinedValue, $.objectreference],
-    [$.identifier, $.DefinedValue],
-    [$.identifier, $.NameForm, $.ObjIdComponents, $.DefinedValue, $.objectreference],
-    [$.identifier, $.ObjIdComponents, $.DefinedValue, $.objectreference],
-    [$.identifier, $.NameForm],
-    [$.identifier, $.NameForm, $.ObjIdComponents, $.DefinedValue],
-
-    [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.ExternalObjectClassReference, $.ExternalTypeReference],
-    [$.ObjIdComponents, $.DefinedValue, $.DefinedObjectClass, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.ObjIdComponents, $.DefinedValue, $.ExternalObjectClassReference, $.ExternalObjectReference, $.ExternalObjectSetReference, $.objectsetreference, $.ExternalTypeReference],
-    [$.DefinedType],
-    [$.ExternalObjectClassReference, $.objectsetreference, $.ExternalTypeReference],
   ],
 
   extras: $ => [
@@ -982,9 +962,11 @@ module.exports = grammar({
     ),
     
     OctetStringValue: $ => choice(
+      // Prefer CONTAINING; bare bstring/hstring also match BitStringValue —
+      // that remaining ambiguity stays a declared conflict.
+      prec(1, seq($.CONTAINING, $.Value)),
       $.bstring,
       $.hstring,
-      seq($.CONTAINING, $.Value)
     ),
     
     NullValue: $ => prec(1, $.NULL),
@@ -1149,12 +1131,12 @@ module.exports = grammar({
       $.UnrestrictedCharacterStringValue
     ),
     
-    RestrictedCharacterStringValue: $ => choice(
+    RestrictedCharacterStringValue: $ => prec(1, choice(
       $.cstring,
       $.CharacterStringList,
       $.Quadruple,
       $.Tuple
-    ),
+    )),
     
     cstring: $ => /"([^"]|"")*"/,
     
@@ -1302,7 +1284,7 @@ module.exports = grammar({
 
     BitStringType: $ => choice(
       seq($.BIT, $.STRING),
-      seq($.BIT, $.STRING, '{', $.NamedBitList, '}')
+      prec(1, seq($.BIT, $.STRING, '{', $.NamedBitList, '}'))
     ),
 
     NamedBitList: $ => seq(
@@ -1348,7 +1330,7 @@ module.exports = grammar({
 
     ExtensionAdditionList: $ => choice(
       $.ExtensionAddition,
-      seq($.ExtensionAdditionList, ',', $.ExtensionAddition)
+      seq($.ExtensionAdditionList, ',', $.ExtensionAddition),
     ),
 
     ExtensionAddition: $ => choice(
@@ -2158,9 +2140,10 @@ module.exports = grammar({
     // should also exclude other XML reserved forms beyond raw `<` / `&`.
     xmlcstring: $ => /[^<&]+/,
 
+    // UsefulType (X.680) is indistinguishable from a parameter-less DefinedType
+    // at parse time, so it is folded into DefinedType to avoid GLR conflicts.
     ReferencedType: $ => choice(
       $.DefinedType,
-      $.UsefulType,
       $.SelectionType,
       prec(1, $.TypeFromObject),
     ),
@@ -2170,7 +2153,7 @@ module.exports = grammar({
     //   alias($._upper_name, 'typereference'),
     //   optional($.ActualParameterList),
     // )),
-    DefinedType: $ => choice(
+    DefinedType: $ => prec.right(choice(
       seq(
         $.ExternalTypeReference,
         optional($.ActualParameterList),
@@ -2179,15 +2162,13 @@ module.exports = grammar({
         alias($._upper_name, 'typereference'),
         optional($.ActualParameterList),
       ),
-    ),
+    )),
 
     ExternalTypeReference: $ => seq(
       $.modulereference,
       '.',
       alias($._upper_name, 'typereference')
     ),
-
-    UsefulType: $ => alias($._upper_name, 'typereference'),
 
     DummyReference: $ => $.Reference,
   },

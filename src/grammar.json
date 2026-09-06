@@ -3281,25 +3281,29 @@
       "type": "CHOICE",
       "members": [
         {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "CONTAINING"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "Value"
+              }
+            ]
+          }
+        },
+        {
           "type": "SYMBOL",
           "name": "bstring"
         },
         {
           "type": "SYMBOL",
           "name": "hstring"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "CONTAINING"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "Value"
-            }
-          ]
         }
       ]
     },
@@ -3926,25 +3930,29 @@
       ]
     },
     "RestrictedCharacterStringValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "cstring"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "CharacterStringList"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "Quadruple"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "Tuple"
-        }
-      ]
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "cstring"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "CharacterStringList"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "Quadruple"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "Tuple"
+          }
+        ]
+      }
     },
     "cstring": {
       "type": "PATTERN",
@@ -4568,29 +4576,33 @@
           ]
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "BIT"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "STRING"
-            },
-            {
-              "type": "STRING",
-              "value": "{"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "NamedBitList"
-            },
-            {
-              "type": "STRING",
-              "value": "}"
-            }
-          ]
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "BIT"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "STRING"
+              },
+              {
+                "type": "STRING",
+                "value": "{"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "NamedBitList"
+              },
+              {
+                "type": "STRING",
+                "value": "}"
+              }
+            ]
+          }
         }
       ]
     },
@@ -8519,10 +8531,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "UsefulType"
-        },
-        {
-          "type": "SYMBOL",
           "name": "SelectionType"
         },
         {
@@ -8536,56 +8544,60 @@
       ]
     },
     "DefinedType": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "ExternalTypeReference"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ActualParameterList"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
                 "type": "SYMBOL",
-                "name": "_upper_name"
+                "name": "ExternalTypeReference"
               },
-              "named": false,
-              "value": "typereference"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "ActualParameterList"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
                   "type": "SYMBOL",
-                  "name": "ActualParameterList"
+                  "name": "_upper_name"
                 },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                "named": false,
+                "value": "typereference"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "ActualParameterList"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     "ExternalTypeReference": {
       "type": "SEQ",
@@ -8609,15 +8621,6 @@
         }
       ]
     },
-    "UsefulType": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "_upper_name"
-      },
-      "named": false,
-      "value": "typereference"
-    },
     "DummyReference": {
       "type": "SYMBOL",
       "name": "Reference"
@@ -8639,37 +8642,27 @@
   ],
   "conflicts": [
     [
-      "UsefulType",
+      "objectsetreference",
+      "DefinedType"
+    ],
+    [
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
+      "objectsetreference",
+      "ExternalTypeReference"
+    ],
+    [
+      "DefinedObjectClass",
       "DefinedType"
     ],
     [
       "DefinedObjectClass",
-      "DefinedType",
-      "UsefulType"
-    ],
-    [
-      "Literal",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
       "objectsetreference",
-      "DefinedType",
-      "UsefulType"
-    ],
-    [
-      "Literal",
-      "DefinedType",
-      "UsefulType"
-    ],
-    [
-      "NameForm",
-      "ObjIdComponents"
-    ],
-    [
-      "ObjIdComponents",
-      "DefinedValue",
-      "objectreference"
-    ],
-    [
-      "DefinedValue",
-      "objectreference"
+      "ExternalTypeReference"
     ],
     [
       "DefinedObjectClass",
@@ -8677,10 +8670,46 @@
       "DefinedType"
     ],
     [
-      "DefinedObjectClass",
+      "DefinedValue",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
       "objectsetreference",
-      "DefinedType",
-      "UsefulType"
+      "ExternalTypeReference"
+    ],
+    [
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "identifier",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "DefinedValue",
+      "DefinedObjectClass",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
+      "objectsetreference",
+      "ExternalTypeReference"
+    ],
+    [
+      "objectsetreference",
+      "ExternalTypeReference"
+    ],
+    [
+      "ExternalObjectClassReference",
+      "ExternalTypeReference"
+    ],
+    [
+      "ExternalObjectClassReference",
+      "objectsetreference"
+    ],
+    [
+      "identifier",
+      "DefinedValue"
     ],
     [
       "ExternalObjectReference",
@@ -8689,23 +8718,59 @@
     ],
     [
       "ExternalObjectClassReference",
-      "objectsetreference"
-    ],
-    [
       "objectsetreference",
       "ExternalTypeReference"
     ],
     [
+      "ObjIdComponents",
+      "DefinedValue",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
       "objectsetreference",
-      "DefinedType",
-      "UsefulType"
+      "ExternalTypeReference"
     ],
     [
-      "BitStringValue",
-      "SequenceValue",
-      "SequenceOfValue",
-      "SetValue",
-      "SetOfValue"
+      "identifier",
+      "NameForm",
+      "ObjIdComponents",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "identifier",
+      "ObjIdComponents",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "identifier",
+      "NameForm"
+    ],
+    [
+      "ObjIdComponents",
+      "DefinedValue",
+      "DefinedObjectClass",
+      "ExternalObjectClassReference",
+      "ExternalObjectReference",
+      "ExternalObjectSetReference",
+      "objectsetreference",
+      "ExternalTypeReference"
+    ],
+    [
+      "ReferencedValue",
+      "RelativeOIDComponents",
+      "NumberForm"
+    ],
+    [
+      "ReferencedValue",
+      "RelativeOIDComponents",
+      "NumberForm",
+      "CharsDefn"
+    ],
+    [
+      "ReferencedValue",
+      "CharsDefn"
     ],
     [
       "ObjIdComponents",
@@ -8722,6 +8787,37 @@
       "CharsDefn"
     ],
     [
+      "identifier",
+      "NameForm",
+      "ObjIdComponents",
+      "DefinedValue"
+    ],
+    [
+      "RelativeOIDComponents",
+      "NumberForm"
+    ],
+    [
+      "ObjIdComponents",
+      "NumberForm"
+    ],
+    [
+      "ObjIdComponents",
+      "DefinedValue"
+    ],
+    [
+      "NameForm",
+      "ObjIdComponents"
+    ],
+    [
+      "ObjIdComponents",
+      "DefinedValue",
+      "objectreference"
+    ],
+    [
+      "Group",
+      "TableColumn"
+    ],
+    [
       "EnumeratedValue",
       "NamedValue"
     ],
@@ -8730,8 +8826,62 @@
       "IdentifierList"
     ],
     [
-      "ReferencedValue",
-      "CharsDefn"
+      "ComponentValueList",
+      "NamedValueList"
+    ],
+    [
+      "BitStringValue",
+      "SequenceValue",
+      "SequenceOfValue",
+      "SetValue",
+      "SetOfValue"
+    ],
+    [
+      "SequenceValue",
+      "SetValue"
+    ],
+    [
+      "SequenceOfValue",
+      "SetOfValue"
+    ],
+    [
+      "Literal",
+      "DefinedType"
+    ],
+    [
+      "Literal",
+      "objectsetreference",
+      "DefinedType"
+    ],
+    [
+      "ValueList",
+      "SingleValue",
+      "Setting"
+    ],
+    [
+      "ReferencedObjects",
+      "Object"
+    ],
+    [
+      "Setting",
+      "TypeConstraint"
+    ],
+    [
+      "ElementSetSpecs",
+      "ObjectSetSpec"
+    ],
+    [
+      "ObjectSetElements",
+      "Setting"
+    ],
+    [
+      "ObjectSetElements",
+      "ComponentRelationConstraint"
+    ],
+    [
+      "ValueFromObject",
+      "ObjectFromObject",
+      "TypeFromObject"
     ],
     [
       "ValueList",
@@ -8744,108 +8894,25 @@
       "TypeFromObject"
     ],
     [
-      "ComponentValueList",
-      "NamedValueList"
-    ],
-    [
-      "ObjectSetElements",
-      "Setting"
-    ],
-    [
-      "BitStringValue",
-      "OctetStringValue"
-    ],
-    [
-      "Setting",
-      "TypeConstraint"
-    ],
-    [
-      "ObjectSetElements",
-      "Setting"
-    ],
-    [
-      "ObjectSetElements",
-      "ComponentRelationConstraint"
-    ],
-    [
-      "ElementSetSpecs",
-      "ObjectSetSpec"
-    ],
-    [
-      "ObjIdComponents",
-      "NumberForm"
-    ],
-    [
-      "ExtensionAdditions",
-      "ExtensionAdditionList"
-    ],
-    [
-      "BitStringType"
-    ],
-    [
-      "SequenceValue",
-      "SetValue"
-    ],
-    [
-      "SequenceOfValue",
-      "SetOfValue"
-    ],
-    [
-      "ValueList",
-      "Setting"
-    ],
-    [
-      "SingleValue",
-      "Setting",
-      "ValueList"
-    ],
-    [
-      "ValueFromObject",
-      "ObjectFromObject",
-      "TypeFromObject"
-    ],
-    [
       "ValueFromObject",
       "TypeFromObject"
-    ],
-    [
-      "Group",
-      "TableColumn"
     ],
     [
       "ValueFromObject",
       "ObjectFromObject"
     ],
     [
-      "ReferencedValue",
-      "RelativeOIDComponents",
-      "NumberForm",
-      "CharsDefn"
+      "ComponentTypeList"
     ],
     [
-      "ReferencedValue",
-      "RelativeOIDComponents",
-      "NumberForm"
+      "AlternativeTypeList"
     ],
     [
-      "RelativeOIDComponents",
-      "NumberForm"
+      "Enumeration"
     ],
     [
-      "ObjIdComponents",
-      "ExternalValueReference"
-    ],
-    [
-      "ObjIdComponents",
-      "DefinedValue"
-    ],
-    [
-      "ReferencedObjects",
-      "Object"
-    ],
-    [
-      "objectsetreference",
-      "DefinedType"
+      "ExtensionAdditions",
+      "ExtensionAdditionList"
     ],
     [
       "XMLTypedValue",
@@ -8879,125 +8946,6 @@
     [
       "XMLTypedValue",
       "XMLDelimitedItem"
-    ],
-    [
-      "ComponentTypeList"
-    ],
-    [
-      "Enumeration"
-    ],
-    [
-      "AlternativeTypeList"
-    ],
-    [
-      "identifier",
-      "DefinedValue",
-      "objectreference"
-    ],
-    [
-      "identifier",
-      "DefinedValue"
-    ],
-    [
-      "identifier",
-      "NameForm",
-      "ObjIdComponents",
-      "DefinedValue",
-      "objectreference"
-    ],
-    [
-      "identifier",
-      "ObjIdComponents",
-      "DefinedValue",
-      "objectreference"
-    ],
-    [
-      "identifier",
-      "NameForm"
-    ],
-    [
-      "identifier",
-      "NameForm",
-      "ObjIdComponents",
-      "DefinedValue"
-    ],
-    [
-      "DefinedObjectClass",
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "DefinedValue",
-      "DefinedObjectClass",
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "DefinedObjectClass",
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "DefinedValue",
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "ExternalObjectClassReference",
-      "ExternalTypeReference"
-    ],
-    [
-      "ObjIdComponents",
-      "DefinedValue",
-      "DefinedObjectClass",
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "ObjIdComponents",
-      "DefinedValue",
-      "ExternalObjectClassReference",
-      "ExternalObjectReference",
-      "ExternalObjectSetReference",
-      "objectsetreference",
-      "ExternalTypeReference"
-    ],
-    [
-      "DefinedType"
-    ],
-    [
-      "ExternalObjectClassReference",
-      "objectsetreference",
-      "ExternalTypeReference"
     ]
   ],
   "precedences": [],

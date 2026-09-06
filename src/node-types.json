@@ -4111,10 +4111,6 @@
         {
           "type": "TypeFromObject",
           "named": true
-        },
-        {
-          "type": "UsefulType",
-          "named": true
         }
       ]
     }
@@ -5493,11 +5489,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "UsefulType",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "UserDefinedConstraint",
