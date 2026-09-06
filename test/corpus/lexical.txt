@@ -37,6 +37,36 @@ END
     (END)))
 
 ================================================================================
+Line comment may end with a single hyphen
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+-- Refer to the in-
+-- ServiceError definition.
+A ::= INTEGER
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (line_comment)
+    (line_comment)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (IntegerType
+                  (INTEGER))))))))
+    (END)))
+
+================================================================================
 Cstring with doubled quotes
 ================================================================================
 

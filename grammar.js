@@ -1874,7 +1874,16 @@ module.exports = grammar({
     ),
 
     // `--` comments end at the next `--` or at end of line, whichever is first.
-    line_comment: $ => token(seq('--', /([^-\n]|-[^-\n])*/, optional('--'))),
+    // A single trailing hyphen (e.g. a line-wrapped word like `in-`) is still
+    // comment text; only a second adjacent hyphen terminates the comment early.
+    // Without the optional('-'), a line ending in `... in-` left a stray `-`
+    // token and broke modules such as IN-SCF-SDF.asn1.
+    line_comment: $ => token(seq(
+      '--',
+      /([^-\n]|-[^-\n])*/,
+      optional('-'),
+      optional('--'),
+    )),
 
     XMLTypedValue: $ => choice(
       seq('<', $.NonParameterizedTypeName, '>', $.XMLValue, '</', $.NonParameterizedTypeName, '>'),
