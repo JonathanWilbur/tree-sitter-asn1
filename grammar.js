@@ -440,8 +440,11 @@ module.exports = grammar({
       optional($.ActualParameterList),
     )),
 
-    // Empty `{}` is valid (X.683): e.g. `SIGNED{}` after a ParameterList-less
-    // parameterization, and Symbols such as `HASH{}` / `SIGNED{}` in IMPORTS.
+    // X.683 requires at least one ActualParameter
+    // (`"{" ActualParameter "," + "}"`). Empty `{}` in IMPORTS Symbols is
+    // ParameterizedReference / PossiblyParameterizedReference (`Reference "{}"`),
+    // not this production. We still admit empty `{}` here for resiliency:
+    // once both braces are present it is obvious how to recover and continue.
     ActualParameterList: $ => seq(
       '{',
       optional(seq(
