@@ -562,54 +562,46 @@
       "value": "[A-Z][A-Z0-9]*(-[A-Z0-9]+)*"
     },
     "ModuleIdentifier": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "modulereference"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "DefinitiveIdentification"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "modulereference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "DefinitiveIdentification"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "DefinitiveIdentification": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "DefinitiveOID"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "IRIValue"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "DefinitiveOID"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "IRIValue"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "DefinitiveOID": {
       "type": "SEQ",
@@ -657,42 +649,38 @@
       "name": "number"
     },
     "DefinitiveNameAndNumberForm": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "lowercased_identifier"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "("
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "DefinitiveNumberForm"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": ")"
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "lowercased_identifier"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "("
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "DefinitiveNumberForm"
+                },
+                {
+                  "type": "STRING",
+                  "value": ")"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "IRIValue": {
       "type": "SEQ",
@@ -964,28 +952,24 @@
       "value": "[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
     },
     "Imports": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "IMPORTS"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
             "type": "SYMBOL",
-            "name": "IMPORTS"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "SymbolsFromModule"
-            }
-          },
-          {
-            "type": "STRING",
-            "value": ";"
+            "name": "SymbolsFromModule"
           }
-        ]
-      }
+        },
+        {
+          "type": "STRING",
+          "value": ";"
+        }
+      ]
     },
     "SymbolsFromModule": {
       "type": "SEQ",
@@ -1195,50 +1179,46 @@
       ]
     },
     "DefinedValue": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "modulereference"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "."
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "valuereference"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "ActualParameterList"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "modulereference"
+                },
+                {
+                  "type": "STRING",
+                  "value": "."
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "valuereference"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ActualParameterList"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "ActualParameterList": {
       "type": "SEQ",
@@ -2260,7 +2240,7 @@
             "name": "_upper_name"
           },
           "named": false,
-          "value": "objectreference"
+          "value": "objectsetreference"
         },
         {
           "type": "CHOICE",
@@ -3078,6 +3058,14 @@
         {
           "type": "SYMBOL",
           "name": "SignedNumber"
+        },
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
         }
       ]
     },
@@ -4776,30 +4764,21 @@
       ]
     },
     "ExtensionAndException": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "STRING",
           "value": "..."
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "..."
+              "type": "SYMBOL",
+              "name": "ExceptionSpec"
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ExceptionSpec"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "BLANK"
             }
           ]
         }
@@ -7780,26 +7759,36 @@
       ]
     },
     "NonParameterizedTypeName": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "modulereference"
-                },
-                {
-                  "type": "STRING",
-                  "value": "."
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "modulereference"
             },
             {
-              "type": "BLANK"
+              "type": "STRING",
+              "value": "."
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_upper_name"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_xml_keyword_type_name"
+                  }
+                ]
+              },
+              "named": false,
+              "value": "typereference"
             }
           ]
         },
@@ -7941,13 +7930,8 @@
       ]
     },
     "XMLIntegerValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLSignedNumber"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "XMLSignedNumber"
     },
     "XMLSignedNumber": {
       "type": "TOKEN",
@@ -7959,23 +7943,6 @@
           "value": "-?(0|[1-9][0-9]*)"
         }
       }
-    },
-    "EmptyElementInteger": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "<"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
-        },
-        {
-          "type": "STRING",
-          "value": "/>"
-        }
-      ]
     },
     "XMLRealValue": {
       "type": "CHOICE",
@@ -8134,26 +8101,16 @@
       }
     },
     "XMLOctetStringValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "xmlhstring"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "xmlhstring"
     },
     "xmlhstring": {
       "type": "PATTERN",
       "value": "[0-9A-Fa-f]+"
     },
     "XMLSequenceValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLComponentValueList"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "XMLComponentValueList"
     },
     "XMLComponentValueList": {
       "type": "PREC_RIGHT",
@@ -8265,48 +8222,43 @@
       }
     },
     "XMLDelimitedItem": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NonParameterizedTypeName"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "<"
-            },
-            {
               "type": "SYMBOL",
-              "name": "NonParameterizedTypeName"
+              "name": "XMLValue"
             },
             {
-              "type": "STRING",
-              "value": ">"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "XMLValue"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "STRING",
-              "value": "</"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "NonParameterizedTypeName"
-            },
-            {
-              "type": "STRING",
-              "value": ">"
+              "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "STRING",
+          "value": "</"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NonParameterizedTypeName"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
         }
       ]
     },
@@ -8352,64 +8304,45 @@
       ]
     },
     "XMLObjectClassFieldValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLOpenTypeFieldVal"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "XMLOpenTypeFieldVal"
     },
     "XMLOpenTypeFieldVal": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLTypedValue"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "XMLTypedValue"
     },
     "XMLObjectIdentifierValue": {
       "type": "SYMBOL",
       "name": "XMLObjIdComponentList"
     },
     "XMLObjIdComponentList": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "XMLObjIdComponent"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "."
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "XMLObjIdComponentList"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "XMLObjIdComponent": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "XMLNameAndNumberForm"
+          "name": "XMLObjIdComponent"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "."
+              },
+              {
+                "type": "SYMBOL",
+                "name": "XMLObjIdComponent"
+              }
+            ]
+          }
         }
       ]
+    },
+    "XMLObjIdComponent": {
+      "type": "SYMBOL",
+      "name": "XMLNameAndNumberForm"
     },
     "XMLNumberForm": {
       "type": "SYMBOL",
@@ -8506,13 +8439,8 @@
       }
     },
     "XMLCharacterStringValue": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "XMLRestrictedCharacterStringValue"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "XMLRestrictedCharacterStringValue"
     },
     "XMLRestrictedCharacterStringValue": {
       "type": "SYMBOL",
@@ -8816,14 +8744,6 @@
     [
       "Group",
       "TableColumn"
-    ],
-    [
-      "EnumeratedValue",
-      "NamedValue"
-    ],
-    [
-      "EnumeratedValue",
-      "IdentifierList"
     ],
     [
       "ComponentValueList",

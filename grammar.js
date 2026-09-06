@@ -77,8 +77,6 @@ module.exports = grammar({
     [$.ObjIdComponents, $.DefinedValue, $.objectreference],
     [$.Group, $.TableColumn],
     // --- Values that share brace or string shapes ---
-    [$.EnumeratedValue, $.NamedValue],
-    [$.EnumeratedValue, $.IdentifierList],
     [$.ComponentValueList, $.NamedValueList],
     [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue],
     [$.SequenceValue, $.SetValue],
@@ -124,9 +122,9 @@ module.exports = grammar({
   rules: {
     source_file: $ => repeat($.ModuleDefinition),
 
-    // TODO: This should prevent terminal hyphens. Apply it to other identifiers.
     // All-caps identifiers: object class names, WITH SYNTAX words, and type or
-    // module names that happen to be all-caps.
+    // module names that happen to be all-caps. Each hyphen must be followed by
+    // an alphanumeric, so a trailing hyphen is not allowed.
     yellcased_identifier: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
 
     // Mixed-case identifiers (at least one lowercase letter). Used as `word` so
@@ -147,8 +145,6 @@ module.exports = grammar({
     anycased_field_ref: $ => /&[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
     any_identifier: $ => /[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*/,
     identifier: $ => $.lowercased_identifier,
-    // identifier: $ => alias($.lowercased_identifier, $.identifier),
-    // identifier: $ => /[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
 
     DEFINITIONS: $ => 'DEFINITIONS',
     BEGIN: $ => 'BEGIN',
@@ -276,36 +272,36 @@ module.exports = grammar({
     // Same hyphen rules as typereference: no leading/trailing/double hyphen.
     encodingreference: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
 
-    ModuleIdentifier: $ => prec.right(seq(
+    ModuleIdentifier: $ => seq(
       $.modulereference,
       optional($.DefinitiveIdentification),
-    )),
+    ),
 
-    DefinitiveIdentification: $ => prec.right(seq(
+    DefinitiveIdentification: $ => seq(
       $.DefinitiveOID,
       optional($.IRIValue),
-    )),
+    ),
 
     DefinitiveOID: $ => seq('{', $.DefinitiveObjIdComponentList, '}'),
 
     DefinitiveObjIdComponentList: $ => repeat1($.DefinitiveObjIdComponent),
 
+    // NameForm alone is omitted in definitive OIDs (X.680): arcs need numbers.
     DefinitiveObjIdComponent: $ => choice(
-      // $.NameForm,
       $.DefinitiveNumberForm,
       $.DefinitiveNameAndNumberForm,
     ),
 
     NameForm: $ => $.lowercased_identifier,
     DefinitiveNumberForm: $ => $.number,
-    DefinitiveNameAndNumberForm: $ => prec.right(seq(
+    DefinitiveNameAndNumberForm: $ => seq(
       $.lowercased_identifier,
       optional(seq(
         '(',
         $.DefinitiveNumberForm,
         ')',
       )),
-    )),
+    ),
 
     IRIValue: $ => seq(
       '"',
@@ -370,11 +366,11 @@ module.exports = grammar({
     // Hyphen rules match X.680 §12.2/12.3: no trailing hyphen, no `--`.
     Reference: $ => /[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
   
-    Imports: $ => prec.right(seq(
+    Imports: $ => seq(
       $.IMPORTS,
       repeat($.SymbolsFromModule),
       ';',
-    )),
+    ),
 
     SymbolsFromModule: $ => seq(
       $.SymbolList,
@@ -414,11 +410,11 @@ module.exports = grammar({
       seq($.valuereference, optional($.ActualParameterList)),
     ),
 
-    DefinedValue: $ => prec.right(seq(
+    DefinedValue: $ => seq(
       optional(seq($.modulereference, '.')),
       $.valuereference,
       optional($.ActualParameterList),
-    )),
+    ),
 
     // X.683 requires at least one ActualParameter
     // (`"{" ActualParameter "," + "}"`). Empty `{}` in IMPORTS Symbols is
@@ -642,12 +638,8 @@ module.exports = grammar({
       ']',
     ),
 
-    // TypeAssignment: $ => seq(
-    //   alias($._upper_name, 'typereference'),
-    //   optional($.ParameterList),
-    //   '::=',
-    //   $.Type,
-    // ),
+    // Parameterized and plain forms as alternatives: optional ParameterList
+    // after the typereference does not parse reliably here.
     TypeAssignment: $ => choice(
       seq(
         alias($._upper_name, 'typereference'),
@@ -671,7 +663,7 @@ module.exports = grammar({
     ),
 
     ObjectSetAssignment: $ => seq(
-      alias($._upper_name, 'objectreference'),
+      alias($._upper_name, 'objectsetreference'),
       optional($.ParameterList),
       $.DefinedObjectClass,
       '::=',
@@ -885,7 +877,6 @@ module.exports = grammar({
       $.EmbeddedPDVValue,
       $.EnumeratedValue,
       $.ExternalValue,
-      // $.InstanceOfValue,
       $.IntegerValue,
       $.IRIValue,
       $.NullValue,
@@ -898,7 +889,6 @@ module.exports = grammar({
       $.SequenceOfValue,
       $.SetValue,
       $.SetOfValue,
-      // $.PrefixedValue,
       $.TimeValue,
     ),
     
@@ -907,10 +897,11 @@ module.exports = grammar({
       $.FALSE
     ),
     
+    // X.680: IntegerValue ::= SignedNumber | identifier
+    // (named number from the governing IntegerType).
     IntegerValue: $ => choice(
       $.SignedNumber,
-      // REVIEW:
-      // $.identifier
+      prec(1, $.identifier),
     ),
     
     SignedNumber: $ => choice(
@@ -1188,7 +1179,6 @@ module.exports = grammar({
     
     UnrestrictedCharacterStringValue: $ => $.SequenceValue,
     
-    // InstanceOfValue: $ => $.Value,
 
     Type: $ => prec.right(seq(
       choice(
@@ -1307,10 +1297,7 @@ module.exports = grammar({
       seq($.SEQUENCE, '{', $.ComponentTypeLists, '}')
     ),
 
-    ExtensionAndException: $ => choice(
-      '...',
-      seq('...', optional($.ExceptionSpec))
-    ),
+    ExtensionAndException: $ => seq('...', optional($.ExceptionSpec)),
 
     OptionalExtensionMarker: $ => seq(',', '...'),
 
@@ -1925,9 +1912,10 @@ module.exports = grammar({
       $.VisibleString,
     ),
 
-    // TODO: Convert to choice. optional prefixes don't work.
-    NonParameterizedTypeName: $ => seq(
-      optional(seq($.modulereference, '.')),
+    // Qualified and unqualified forms as alternatives: a single optional
+    // `modulereference .` prefix does not parse reliably here.
+    NonParameterizedTypeName: $ => choice(
+      seq($.modulereference, '.', alias(choice($._upper_name, $._xml_keyword_type_name), 'typereference')),
       alias(choice($._upper_name, $._xml_keyword_type_name), 'typereference'),
     ),
 
@@ -1936,15 +1924,13 @@ module.exports = grammar({
       $.XMLObjectClassFieldValue
     ),
 
+    // Unimplemented XML value forms (embedded PDV, enumerated, external,
+    // instance-of, relative OID, set/set-of, prefixed) are omitted for now.
     XMLBuiltinValue: $ => choice(
       $.XMLBitStringValue,
       $.XMLBooleanValue,
       $.XMLCharacterStringValue,
       $.XMLChoiceValue,
-      // $.XMLEmbeddedPDVValue,
-      // $.XMLEnumeratedValue,
-      // $.XMLExternalValue,
-      // $.XMLInstanceOfValue,
       // Prefer numeric forms over xmlhstring/xmlcstring/xmltstring when the
       // text is a signed number (xmltstring also matches `-5`).
       prec(2, $.XMLIntegerValue),
@@ -1954,12 +1940,8 @@ module.exports = grammar({
       $.XMLOctetStringValue,
       $.XMLRealValue,
       $.XMLRelativeIRIValue,
-      // $.XMLRelativeOIDValue,
       $.XMLSequenceValue,
       $.XMLSequenceOfValue,
-      // $.XMLSetValue,
-      // $.XMLSetOfValue,
-      // $.XMLPrefixedValue,
       // Lower than XMLIntegerValue: xmltstring also matches bare signed numbers.
       prec(-1, $.XMLTimeValue)
     ),
@@ -1979,17 +1961,12 @@ module.exports = grammar({
       $.false
     ),
 
-    XMLIntegerValue: $ => choice(
-      $.XMLSignedNumber,
-      // $.EmptyElementInteger,
-      // $.TextInteger
-    ),
+    XMLIntegerValue: $ => $.XMLSignedNumber,
 
     // One token so a signed integer is not swallowed by xmlcstring / xmlhstring
     // (longest-match would otherwise take `-5` as a string).
     XMLSignedNumber: $ => token(prec(1, /-?(0|[1-9][0-9]*)/)),
 
-    EmptyElementInteger: $ => seq('<', $.identifier, '/>'),
 
     XMLRealValue: $ => choice(
       $.XMLNumericRealValue,
@@ -2019,7 +1996,6 @@ module.exports = grammar({
     ),
 
     XMLBitStringValue: $ => choice(
-      // $.XMLTypedValue,
       $.xmlbstring,
       $.XMLIdentifierList,
     ),
@@ -2037,17 +2013,12 @@ module.exports = grammar({
 
     TextList: $ => prec.right(repeat1($.identifier)),
 
-    XMLOctetStringValue: $ => choice(
-      // $.XMLTypedValue,
-      $.xmlhstring
-    ),
+    XMLOctetStringValue: $ => $.xmlhstring,
 
     // Non-empty: empty OCTET STRING values use omitted XMLValue.
     xmlhstring: $ => /[0-9A-Fa-f]+/,
 
-    XMLSequenceValue: $ => choice(
-      $.XMLComponentValueList,
-    ),
+    XMLSequenceValue: $ => $.XMLComponentValueList,
 
     XMLComponentValueList: $ => prec.right(repeat1($.XMLNamedValue)),
 
@@ -2069,37 +2040,28 @@ module.exports = grammar({
 
     XMLDelimitedItemList: $ => prec.right(repeat1($.XMLDelimitedItem)),
 
-    XMLDelimitedItem: $ => choice(
-      seq('<', $.NonParameterizedTypeName, '>', optional($.XMLValue), '</', $.NonParameterizedTypeName, '>'),
-      // seq('<', $.identifier, '>', $.XMLValue, '</', $.identifier, '>')
+    XMLDelimitedItem: $ => seq(
+      '<', $.NonParameterizedTypeName, '>', optional($.XMLValue), '</', $.NonParameterizedTypeName, '>'
     ),
 
     XMLChoiceValue: $ => seq(
       '<', $.identifier, '>', optional($.XMLValue), '</', $.identifier, '>'
     ),
 
-    XMLObjectClassFieldValue: $ => choice(
-      $.XMLOpenTypeFieldVal,
-      // $.XMLFixedTypeFieldVal
-    ),
+    XMLObjectClassFieldValue: $ => $.XMLOpenTypeFieldVal,
 
-    XMLOpenTypeFieldVal: $ => choice(
-      $.XMLTypedValue,
-      // $.xmlhstring
-    ),
+    XMLOpenTypeFieldVal: $ => $.XMLTypedValue,
 
     XMLObjectIdentifierValue: $ => $.XMLObjIdComponentList,
 
-    XMLObjIdComponentList: $ => prec.right(seq(
+    // Flat list (X.680 XMLObjIdComponentList), not a recursive right-nest.
+    XMLObjIdComponentList: $ => seq(
       $.XMLObjIdComponent,
-      repeat(seq('.', $.XMLObjIdComponentList))
-    )),
-
-    XMLObjIdComponent: $ => choice(
-      // $.identifier,
-      // $.XMLNumberForm,
-      $.XMLNameAndNumberForm
+      repeat(seq('.', $.XMLObjIdComponent)),
     ),
+
+    // Bare identifier / number forms are not accepted yet (name-and-number only).
+    XMLObjIdComponent: $ => $.XMLNameAndNumberForm,
 
     XMLNumberForm: $ => $.number,
 
@@ -2108,7 +2070,7 @@ module.exports = grammar({
     ),
 
     XMLIRIValue: $ => prec.right(seq(
-      $.FirstArcIdentifier, 
+      $.FirstArcIdentifier,
       repeat(seq(
         '/',
         $.ArcIdentifier
@@ -2129,10 +2091,7 @@ module.exports = grammar({
     // `-5` is not lexed as xmltstring (which would beat XMLSignedNumber).
     xmltstring: $ => token(/[0-9+\-.]*[:TZ][0-9:.+\-ZT]*/),
 
-    XMLCharacterStringValue: $ => choice(
-      $.XMLRestrictedCharacterStringValue,
-      // $.XMLUnrestrictedCharacterStringValue
-    ),
+    XMLCharacterStringValue: $ => $.XMLRestrictedCharacterStringValue,
 
     XMLRestrictedCharacterStringValue: $ => $.xmlcstring,
 
@@ -2148,11 +2107,6 @@ module.exports = grammar({
       prec(1, $.TypeFromObject),
     ),
 
-    // DefinedType: $ => prec.right(seq(
-    //   optional(seq($.modulereference, '.')),
-    //   alias($._upper_name, 'typereference'),
-    //   optional($.ActualParameterList),
-    // )),
     DefinedType: $ => prec.right(choice(
       seq(
         $.ExternalTypeReference,

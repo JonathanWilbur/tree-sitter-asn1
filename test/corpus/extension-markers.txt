@@ -124,3 +124,45 @@ END
                             (SignedNumber
                               (number))))))))))))))
     (END)))
+
+================================================================================
+Extension marker with exception specification
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+A ::= SEQUENCE { x INTEGER, ...!10 }
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (SequenceType
+                  (SEQUENCE)
+                  (ComponentTypeLists
+                    (RootComponentTypeList
+                      (ComponentTypeList
+                        (ComponentType
+                          (NamedType
+                            (identifier
+                              (lowercased_identifier))
+                            (Type
+                              (BuiltinType
+                                (IntegerType
+                                  (INTEGER))))))))
+                    (ExtensionAndException
+                      (ExceptionSpec
+                        (ExceptionIdentification
+                          (SignedNumber
+                            (number)))))))))))))
+    (END)))

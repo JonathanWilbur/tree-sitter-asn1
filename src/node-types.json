@@ -2767,6 +2767,10 @@
         {
           "type": "SignedNumber",
           "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
         }
       ]
     }
@@ -6148,10 +6152,6 @@
       "types": [
         {
           "type": "XMLObjIdComponent",
-          "named": true
-        },
-        {
-          "type": "XMLObjIdComponentList",
           "named": true
         }
       ]
