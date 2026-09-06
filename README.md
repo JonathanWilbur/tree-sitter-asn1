@@ -1,6 +1,49 @@
 # Tree Sitter Grammar for ASN.1
 
-Work in progress, but almost done.
+This is a complete and working ASN.1 grammar for
+[tree-sitter](https://tree-sitter.github.io/tree-sitter/). It is based off of
+the BNF provided in the ITU-T Recommendations X.680 through X.683.
+
+It fully supports parameterization, XML values, information objects, defined
+syntax, encoding control notation (ECN), etc.
+
+The queries `highlights.scm` and `folds.scm` works with `nvim-treesitter` to
+provide highlighting and folding. Indents are currently experimental with
+`nvim-treesitter`, and didn't work quite right from my experience, and I don't
+think `textobjects.scm` is really used anywhere.
+
+## Building and testing
+
+Install Node.js dependencies (this also compiles the Node addon):
+
+```sh
+npm install
+```
+
+After changing `grammar.js` (or `src/scanner.c`), regenerate the parser and
+rebuild the Node addon. `tree-sitter test` uses the CLI parser; the Node tests
+in `bindings/node` load `build/Release/tree_sitter_asn1_binding.node`, which is
+not updated by `tree-sitter generate` alone.
+
+```sh
+npx tree-sitter generate
+npx node-gyp rebuild
+```
+
+There are three overlapping test entry points:
+
+| Command | What it runs |
+| --- | --- |
+| `npx tree-sitter test` | Corpus only: each example in `test/corpus` must parse to the expected syntax tree. |
+| `make test` | Corpus, then `tree-sitter parse --quiet --stat` on every `test/asn1/*.asn1` and `*.asn` file (must parse with no errors; trees are not checked). Uses `tree-sitter` from `PATH`, or `TS=...`. |
+| `npm test` | Corpus, then the Node tests in `bindings/node/*_test.js`: load the native addon, a few CST assertions, and the same `test/asn1` fixtures parsed through Node. |
+
+`make test` and `npx tree-sitter test` both use the CLI parser. `npm test` uses that CLI for the corpus, then the Node addon for everything else, so regenerate **and** `npx node-gyp rebuild` after grammar changes before relying on `npm test`.
+
+CMake’s `ts-test` target matches `make test`. Other language bindings have their own tests (`cargo test`, `go test`, and so on).
+
+The playground is `npm start` (`tree-sitter build --wasm` then
+`tree-sitter playground`).
 
 ## Why did you have to include an external parser?
 
@@ -16,11 +59,3 @@ The solution to this is to read ahead and check if the next non-whitespace token
 is a comma or `FROM`. If either of these cases are true, we know that we just
 read a symbol from the subsequent `SymbolsFromModule` production rather than a
 `DefinedValue` for the `AssignedIdentifier` production.
-
-## To Do
-
-- [ ] Encoding Control Notation
-- [ ] Line comments
-- [ ] Clean up conflicts
-- [ ] Tests
-- [ ] Documentation
