@@ -559,7 +559,7 @@
     },
     "encodingreference": {
       "type": "PATTERN",
-      "value": "[A-Z][A-Z0-9\\-]+"
+      "value": "[A-Z][A-Z0-9]*(-[A-Z0-9]+)*"
     },
     "ModuleIdentifier": {
       "type": "PREC_RIGHT",
@@ -961,7 +961,7 @@
     },
     "Reference": {
       "type": "PATTERN",
-      "value": "[a-zA-Z][a-zA-Z0-9\\-]*"
+      "value": "[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
     },
     "Imports": {
       "type": "PREC_RIGHT",
@@ -1248,24 +1248,37 @@
           "value": "{"
         },
         {
-          "type": "SYMBOL",
-          "name": "ActualParameter"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ","
-              },
-              {
-                "type": "SYMBOL",
-                "name": "ActualParameter"
-              }
-            ]
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "ActualParameter"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "ActualParameter"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -3864,8 +3877,20 @@
       "name": "ArcIdentifier"
     },
     "ArcIdentifier": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z0-9][a-zA-Z0-9-]*"
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[0-9]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"
+          }
+        ]
+      }
     },
     "EmbeddedPDVValue": {
       "type": "SYMBOL",
@@ -7569,8 +7594,16 @@
               "value": ">"
             },
             {
-              "type": "SYMBOL",
-              "name": "XMLValue"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "XMLValue"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "STRING",
@@ -7605,6 +7638,135 @@
         }
       ]
     },
+    "_xml_keyword_type_name": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "BOOLEAN"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "INTEGER"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "REAL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NULL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "EXTERNAL"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ENUMERATED"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SEQUENCE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "SET"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CHOICE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DATE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TIME"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DATE_TIME"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "DURATION"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TIME_OF_DAY"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "OID_IRI"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RELATIVE_OID"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "RELATIVE_OID_IRI"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ANY"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "BMPString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "GeneralString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "GraphicString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "IA5String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ISO646String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "NumericString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "PrintableString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "TeletexString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "T61String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UniversalString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "UTF8String"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "VideotexString"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "VisibleString"
+        }
+      ]
+    },
     "NonParameterizedTypeName": {
       "type": "SEQ",
       "members": [
@@ -7632,8 +7794,17 @@
         {
           "type": "ALIAS",
           "content": {
-            "type": "SYMBOL",
-            "name": "_upper_name"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_upper_name"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_xml_keyword_type_name"
+              }
+            ]
           },
           "named": false,
           "value": "typereference"
@@ -7673,16 +7844,16 @@
           "name": "XMLChoiceValue"
         },
         {
-          "type": "SYMBOL",
-          "name": "XMLIntegerValue"
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "SYMBOL",
+            "name": "XMLIntegerValue"
+          }
         },
         {
           "type": "SYMBOL",
           "name": "XMLIRIValue"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "XMLNullValue"
         },
         {
           "type": "SYMBOL",
@@ -7709,8 +7880,12 @@
           "name": "XMLSequenceOfValue"
         },
         {
-          "type": "SYMBOL",
-          "name": "XMLTimeValue"
+          "type": "PREC",
+          "value": -1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "XMLTimeValue"
+          }
         }
       ]
     },
@@ -7763,22 +7938,15 @@
       ]
     },
     "XMLSignedNumber": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "-"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "number"
-            }
-          ]
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "-?(0|[1-9][0-9]*)"
         }
-      ]
+      }
     },
     "EmptyElementInteger": {
       "type": "SEQ",
@@ -7903,7 +8071,7 @@
     },
     "xmlbstring": {
       "type": "PATTERN",
-      "value": "[01]*"
+      "value": "[01]+"
     },
     "XMLIdentifierList": {
       "type": "CHOICE",
@@ -7964,11 +8132,7 @@
     },
     "xmlhstring": {
       "type": "PATTERN",
-      "value": "[0-9A-Fa-f]*"
-    },
-    "XMLNullValue": {
-      "type": "STRING",
-      "value": "$$$$$BLING_BLING_MISTER_MONEY_BAG$$$$$"
+      "value": "[0-9A-Fa-f]+"
     },
     "XMLSequenceValue": {
       "type": "CHOICE",
@@ -8006,8 +8170,16 @@
           "value": ">"
         },
         {
-          "type": "SYMBOL",
-          "name": "XMLValue"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLValue"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -8099,8 +8271,16 @@
               "value": ">"
             },
             {
-              "type": "SYMBOL",
-              "name": "XMLValue"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "XMLValue"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "STRING",
@@ -8134,8 +8314,16 @@
           "value": ">"
         },
         {
-          "type": "SYMBOL",
-          "name": "XMLValue"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "XMLValue"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -8299,8 +8487,11 @@
       "name": "xmltstring"
     },
     "xmltstring": {
-      "type": "PATTERN",
-      "value": "[0-9:.+\\-ZT][0-9:.+\\-ZT]*"
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9+\\-.]*[:TZ][0-9:.+\\-ZT]*"
+      }
     },
     "XMLCharacterStringValue": {
       "type": "CHOICE",
@@ -8317,7 +8508,7 @@
     },
     "xmlcstring": {
       "type": "PATTERN",
-      "value": "[^<&]*"
+      "value": "[^<&]+"
     },
     "ReferencedType": {
       "type": "CHOICE",
