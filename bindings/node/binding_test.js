@@ -30,3 +30,29 @@ END`);
   assert.equal(name.type, "objectsetreference");
   assert.equal(name.text, "MySet");
 });
+
+test("XML typed value accepts module-qualified NonParameterizedTypeName", () => {
+  const parser = new Parser();
+  parser.setLanguage(require("."));
+  const tree = parser.parse(`Mod DEFINITIONS ::= BEGIN
+v ::= <Other.Thing/>
+END`);
+
+  function find(node, type) {
+    if (node.type === type) return node;
+    for (const child of node.children) {
+      const found = find(child, type);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  const name = find(tree.rootNode, "NonParameterizedTypeName");
+  assert.ok(name, "expected NonParameterizedTypeName");
+  assert.equal(name.childCount, 3);
+  assert.equal(name.child(0).type, "modulereference");
+  assert.equal(name.child(0).text, "Other");
+  assert.equal(name.child(2).type, "typereference");
+  assert.equal(name.child(2).text, "Thing");
+});
+
