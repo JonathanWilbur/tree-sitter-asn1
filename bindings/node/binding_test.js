@@ -56,3 +56,33 @@ END`);
   assert.equal(name.child(2).text, "Thing");
 });
 
+test("XML OID values accept number forms and name-and-number forms", () => {
+  const parser = new Parser();
+  parser.setLanguage(require("."));
+
+  function find(node, type) {
+    if (node.type === type) return node;
+    for (const child of node.children) {
+      const found = find(child, type);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  const numeric = parser.parse(`Mod DEFINITIONS ::= BEGIN
+oid ::= <OID>1.2.840</OID>
+END`);
+  assert.ok(
+    find(numeric.rootNode, "XMLObjectIdentifierValue"),
+    "expected XMLObjectIdentifierValue for 1.2.840",
+  );
+
+  const mixed = parser.parse(`Mod DEFINITIONS ::= BEGIN
+oid ::= <OID>iso(1).2.840</OID>
+END`);
+  const oid = find(mixed.rootNode, "XMLObjectIdentifierValue");
+  assert.ok(oid, "expected XMLObjectIdentifierValue for iso(1).2.840");
+  assert.ok(find(oid, "XMLNameAndNumberForm"), "expected XMLNameAndNumberForm");
+  assert.ok(find(oid, "XMLNumberForm"), "expected XMLNumberForm arcs");
+});
+

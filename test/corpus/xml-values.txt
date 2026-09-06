@@ -58,7 +58,8 @@ END
               (XMLValue
                 (XMLBuiltinValue
                   (XMLIntegerValue
-                    (XMLSignedNumber))))
+                    (XMLSignedNumber
+                      (XMLNumberForm)))))
               (NonParameterizedTypeName
                 (INTEGER)))))
         (Assignment
@@ -97,4 +98,67 @@ END
             (XMLTypedValue
               (NonParameterizedTypeName
                 (modulereference)))))))
+    (END)))
+
+================================================================================
+XML object identifier with numeric arcs
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+oid ::= <OID>1.2.840</OID>
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (XMLValueAssignment
+            (XMLTypedValue
+              (NonParameterizedTypeName)
+              (XMLValue
+                (XMLBuiltinValue
+                  (XMLObjectIdentifierValue)))
+              (NonParameterizedTypeName))))))
+    (END)))
+
+================================================================================
+XML object identifier with name-and-number and numeric arcs
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+oid ::= <OID>iso(1).2.840</OID>
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (XMLValueAssignment
+            (XMLTypedValue
+              (NonParameterizedTypeName)
+              (XMLValue
+                (XMLBuiltinValue
+                  (XMLObjectIdentifierValue
+                    (XMLObjIdComponentList
+                      (XMLNameAndNumberForm
+                        (identifier
+                          (lowercased_identifier))
+                        (XMLNumberForm))
+                      (XMLNumberForm)
+                      (XMLNumberForm)))))
+              (NonParameterizedTypeName))))))
     (END)))

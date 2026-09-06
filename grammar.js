@@ -111,6 +111,10 @@ module.exports = grammar({
     [$.XMLValueOrEmpty, $.XMLDelimitedItem],
     [$.XMLNamedValue, $.XMLChoiceValue],
     [$.XMLTypedValue, $.XMLDelimitedItem],
+    // Bare identifiers are both BIT STRING named bits and OID name forms.
+    [$.TextList, $.XMLObjIdComponent],
+    // Positive integers and numeric OID arcs share XMLNumberForm.
+    [$.XMLSignedNumber, $.XMLObjIdComponent],
   ],
 
   extras: $ => [
@@ -927,7 +931,7 @@ module.exports = grammar({
       $.SequenceValue
     ),
     
-    realnumber: $ => /[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?/,
+    realnumber: $ => token(prec(2, /[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?/)),
     
     SpecialRealValue: $ => choice(
       $.PLUS_INFINITY,
@@ -1933,15 +1937,21 @@ module.exports = grammar({
       $.XMLChoiceValue,
       // Prefer numeric forms over xmlhstring/xmlcstring/xmltstring when the
       // text is a signed number (xmltstring also matches `-5`).
-      prec(2, $.XMLIntegerValue),
+      prec(5, $.XMLIntegerValue),
       $.XMLIRIValue,
       // XMLNullValue is empty — see optional($.XMLValue) on XMLTypedValue.
+      // Pure numeric OIDs with 3+ arcs (`1.2.840`): one token so Real cannot
+      // claim the `1.2` prefix. Structured XMLObjIdComponentList still handles
+      // name-and-number / mixed forms (`iso(1).2.840`).
+      prec(4, alias($._xml_dotted_numeric_oid, $.XMLObjectIdentifierValue)),
       $.XMLObjectIdentifierValue,
       $.XMLOctetStringValue,
-      $.XMLRealValue,
+      // Prefer `1.5` as Real over a 2-arc numeric OID (same span).
+      prec(3, $.XMLRealValue),
       $.XMLRelativeIRIValue,
       $.XMLSequenceValue,
-      $.XMLSequenceOfValue,
+      // Space-separated value lists; keep below dotted OID / integer forms.
+      prec(-1, $.XMLSequenceOfValue),
       // Lower than XMLIntegerValue: xmltstring also matches bare signed numbers.
       prec(-1, $.XMLTimeValue)
     ),
@@ -1963,9 +1973,13 @@ module.exports = grammar({
 
     XMLIntegerValue: $ => $.XMLSignedNumber,
 
-    // One token so a signed integer is not swallowed by xmlcstring / xmlhstring
-    // (longest-match would otherwise take `-5` as a string).
-    XMLSignedNumber: $ => token(prec(1, /-?(0|[1-9][0-9]*)/)),
+    // Positive branch is XMLNumberForm so OID arcs and integers share one token.
+    XMLSignedNumber: $ => choice(
+      $.XMLNumberForm,
+      token(prec(2, /-(0|[1-9][0-9]*)/)),
+    ),
+
+    _xml_unsigned_number: $ => token(prec(2, /(0|[1-9][0-9]*)/)),
 
 
     XMLRealValue: $ => choice(
@@ -1973,9 +1987,12 @@ module.exports = grammar({
       $.XMLSpecialRealValue
     ),
 
+    // realnumber is prec(2); `_xml_dotted_numeric_oid` is prec(3) so `1.2.840`
+    // is an OID token rather than real `1.2` plus trailing text. Negative form
+    // is one token so it is not split into Integer `-1` plus `.5e10`.
     XMLNumericRealValue: $ => choice(
       $.realnumber,
-      seq('-', $.realnumber)
+      token(prec(2, /-[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?/)),
     ),
 
     XMLSpecialRealValue: $ => choice(
@@ -2055,15 +2072,35 @@ module.exports = grammar({
     XMLObjectIdentifierValue: $ => $.XMLObjIdComponentList,
 
     // Flat list (X.680 XMLObjIdComponentList), not a recursive right-nest.
-    XMLObjIdComponentList: $ => seq(
-      $.XMLObjIdComponent,
-      repeat(seq('.', $.XMLObjIdComponent)),
+    // `_xml_oid_dot` outranks xmlcstring so `.2` is not absorbed into a string.
+    // Multi-arc beats SequenceOf; single arc stays plain for IntegerValue.
+    XMLObjIdComponentList: $ => choice(
+      // Numeric arcs allowed here (including leading numbers).
+      prec(2, seq($._xml_oid_arc, repeat1(seq($._xml_oid_dot, $._xml_oid_arc)))),
+      // Lone name / name-and-number (not bare number — those are integers).
+      // Prec 1 beats BitString TextList for a single identifier like `iso`.
+      prec(1, choice($.identifier, $.XMLNameAndNumberForm)),
     ),
 
-    // Bare identifier / number forms are not accepted yet (name-and-number only).
-    XMLObjIdComponent: $ => $.XMLNameAndNumberForm,
+    _xml_oid_arc: $ => choice(
+      $.identifier,
+      $.XMLNumberForm,
+      $.XMLNameAndNumberForm,
+    ),
 
-    XMLNumberForm: $ => $.number,
+    _xml_oid_dot: $ => token(prec(2, '.')),
+
+    // At least two dots so this cannot be a Real (`1.5`) but matches `1.2.840`.
+    _xml_dotted_numeric_oid: $ => token(prec(3, /(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*)){2,}/)),
+
+    // Kept for clarity; arcs in lists use `_xml_oid_arc`.
+    XMLObjIdComponent: $ => $._xml_oid_arc,
+
+
+    // High lexical precedence so `1.2.840` is three number arcs (and dots), not
+    // a realnumber token `1.2` / `2.840` swallowed by the float regex. Shares
+    // `_xml_unsigned_number` with XMLSignedNumber so the lexer emits one token.
+    XMLNumberForm: $ => $._xml_unsigned_number,
 
     XMLNameAndNumberForm: $ => seq(
       $.identifier, '(', $.XMLNumberForm, ')'
@@ -2097,7 +2134,9 @@ module.exports = grammar({
 
     // Non-empty: empty character strings use omitted XMLValue. Simplified:
     // should also exclude other XML reserved forms beyond raw `<` / `&`.
-    xmlcstring: $ => /[^<&]+/,
+    // Lower precedence than numbers, identifiers, and '.' so structured XML
+    // values (integer, OID arcs, …) are not swallowed as one cstring token.
+    xmlcstring: $ => token(prec(-1, /[^<&]+/)),
 
     // UsefulType (X.680) is indistinguishable from a parameter-less DefinedType
     // at parse time, so it is folded into DefinedType to avoid GLR conflicts.
