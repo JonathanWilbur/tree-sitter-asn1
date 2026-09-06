@@ -77,8 +77,6 @@ module.exports = grammar({
     [$.ObjIdComponents, $.DefinedValue, $.objectreference],
     [$.Group, $.TableColumn],
     // --- Values that share brace or string shapes ---
-    [$.EnumeratedValue, $.NamedValue],
-    [$.EnumeratedValue, $.IdentifierList],
     [$.ComponentValueList, $.NamedValueList],
     [$.BitStringValue, $.SequenceValue, $.SequenceOfValue, $.SetValue, $.SetOfValue],
     [$.SequenceValue, $.SetValue],
@@ -124,9 +122,9 @@ module.exports = grammar({
   rules: {
     source_file: $ => repeat($.ModuleDefinition),
 
-    // TODO: This should prevent terminal hyphens. Apply it to other identifiers.
     // All-caps identifiers: object class names, WITH SYNTAX words, and type or
-    // module names that happen to be all-caps.
+    // module names that happen to be all-caps. Each hyphen must be followed by
+    // an alphanumeric, so a trailing hyphen is not allowed.
     yellcased_identifier: $ => /[A-Z][A-Z0-9]*(-[A-Z0-9]+)*/,
 
     // Mixed-case identifiers (at least one lowercase letter). Used as `word` so
@@ -147,8 +145,6 @@ module.exports = grammar({
     anycased_field_ref: $ => /&[a-zA-Z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
     any_identifier: $ => /[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*/,
     identifier: $ => $.lowercased_identifier,
-    // identifier: $ => alias($.lowercased_identifier, $.identifier),
-    // identifier: $ => /[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*/,
 
     DEFINITIONS: $ => 'DEFINITIONS',
     BEGIN: $ => 'BEGIN',
@@ -671,7 +667,7 @@ module.exports = grammar({
     ),
 
     ObjectSetAssignment: $ => seq(
-      alias($._upper_name, 'objectreference'),
+      alias($._upper_name, 'objectsetreference'),
       optional($.ParameterList),
       $.DefinedObjectClass,
       '::=',
@@ -898,7 +894,6 @@ module.exports = grammar({
       $.SequenceOfValue,
       $.SetValue,
       $.SetOfValue,
-      // $.PrefixedValue,
       $.TimeValue,
     ),
     
@@ -907,10 +902,11 @@ module.exports = grammar({
       $.FALSE
     ),
     
+    // X.680: IntegerValue ::= SignedNumber | identifier
+    // (named number from the governing IntegerType).
     IntegerValue: $ => choice(
       $.SignedNumber,
-      // REVIEW:
-      // $.identifier
+      prec(1, $.identifier),
     ),
     
     SignedNumber: $ => choice(
@@ -1307,10 +1303,7 @@ module.exports = grammar({
       seq($.SEQUENCE, '{', $.ComponentTypeLists, '}')
     ),
 
-    ExtensionAndException: $ => choice(
-      '...',
-      seq('...', optional($.ExceptionSpec))
-    ),
+    ExtensionAndException: $ => seq('...', optional($.ExceptionSpec)),
 
     OptionalExtensionMarker: $ => seq(',', '...'),
 

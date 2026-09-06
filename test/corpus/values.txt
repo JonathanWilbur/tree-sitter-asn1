@@ -32,3 +32,50 @@ END
                         (SignedNumber
                           (number))))))))))))
     (END)))
+
+================================================================================
+INTEGER named number list and named value reference
+================================================================================
+
+Mod DEFINITIONS ::= BEGIN
+Color ::= INTEGER { red(0), green(1) }
+c Color ::= red
+END
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ModuleDefinition
+    (ModuleIdentifier
+      (modulereference))
+    (DEFINITIONS)
+    (BEGIN)
+    (ModuleBody
+      (AssignmentList
+        (Assignment
+          (TypeAssignment
+            (Type
+              (BuiltinType
+                (IntegerType
+                  (INTEGER)
+                  (NamedNumberList
+                    (NamedNumber
+                      (identifier
+                        (lowercased_identifier))
+                      (SignedNumber
+                        (number)))
+                    (NamedNumber
+                      (identifier
+                        (lowercased_identifier))
+                      (SignedNumber
+                        (number)))))))))
+        (Assignment
+          (ValueAssignment
+            (Type
+              (ReferencedType
+                (DefinedType)))
+            (Value
+              (ReferencedValue
+                (DefinedValue
+                  (valuereference))))))))
+    (END)))

@@ -2260,7 +2260,7 @@
             "name": "_upper_name"
           },
           "named": false,
-          "value": "objectreference"
+          "value": "objectsetreference"
         },
         {
           "type": "CHOICE",
@@ -3078,6 +3078,14 @@
         {
           "type": "SYMBOL",
           "name": "SignedNumber"
+        },
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
         }
       ]
     },
@@ -4776,30 +4784,21 @@
       ]
     },
     "ExtensionAndException": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "STRING",
           "value": "..."
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "..."
+              "type": "SYMBOL",
+              "name": "ExceptionSpec"
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "ExceptionSpec"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "BLANK"
             }
           ]
         }
@@ -8816,14 +8815,6 @@
     [
       "Group",
       "TableColumn"
-    ],
-    [
-      "EnumeratedValue",
-      "NamedValue"
-    ],
-    [
-      "EnumeratedValue",
-      "IdentifierList"
     ],
     [
       "ComponentValueList",
