@@ -1,6 +1,6 @@
 LANGUAGE_NAME := tree-sitter-asn1
 HOMEPAGE_URL := https://github.com/JonathanWilbur/tree-sitter-asn1
-VERSION := 1.0.2
+VERSION := 1.0.3
 DESCRIPTION := Abstract Syntax Notation
 
 # repository
