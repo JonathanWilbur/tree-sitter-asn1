@@ -6100,17 +6100,7 @@
   {
     "type": "XMLNumberForm",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "number",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "XMLNumericRealValue",
@@ -6118,25 +6108,10 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "realnumber",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "XMLObjIdComponent",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "XMLNameAndNumberForm",
           "named": true
         }
       ]
@@ -6151,7 +6126,15 @@
       "required": true,
       "types": [
         {
-          "type": "XMLObjIdComponent",
+          "type": "XMLNameAndNumberForm",
+          "named": true
+        },
+        {
+          "type": "XMLNumberForm",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         }
       ]
@@ -6178,7 +6161,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "XMLObjIdComponentList",
@@ -6299,6 +6282,21 @@
       "types": [
         {
           "type": "XMLComponentValueList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "XMLSignedNumber",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "XMLNumberForm",
           "named": true
         }
       ]
@@ -7145,10 +7143,6 @@
   },
   {
     "type": "WITH",
-    "named": true
-  },
-  {
-    "type": "XMLSignedNumber",
     "named": true
   },
   {
