@@ -15,8 +15,7 @@ class TestLanguage(TestCase):
             self.fail("Error loading ASN.1 grammar")
 
     def test_asn1_fixtures_parse_without_errors(self):
-        language = Parser(Language(tree_sitter_asn1.language()))
-        parser = tree_sitter.Parser(language)
+        parser = Parser(Language(tree_sitter_asn1.language()))
         files = sorted(
             [*FIXTURES_DIR.glob("*.asn1"), *FIXTURES_DIR.glob("*.asn")]
         )
