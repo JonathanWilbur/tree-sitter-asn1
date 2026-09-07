@@ -60,7 +60,21 @@ is a comma or `FROM`. If either of these cases are true, we know that we just
 read a symbol from the subsequent `SymbolsFromModule` production rather than a
 `DefinedValue` for the `AssignedIdentifier` production.
 
+## Releasing a new Version
+
+Run
+
+```bash
+# Set the version
+npx tree-sitter version $DESIRED_VERSION
+# Re-generate the C files, because the version number is incorporate into them.
+npx tree-sitter generate
+```
+
 ## Publishing to Various Package Repositories
 
 - [x] ~~Maven Central~~ (I would have to create the bindings myself, and I have not used Java in 10 years.)
 - [x] ~~`jsr.io`~~ The NodeJS bindings currently use CommonJS, but JSR requires ESM.
+- [x] NPM
+- [x] PyPI
+- [ ] Crates

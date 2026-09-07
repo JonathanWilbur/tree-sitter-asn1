@@ -1,12 +1,14 @@
-const assert = require("node:assert");
-const fs = require("node:fs");
-const path = require("node:path");
-const { test } = require("node:test");
+import assert from "node:assert";
+import fs from "node:fs";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 
-const Parser = require("tree-sitter");
+import Parser from "tree-sitter";
 
-const language = require(".");
-const fixturesDir = path.join(__dirname, "..", "..", "test", "asn1");
+import language from "./index.js";
+
+const fixturesDir = fileURLToPath(new URL("../../test/asn1", import.meta.url));
 
 function listAsn1Fixtures(dir) {
   if (!fs.existsSync(dir)) {

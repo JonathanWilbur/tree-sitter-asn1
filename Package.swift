@@ -1,10 +1,11 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.6
 
 import Foundation
 import PackageDescription
 
+let dir = Context.packageDirectory
 var sources = ["src/parser.c"]
-if FileManager.default.fileExists(atPath: "src/scanner.c") {
+if FileManager.default.fileExists(atPath: "\(dir)/src/scanner.c") {
     sources.append("src/scanner.c")
 }
 
@@ -31,7 +32,7 @@ let package = Package(
         .testTarget(
             name: "TreeSitterAsn1Tests",
             dependencies: [
-                "SwiftTreeSitter",
+                .product(name: "SwiftTreeSitter", package: "swift-tree-sitter"),
                 "TreeSitterAsn1",
             ],
             path: "bindings/swift/TreeSitterAsn1Tests"

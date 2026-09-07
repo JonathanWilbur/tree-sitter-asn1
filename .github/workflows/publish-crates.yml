@@ -48,7 +48,7 @@ jobs:
         with:
           # Match package-lock.json / committed src/parser.c (v0.25.6).
           # A newer CLI rewrites generated files and cargo publish then fails.
-          tree-sitter-ref: v0.25.6
+          tree-sitter-ref: v0.27.0
       - name: Install dependencies
         run: |-
           if jq -e "$JQ_SCRIPT" package.json >/dev/null; then
