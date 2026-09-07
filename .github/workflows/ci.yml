@@ -41,7 +41,7 @@ jobs:
         with:
           # Match package-lock.json so `generate: true` does not fail on a
           # header-comment drift from a newer CLI (0.27 vs committed 0.25.6).
-          tree-sitter-ref: v0.25.6
+          tree-sitter-ref: v0.27.0
       - name: Run parser and binding tests
         uses: tree-sitter/parser-test-action@v2
         with:
