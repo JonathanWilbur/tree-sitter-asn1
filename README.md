@@ -79,4 +79,4 @@ cargo update
 - [x] ~~`jsr.io`~~ The NodeJS bindings currently use CommonJS, but JSR requires ESM.
 - [x] NPM
 - [x] PyPI
-- [ ] Crates
+- [x] Crates
