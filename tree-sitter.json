@@ -11,7 +11,8 @@
         "asn"
       ],
       "injection-regex": "^asn1$",
-      "class-name": "TreeSitterAsn1"
+      "class-name": "TreeSitterAsn1",
+      "highlights": "nvim-queries/asn1/highlights.scm"
     }
   ],
   "metadata": {

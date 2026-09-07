@@ -7,6 +7,9 @@ on:
       - grammar.js
       - src/**
       - test/**
+      - queries/**
+      - nvim-queries/**
+      - parser.json
       - bindings/**
       - binding.gyp
       - tree-sitter.json
@@ -16,6 +19,9 @@ on:
       - grammar.js
       - src/**
       - test/**
+      - queries/**
+      - nvim-queries/**
+      - parser.json
       - bindings/**
       - binding.gyp
       - tree-sitter.json

@@ -1,0 +1,11 @@
+Mod DEFINITIONS ::= BEGIN
+--<- @module
+--  ^^^^^^^^^^^ @keyword
+--              ^^^ @operator
+--                  ^^^^^ @keyword
+  A ::= INTEGER
+--^ @type
+--  ^^^ @operator
+--      ^^^^^^^ @type.builtin
+END
+--<- @keyword

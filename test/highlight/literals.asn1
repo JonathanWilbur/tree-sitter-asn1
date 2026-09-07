@@ -1,0 +1,12 @@
+M DEFINITIONS ::= BEGIN
+-- a line comment
+--<- @comment
+  n INTEGER ::= 42
+--  ^^^^^^^ @type.builtin
+--          ^^^ @operator
+--              ^^ @number
+  s IA5String ::= "hi"
+--  ^^^^^^^^^ @type.builtin
+--            ^^^ @operator
+--                ^^^^ @string
+END

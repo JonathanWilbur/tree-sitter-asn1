@@ -1,0 +1,27 @@
+name: Validate Queries (Self-Contained)
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - nvim-queries/**
+      - test/highlight/**
+      - parser.json
+      - tree-sitter.json
+      - grammar.js
+      - src/**
+      - .github/workflows/nvim-queries.yml
+  pull_request:
+    paths:
+      - nvim-queries/**
+      - test/highlight/**
+      - parser.json
+      - tree-sitter.json
+      - grammar.js
+      - src/**
+      - .github/workflows/nvim-queries.yml
+  workflow_dispatch:
+
+jobs:
+  validate:
+    uses: neovim-treesitter/.github/.github/workflows/self-contained-validate.yml@main

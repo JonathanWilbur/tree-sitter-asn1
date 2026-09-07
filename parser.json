@@ -1,0 +1,5 @@
+{
+    "lang": "asn1",
+    "queries_dir": "nvim-queries",
+    "test_dir": "test/highlight"
+}
