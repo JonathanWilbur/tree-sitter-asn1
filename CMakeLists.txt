@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-asn1
-        VERSION "1.0.3"
+        VERSION "1.0.4"
         DESCRIPTION "Abstract Syntax Notation"
         HOMEPAGE_URL "https://github.com/jonathanwilbur/tree-sitter-asn1"
         LANGUAGES C)

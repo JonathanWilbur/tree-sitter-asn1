@@ -190,7 +190,7 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-asn1"
-version = "1.0.3"
+version = "1.0.4"
 dependencies = [
  "cc",
  "tree-sitter",
