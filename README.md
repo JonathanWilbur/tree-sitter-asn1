@@ -69,6 +69,8 @@ Run
 npx tree-sitter version $DESIRED_VERSION
 # Re-generate the C files, because the version number is incorporate into them.
 npx tree-sitter generate
+# Apparently needed for the Rust crate to publish
+cargo update
 ```
 
 ## Publishing to Various Package Repositories
