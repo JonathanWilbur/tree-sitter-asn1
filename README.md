@@ -59,3 +59,8 @@ The solution to this is to read ahead and check if the next non-whitespace token
 is a comma or `FROM`. If either of these cases are true, we know that we just
 read a symbol from the subsequent `SymbolsFromModule` production rather than a
 `DefinedValue` for the `AssignedIdentifier` production.
+
+## Publishing to Various Package Repositories
+
+- [x] ~~Maven Central~~ (I would have to create the bindings myself, and I have not used Java in 10 years.)
+- [x] ~~`jsr.io`~~ The NodeJS bindings currently use CommonJS, but JSR requires ESM.

@@ -11,12 +11,18 @@ concurrency:
 permissions:
   contents: read
   id-token: write
+  attestations: write
 
 jobs:
   # The shared release.yml workflow runs `gh release create` from a tag push.
   # This workflow is triggered by an already-published GitHub release, so that
   # job is omitted. Wasm and source tarball assets can still be attached to the
   # release in the GitHub UI if needed.
+
+  # I have to use this instead of .github/workflows/publish-npm-with-prov.yml
+  # for the first time. You can't configure trusted publishing until you
+  # already have the package published. PyPI can do that, though.
+  # TODO: uncomment publish job in publish-npm-with-prov.yml after the first release and remove this job.
   npm:
     uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
     secrets:
@@ -24,6 +30,7 @@ jobs:
     with:
       generate: true
 
+  # TODO: Use hashed versions.
   crates:
     uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
     secrets:
@@ -31,9 +38,12 @@ jobs:
     with:
       generate: true
 
-  pypi:
-    uses: tree-sitter/workflows/.github/workflows/package-pypi.yml@main
-    secrets:
-      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-    with:
-      generate: true
+  # Using the separate workflow for this to get provenance, and to generate
+  # attestations and SBOMs.
+  # See: .github/workflows/publish-pypi-with-prov.yml
+  # pypi:
+  #   uses: tree-sitter/workflows/.github/workflows/package-pypi.yml@main
+  #   secrets:
+  #     PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+  #   with:
+  #     generate: true
