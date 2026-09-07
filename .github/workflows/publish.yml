@@ -22,13 +22,10 @@ jobs:
   # I have to use this instead of .github/workflows/publish-npm-with-prov.yml
   # for the first time. You can't configure trusted publishing until you
   # already have the package published. PyPI can do that, though.
-  # TODO: uncomment publish job in publish-npm-with-prov.yml after the first release and remove this job.
-  npm:
-    uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
-    secrets:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    with:
-      generate: true
+  # npm:
+  #   uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
+  #   secrets:
+  #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # TODO: Use hashed versions.
   crates:

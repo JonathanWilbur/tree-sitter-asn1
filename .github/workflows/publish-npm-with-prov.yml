@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           cache: npm
-          node-version: "26"
+          node-version: "24"
       - name: Install dependencies
         run: npm i --omit peer --omit optional
       - name: Regenerate parser
@@ -68,7 +68,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           cache: npm
-          node-version: "26"
+          node-version: "24"
       - name: Install dependencies
         run: npm i --omit peer --omit optional
       - name: Regenerate parser
@@ -89,36 +89,35 @@ jobs:
           name: prebuilds-${{matrix.os}}
           retention-days: 2
 
-  # Uncomment when the package is already published.
-  # package:
-  #   name: Publish NodeJS package
-  #   needs: [build_wasm, build_node]
-  #   runs-on: ubuntu-26.04
-  #   environment:
-  #     name: npm
-  #     url: https://www.npmjs.com/package/tree-sitter-asn1
-  #   permissions:
-  #     id-token: write
-  #     contents: read
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v7
-  #     - name: Set up NodeJS
-  #       uses: actions/setup-node@v7
-  #       with:
-  #         cache: npm
-  #         node-version: "26"
-  #         registry-url: https://registry.npmjs.org/
-  #     - name: Download binaries
-  #       uses: actions/download-artifact@v8
-  #       with:
-  #         path: prebuilds
-  #         pattern: prebuilds-*
-  #         merge-multiple: true
-  #     - name: Check binaries
-  #       run: tree prebuilds
-  #     - name: Move Wasm binaries to root
-  #       continue-on-error: true
-  #       run: mv -v prebuilds/*.wasm .
-  #     - name: Publish to npm
-  #       run: npm publish --provenance
+  package:
+    name: Publish NodeJS package
+    needs: [build_wasm, build_node]
+    runs-on: ubuntu-26.04
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/tree-sitter-asn1
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Set up NodeJS
+        uses: actions/setup-node@v7
+        with:
+          cache: npm
+          node-version: "24"
+          registry-url: https://registry.npmjs.org/
+      - name: Download binaries
+        uses: actions/download-artifact@v8
+        with:
+          path: prebuilds
+          pattern: prebuilds-*
+          merge-multiple: true
+      - name: Check binaries
+        run: tree prebuilds
+      - name: Move Wasm binaries to root
+        continue-on-error: true
+        run: mv -v prebuilds/*.wasm .
+      - name: Publish to npm
+        run: npm publish --provenance
