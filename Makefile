@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-asn1
 HOMEPAGE_URL := https://github.com/jonathanwilbur/tree-sitter-asn1
-VERSION := 0.1.0
+VERSION := 1.0.0
 
 # repository
 SRC_DIR := src

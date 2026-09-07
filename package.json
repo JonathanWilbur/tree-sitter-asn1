@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-asn1",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Abstract Syntax Notation",
   "repository": "https://github.com/jonathanwilbur/tree-sitter-asn1",
   "license": "MIT",
