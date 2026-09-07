@@ -69,7 +69,7 @@ install(TARGETS tree-sitter-asn1
 
 file(GLOB QUERIES queries/*.scm)
 install(FILES ${QUERIES}
-        DESTINATION "${CMAKE_INSTALL_DATADIR}/tree-sitter/queries/asn1")
+        DESTINATION "${CMAKE_INSTALL_DATADIR}/tree-sitter/queries")
 
 file(GLOB ASN1_FIXTURES
      "${CMAKE_CURRENT_SOURCE_DIR}/test/asn1/*.asn1"
